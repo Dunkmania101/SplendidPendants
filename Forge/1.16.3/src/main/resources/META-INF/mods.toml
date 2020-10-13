@@ -1,0 +1,27 @@
+modLoader = "javafml" #mandatory
+loaderVersion = "[34,)" #mandatory
+license = "All rights reserved"
+issueTrackerURL="https://github.com/Dunkmania101/SplendidPendants/issues" #optional
+[[mods]] #mandatory
+modId = "splendidpendants" #mandatory
+version = "0.0.1" #mandatory
+displayName = "Splendid Pendants" #mandatory
+#updateJSONURL="http://myurl.me/" #optional
+#displayURL="http://example.com/" #optional
+#logoFile="examplemod.png" #optional
+authors = "Dunkmania101" #optional
+description = '''
+    Adds some pendants that give the player great strengths. Splendid!
+'''
+#[[dependencies.splendidpendants]] #optional
+#    modId="forge" #mandatory
+#    mandatory=true #mandatory
+#    versionRange="[34,)" #mandatory
+#    ordering="NONE"
+#    side="BOTH"
+#[[dependencies.splendidpendants]]
+#    modId="minecraft"
+#    mandatory=true
+#    versionRange="[1.16.3]"
+#    ordering="NONE"
+#    side="BOTH"

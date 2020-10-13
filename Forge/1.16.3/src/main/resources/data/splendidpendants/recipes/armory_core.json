@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "splendidpendants:reinforced_plate"
+    },
+    {
+      "item": "minecraft:netherite_sword"
+    },
+    {
+      "item": "minecraft:netherite_helmet"
+    },
+    {
+      "item": "minecraft:netherite_chestplate"
+    },
+    {
+      "item": "minecraft:netherite_leggings"
+    },
+    {
+      "item": "minecraft:netherite_boots"
+    }
+  ],
+  "result": {
+    "item": "splendidpendants:armory_core"
+  }
+}

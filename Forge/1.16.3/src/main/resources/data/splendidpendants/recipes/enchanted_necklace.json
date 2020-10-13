@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aaa",
+    "a a",
+    " a "
+  ],
+  "key": {
+    "a": {
+      "item": "splendidpendants:enchanted_lace"
+    }
+  },
+  "result": {
+    "item": "splendidpendants:enchanted_necklace"
+  }
+}

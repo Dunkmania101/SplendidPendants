@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bbb",
+    "bab",
+    "bbb"
+  ],
+  "key": {
+    "a": {
+      "item": "splendidpendants:iron_plate"
+    },
+    "b": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "result": {
+    "item": "splendidpendants:reinforced_plate"
+  }
+}

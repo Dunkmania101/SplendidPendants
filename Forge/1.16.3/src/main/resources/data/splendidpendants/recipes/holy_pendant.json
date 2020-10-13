@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "splendidpendants:enchanted_necklace"
+    },
+    {
+      "item": "splendidpendants:holy_charm"
+    },
+    {
+      "item": "splendidpendants:enchanted_gemstone"
+    }
+  ],
+  "result": {
+    "item": "splendidpendants:atlantic_pendant"
+  }
+}
