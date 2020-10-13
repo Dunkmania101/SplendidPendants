@@ -1,3 +1,3 @@
 # SplendidPendants
-A Minecraft mod that adds harvesters that gather resources from space-time itself!
+Adds some pendants that give the player great strengths. Splendid!
 ![Showcase](SplendidPendants.png)
