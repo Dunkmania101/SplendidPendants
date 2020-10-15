@@ -4,6 +4,7 @@ import dunkmania101.splendidpendants.SplendidPendants;
 import dunkmania101.splendidpendants.data.compat.CuriosCompat;
 import dunkmania101.splendidpendants.data.compat.Mods;
 import dunkmania101.splendidpendants.data.models.BlankBipedModel;
+import dunkmania101.splendidpendants.data.models.FakeHolyHaloModel;
 import dunkmania101.splendidpendants.util.PendantTools;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
@@ -12,6 +13,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -22,6 +24,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class PendantItem extends ArmorItem {
@@ -45,7 +48,11 @@ public class PendantItem extends ArmorItem {
     @Override
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
         if (PendantTools.isEnabled(itemStack)) {
-            return (A) getCustomModel(entityLiving, itemStack, armorSlot);
+            if (entityLiving instanceof PlayerEntity) {
+                return (A) getCustomModel(entityLiving, itemStack, armorSlot);
+            } else {
+                return (A) new FakeHolyHaloModel(DyeColor.RED);
+            }
         }
         return (A) new BlankBipedModel();
     }
@@ -67,8 +74,9 @@ public class PendantItem extends ArmorItem {
         return SplendidPendants.modid + ":textures/blank.png";
     }
 
+    @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, PlayerEntity playerIn, @Nonnull Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
         if (playerIn.isCrouching()) {
             customClickActions(worldIn, playerIn, handIn, stack);
@@ -87,12 +95,12 @@ public class PendantItem extends ArmorItem {
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack) {
+    public boolean hasEffect(@Nonnull ItemStack stack) {
         return PendantTools.isEnabled(stack);
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(@Nonnull ItemStack stack, World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.use_instructions"));

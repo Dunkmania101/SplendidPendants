@@ -7,6 +7,8 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 
+import javax.annotation.Nonnull;
+
 public enum PendantArmorMaterial implements IArmorMaterial {
     ATLANTIC(SplendidPendants.modid + ":atlantic", SoundEvents.ENTITY_DOLPHIN_SPLASH, 0, 0, 0),
     KNIGHTHOOD(SplendidPendants.modid + ":knighthood", SoundEvents.ENTITY_IRON_GOLEM_STEP, 0, 0, 0),
@@ -28,12 +30,12 @@ public enum PendantArmorMaterial implements IArmorMaterial {
     }
 
     @Override
-    public int getDurability(EquipmentSlotType slotIn) {
+    public int getDurability(@Nonnull EquipmentSlotType slotIn) {
         return 0;
     }
 
     @Override
-    public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+    public int getDamageReductionAmount(@Nonnull EquipmentSlotType slotIn) {
         return this.damageReduce;
     }
 
@@ -42,16 +44,19 @@ public enum PendantArmorMaterial implements IArmorMaterial {
         return 0;
     }
 
+    @Nonnull
     @Override
     public SoundEvent getSoundEvent() {
         return this.sound;
     }
 
+    @Nonnull
     @Override
     public Ingredient getRepairMaterial() {
         return Ingredient.EMPTY;
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return this.name;

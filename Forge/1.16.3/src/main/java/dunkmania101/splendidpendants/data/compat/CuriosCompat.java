@@ -31,6 +31,8 @@ import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
+import javax.annotation.Nonnull;
+
 public class CuriosCompat {
     public static void enqueueImc() {
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(CustomValues.pendantCuriosSlotName)
@@ -74,6 +76,14 @@ public class CuriosCompat {
             }
 
             @Override
+            public void curioTick(String identifier, int index, LivingEntity livingEntity) {
+                if (livingEntity instanceof PlayerEntity) {
+                    PlayerEntity player = (PlayerEntity) livingEntity;
+                    stack.onArmorTick(player.getEntityWorld(), player);
+                }
+            }
+
+            @Override
             @OnlyIn(Dist.CLIENT)
             public void render(String identifier, int index, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
                 if (PendantTools.isEnabled(stack)) {
@@ -106,8 +116,9 @@ public class CuriosCompat {
         return new ICapabilityProvider() {
             private final LazyOptional<ICurio> curioOpt = LazyOptional.of(() -> curio);
 
+            @Nonnull
             @Override
-            public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
                 return CuriosCapability.ITEM.orEmpty(cap, curioOpt);
             }
         };

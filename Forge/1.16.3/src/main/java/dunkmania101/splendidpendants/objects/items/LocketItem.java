@@ -1,7 +1,5 @@
 package dunkmania101.splendidpendants.objects.items;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import dunkmania101.splendidpendants.data.CustomValues;
 import dunkmania101.splendidpendants.data.PendantArmorMaterial;
 import dunkmania101.splendidpendants.data.models.BlankBipedModel;
@@ -12,8 +10,6 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
@@ -25,8 +21,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Map;
 
 public class LocketItem extends PendantItem {
     public LocketItem(Properties properties) {
@@ -56,20 +52,12 @@ public class LocketItem extends PendantItem {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot, ItemStack stack) {
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
         ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.locketSize, false);
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
             ItemStack storedStack = itemStackHandler.getStackInSlot(i);
-            if (storedStack.getItem() instanceof PendantItem) {
-                for (Map.Entry<Attribute, AttributeModifier> entry : storedStack.getAttributeModifiers(equipmentSlot).entries()) {
-                    if (!builder.build().containsKey(entry.getKey())) {
-                        builder.put(entry);
-                    }
-                }
-            }
+            storedStack.onArmorTick(world, player);
         }
-        return builder.build();
     }
 
     @Override
@@ -83,7 +71,7 @@ public class LocketItem extends PendantItem {
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(@Nonnull ItemStack stack, World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.locket_sneak_use_instructions"));
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));

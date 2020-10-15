@@ -1,8 +1,8 @@
 package dunkmania101.splendidpendants.init;
 
 import dunkmania101.splendidpendants.SplendidPendants;
-import dunkmania101.splendidpendants.objects.containers.LocketContainer;
 import dunkmania101.splendidpendants.objects.containers.DyeableContainer;
+import dunkmania101.splendidpendants.objects.containers.LocketContainer;
 import dunkmania101.splendidpendants.objects.containers.screens.DyeableScreen;
 import dunkmania101.splendidpendants.objects.containers.screens.LocketScreen;
 import net.minecraft.client.gui.ScreenManager;

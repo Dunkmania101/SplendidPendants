@@ -13,7 +13,7 @@ public class DyeableContainer extends PendantContainer {
         super(ContainerInit.DYEABLE_CONTAINER.get(), id, playerInventory, stack, CustomValues.dyeableSize, true);
     }
 
-    public DyeableContainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer data) {
+    public DyeableContainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer ignored) {
         this(windowId, playerInventory, playerInventory.getCurrentItem());
     }
 

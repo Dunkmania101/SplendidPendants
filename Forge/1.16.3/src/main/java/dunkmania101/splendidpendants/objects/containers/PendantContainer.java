@@ -16,6 +16,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import javax.annotation.Nonnull;
+
 public class PendantContainer extends Container {
     protected final ItemStack stack;
     protected ItemStackHandler itemStackHandler;
@@ -66,7 +68,7 @@ public class PendantContainer extends Container {
         for (int x = 0; x < 9; ++x) {
             Slot slot = addSlot(new Slot(playerInventory, x, 8 + (x * slotSizePlus2), startPlayerHotBarY) {
                 @Override
-                public boolean canTakeStack(PlayerEntity playerIn) {
+                public boolean canTakeStack(@Nonnull PlayerEntity playerIn) {
                     return slotNumber != thisSlot;
                 }
             });
@@ -80,8 +82,9 @@ public class PendantContainer extends Container {
         return new ResourceLocation(SplendidPendants.modid, "");
     }
 
+    @Nonnull
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack transferStackInSlot(@Nonnull PlayerEntity playerIn, int index) {
         Slot slot = this.getSlot(index);
 
         if (!slot.canTakeStack(playerIn)) {
@@ -115,13 +118,13 @@ public class PendantContainer extends Container {
     }
 
     @Override
-    public void onContainerClosed(PlayerEntity playerIn) {
+    public void onContainerClosed(@Nonnull PlayerEntity playerIn) {
         super.onContainerClosed(playerIn);
         Tools.saveItemStackHandlerOfStack(this.stack, this.itemStackHandler);
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
+    public boolean canInteractWith(@Nonnull PlayerEntity playerIn) {
         return true;
     }
 }

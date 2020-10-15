@@ -5,7 +5,8 @@ import dunkmania101.splendidpendants.data.CustomValues;
 import dunkmania101.splendidpendants.data.compat.Mods;
 import dunkmania101.splendidpendants.init.ItemInit;
 import dunkmania101.splendidpendants.objects.items.*;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -31,18 +32,31 @@ import java.util.UUID;
 
 public class PendantTools {
     public static void runPendants(PlayerEntity player) {
-        if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
-            runAtlantic(player);
+        CompoundNBT data = player.getPersistentData();
+        if (data.contains(CustomValues.hasAtlanticKey)) {
+            if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
+                runAtlantic(player);
+            } else {
+                resetAtlantic(player);
+            }
         } else {
             resetAtlantic(player);
         }
-        if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
-            runKnighthood(player);
+        if (data.contains(CustomValues.hasKnighthoodKey)) {
+            if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
+                runKnighthood(player);
+            } else {
+                resetKnighthood(player);
+            }
         } else {
             resetKnighthood(player);
         }
-        if (inventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
-            runHoly(player);
+        if (data.contains(CustomValues.hasHolyKey)) {
+            if (inventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
+                runHoly(player);
+            } else {
+                resetHoly(player);
+            }
         } else {
             resetHoly(player);
         }
@@ -169,17 +183,23 @@ public class PendantTools {
 
     public static void runPendantModel(RenderPlayerEvent event) {
         PlayerEntity player = event.getPlayer();
-        PlayerRenderer renderer = event.getRenderer();
         if (player.isInWater()) {
-            if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
-                renderer.getEntityModel().bipedRightLeg.showModel = false;
-                renderer.getEntityModel().bipedRightLegwear.showModel = false;
-                renderer.getEntityModel().bipedLeftLegwear.showModel = false;
+            CompoundNBT data = player.getPersistentData();
+            if (data.contains(CustomValues.hasAtlanticKey)) {
+                if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
+                    PlayerModel<AbstractClientPlayerEntity> model = event.getRenderer().getEntityModel();
+                    model.bipedRightLeg.showModel = false;
+                    model.bipedRightLegwear.showModel = false;
+                    model.bipedLeftLegwear.showModel = false;
+                }
             }
         }
     }
 
     public static void resetAtlantic(PlayerEntity player) {
+        CompoundNBT data = player.getPersistentData();
+        data.remove(CustomValues.hasAtlanticKey);
+
         resetPlayerAttribute(player.getAttribute(ForgeMod.SWIM_SPEED.get()), CustomValues.atlanticSpeedUUID);
     }
 
@@ -199,19 +219,8 @@ public class PendantTools {
         modifyPlayerAttribute(player.getAttribute(Attributes.field_233823_f_), damageBoost, CustomValues.knighthoodDamageBoostUUID, CustomValues.knighthoodDamageBoostName);
 
         CompoundNBT data = player.getPersistentData();
-        float oldHealth = 0;
-        float newHealth = player.getHealth();
         player.setFire(0);
         player.setArrowCountInEntity(0);
-        if (data.contains(CustomValues.playerHealthKey)) {
-            oldHealth = data.getFloat(CustomValues.playerHealthKey);
-            if (newHealth < oldHealth) {
-                data.putInt(CustomValues.renderKnighthoodKey, CustomValues.renderKnighthoodTicks);
-
-                player.playSound(SoundEvents.ENTITY_IRON_GOLEM_HURT, 1, -1);
-                player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 3);
-            }
-        }
 
         if (data.contains(CustomValues.renderKnighthoodKey)) {
             int renderKnighthoodTicks = data.getInt(CustomValues.renderKnighthoodKey);
@@ -222,27 +231,46 @@ public class PendantTools {
             }
         }
 
+        float oldHealth = 0;
+        float newHealth = player.getHealth();
+
+        if (data.contains(CustomValues.playerHealthKey)) {
+            oldHealth = data.getFloat(CustomValues.playerHealthKey);
+            if (newHealth < oldHealth) {
+                data.putInt(CustomValues.renderKnighthoodKey, CustomValues.renderKnighthoodTicks);
+
+                player.playSound(SoundEvents.ENTITY_IRON_GOLEM_HURT, 1, -1);
+                player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 3);
+            }
+        }
+
         if (oldHealth != newHealth) {
-            data.putFloat(CustomValues.playerHealthKey, player.getHealth());
+            data.putFloat(CustomValues.playerHealthKey, newHealth);
         }
     }
 
     public static void runKnighthoodCritical(CriticalHitEvent event) {
         if (event.isVanillaCritical()) {
             PlayerEntity player = event.getPlayer();
-            if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
-                double damage = CommonConfig.KNIGHTHOOD_CRITICAL_DAMAGE.get();
-                event.setDamageModifier((float) (event.getDamageModifier() + damage));
+            CompoundNBT data = player.getPersistentData();
+            if (data.contains(CustomValues.hasKnighthoodKey)) {
+                if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
+                    double damage = CommonConfig.KNIGHTHOOD_CRITICAL_DAMAGE.get();
+                    event.setDamageModifier((float) (event.getDamageModifier() + damage));
 
-                player.getPersistentData().putInt(CustomValues.renderKnighthoodKey, CustomValues.renderKnighthoodTicks);
+                    player.getPersistentData().putInt(CustomValues.renderKnighthoodKey, CustomValues.renderKnighthoodTicks);
 
-                player.playSound(SoundEvents.ENTITY_ENDER_DRAGON_FLAP, 1, 1);
-                player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 2);
+                    player.playSound(SoundEvents.ENTITY_ENDER_DRAGON_FLAP, 1, 1);
+                    player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 2);
+                }
             }
         }
     }
 
     public static void resetKnighthood(PlayerEntity player) {
+        CompoundNBT data = player.getPersistentData();
+        data.remove(CustomValues.hasKnighthoodKey);
+
         resetPlayerAttribute(player.getAttribute(Attributes.field_233818_a_), CustomValues.knighthoodMaxHealthUUID);
         resetPlayerAttribute(player.getAttribute(Attributes.field_233826_i_), CustomValues.knighthoodArmorUUID);
         resetPlayerAttribute(player.getAttribute(Attributes.field_233827_j_), CustomValues.knighthoodArmorToughnessUUID);
@@ -250,7 +278,6 @@ public class PendantTools {
         resetPlayerAttribute(player.getAttribute(Attributes.field_233824_g_), CustomValues.knighthoodKnockBackBoostUUID);
         resetPlayerAttribute(player.getAttribute(Attributes.field_233823_f_), CustomValues.knighthoodDamageBoostUUID);
 
-        CompoundNBT data = player.getPersistentData();
         data.remove(CustomValues.renderKnighthoodKey);
         data.remove(CustomValues.playerHealthKey);
     }
@@ -273,6 +300,9 @@ public class PendantTools {
     }
 
     public static void resetHoly(PlayerEntity player) {
+        CompoundNBT data = player.getPersistentData();
+        data.remove(CustomValues.hasHolyKey);
+
         resetPlayerAttribute(player.getAttribute(Attributes.field_233822_e_), CustomValues.holyFlightSpeedBoostUUID);
 
         if (!player.isCreative() && !player.isSpectator()) {

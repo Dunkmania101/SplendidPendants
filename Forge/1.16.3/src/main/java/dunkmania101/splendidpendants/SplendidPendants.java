@@ -21,14 +21,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import javax.annotation.Nonnull;
 
 @Mod(SplendidPendants.modid)
 public class SplendidPendants {
     public static final String modid = "splendidpendants";
-
-    public static final Logger LOGGER = LogManager.getLogger();
 
     public SplendidPendants() {
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -71,6 +69,7 @@ public class SplendidPendants {
             super(index, label);
         }
 
+        @Nonnull
         @Override
         public ItemStack createIcon() {
             return new ItemStack(ItemInit.LOCKET.get());

@@ -13,7 +13,7 @@ public class LocketContainer extends PendantContainer {
         super(ContainerInit.LOCKET_CONTAINER.get(), id, playerInventory, stack, CustomValues.locketSize, false);
     }
 
-    public LocketContainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer data) {
+    public LocketContainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer ignored) {
         this(windowId, playerInventory, playerInventory.getCurrentItem());
     }
 

@@ -13,8 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+
 public class AtlanticTailModel extends BipedModel<LivingEntity> {
-    private final ModelRenderer leftLegModel;
     private DyeColor color = DyeColor.LIME;
 
     public AtlanticTailModel(ItemStack stack) {
@@ -30,7 +31,7 @@ public class AtlanticTailModel extends BipedModel<LivingEntity> {
         this.textureWidth = 32;
         this.textureHeight = 32;
 
-        leftLegModel = new ModelRenderer(this);
+        ModelRenderer leftLegModel = new ModelRenderer(this);
         leftLegModel.setRotationPoint(2.0F, 5.0F, -1.0F);
         leftLegModel.setTextureOffset(0, 0).addBox(-8.0F, 0.0F, -4.0F, 12.0F, 1.0F, 8.0F, 0.0F, false);
         leftLegModel.setTextureOffset(0, 0).addBox(-8.0F, -2.0F, 3.0F, 12.0F, 2.0F, 1.0F, 0.0F, false);
@@ -65,7 +66,7 @@ public class AtlanticTailModel extends BipedModel<LivingEntity> {
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void render(@Nonnull MatrixStack matrixStackIn, @Nonnull IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         float[] colors = this.color.getColorComponentValues();
         this.bipedLeftLeg.showModel = true;
         super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, colors[0], colors[1], colors[2], alpha);

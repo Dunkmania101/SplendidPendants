@@ -13,8 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+
 public class HolyHaloModel extends BipedModel<LivingEntity> {
-    private final ModelRenderer holyHaloModel;
     private DyeColor color = DyeColor.YELLOW;
 
     public HolyHaloModel(ItemStack stack) {
@@ -30,9 +31,8 @@ public class HolyHaloModel extends BipedModel<LivingEntity> {
         this.textureWidth = 32;
         this.textureHeight = 32;
 
-        holyHaloModel = new ModelRenderer(this);
+        ModelRenderer holyHaloModel = new ModelRenderer(this);
         holyHaloModel.setRotationPoint(0.0F, 23.5F, 0.0F);
-        setRotationAngle(holyHaloModel, -0.2182F, 0.0F, 0.1309F);
         holyHaloModel.setTextureOffset(0, 0).addBox(-7.1747F, -19.2114F, 1.0686F, 12.0F, 1.0F, 3.0F, 0.0F, false);
         holyHaloModel.setTextureOffset(0, 0).addBox(-7.1747F, -19.2114F, -7.9314F, 12.0F, 1.0F, 3.0F, 0.0F, false);
         holyHaloModel.setTextureOffset(0, 0).addBox(1.8253F, -19.2114F, -4.9314F, 3.0F, 1.0F, 6.0F, 0.0F, false);
@@ -45,6 +45,7 @@ public class HolyHaloModel extends BipedModel<LivingEntity> {
         holyHaloModel.setTextureOffset(0, 0).addBox(2.8253F, -18.2114F, -5.9314F, 1.0F, 1.0F, 8.0F, 0.0F, false);
         holyHaloModel.setTextureOffset(0, 0).addBox(-6.1747F, -18.2114F, -6.9314F, 10.0F, 1.0F, 1.0F, 0.0F, false);
         holyHaloModel.setTextureOffset(0, 0).addBox(-6.1747F, -18.2114F, -5.9314F, 1.0F, 1.0F, 8.0F, 0.0F, false);
+        setRotationAngle(holyHaloModel, -0.2182F, 0.0F, 0.1309F);
 
         this.bipedHeadwear = holyHaloModel;
         this.bipedHead = new ModelRenderer(this);
@@ -62,7 +63,7 @@ public class HolyHaloModel extends BipedModel<LivingEntity> {
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void render(@Nonnull MatrixStack matrixStackIn, @Nonnull IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         float[] colors = this.color.getColorComponentValues();
         this.bipedHeadwear.showModel = true;
         super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, colors[0], colors[1], colors[2], alpha);

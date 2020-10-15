@@ -10,6 +10,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nonnull;
+
 @OnlyIn(Dist.CLIENT)
 public class PendantScreen extends ContainerScreen<PendantContainer> {
     private static final ResourceLocation BACKGROUND_TEXTURE = INVENTORY_BACKGROUND;
@@ -24,14 +26,14 @@ public class PendantScreen extends ContainerScreen<PendantContainer> {
     }
 
     @Override
-    public void func_230430_a_(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void func_230430_a_(@Nonnull MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         this.func_230446_a_(stack);
         super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
         this.func_230459_a_(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack stack, int mouseX, int mouseY) {
+    protected void func_230451_b_(@Nonnull MatrixStack stack, int mouseX, int mouseY) {
     }
 
     protected ResourceLocation getBackgroundTexture() {
@@ -39,7 +41,7 @@ public class PendantScreen extends ContainerScreen<PendantContainer> {
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack stack, float ignored, int ignored1, int ignored2) {
+    protected void func_230450_a_(@Nonnull MatrixStack stack, float ignored, int ignored1, int ignored2) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.field_230706_i_ != null) {
             this.field_230706_i_.getTextureManager().bindTexture(getBackgroundTexture());

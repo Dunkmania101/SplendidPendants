@@ -13,11 +13,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class KnighthoodPendantItem extends PendantItem {
@@ -42,6 +44,14 @@ public class KnighthoodPendantItem extends PendantItem {
     }
 
     @Override
+    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
+        CompoundNBT data = player.getPersistentData();
+        if (!data.contains(CustomValues.hasKnighthoodKey)) {
+            data.putString(CustomValues.hasKnighthoodKey, "");
+        }
+    }
+
+    @Override
     public void customClickActions(World world, PlayerEntity player, Hand hand, ItemStack stack) {
         super.customClickActions(world, player, hand, stack);
         SimpleNamedContainerProvider newContainer = new SimpleNamedContainerProvider(
@@ -52,7 +62,7 @@ public class KnighthoodPendantItem extends PendantItem {
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(@Nonnull ItemStack stack, World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.dyeable_sneak_use_instructions"));
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));

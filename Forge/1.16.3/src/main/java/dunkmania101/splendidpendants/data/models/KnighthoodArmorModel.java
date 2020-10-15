@@ -13,8 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+
 public class KnighthoodArmorModel extends BipedModel<LivingEntity> {
-    private final ModelRenderer knighthoodArmorChest;
     private DyeColor color = DyeColor.GRAY;
 
     public KnighthoodArmorModel(ItemStack stack) {
@@ -30,7 +31,7 @@ public class KnighthoodArmorModel extends BipedModel<LivingEntity> {
         this.textureWidth = 32;
         this.textureHeight = 32;
 
-        knighthoodArmorChest = new ModelRenderer(this);
+        ModelRenderer knighthoodArmorChest = new ModelRenderer(this);
         knighthoodArmorChest.setRotationPoint(0.0F, 7.0F, 0.0F);
         knighthoodArmorChest.setTextureOffset(0, 0).addBox(-8.0F, 13.0F, -8.0F, 16.0F, 4.0F, 16.0F, 0.0F, false);
         knighthoodArmorChest.setTextureOffset(0, 0).addBox(-8.0F, -1.0F, -8.0F, 16.0F, 4.0F, 16.0F, 0.0F, false);
@@ -46,7 +47,7 @@ public class KnighthoodArmorModel extends BipedModel<LivingEntity> {
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void render(@Nonnull MatrixStack matrixStackIn, @Nonnull IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         float[] colors = this.color.getColorComponentValues();
         this.bipedBody.showModel = true;
         super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, colors[0], colors[1], colors[2], alpha);
