@@ -79,10 +79,7 @@ public class LocketItem extends PendantItem {
         ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.locketSize, false);
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
             ItemStack checkStack = itemStackHandler.getStackInSlot(i);
-            Item checkItem = checkStack.getItem();
-            if (checkItem instanceof PendantItem) {
-                tooltip.add(checkItem.getName());
-            }
+            tooltip.add(checkStack.getDisplayName());
         }
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
     }

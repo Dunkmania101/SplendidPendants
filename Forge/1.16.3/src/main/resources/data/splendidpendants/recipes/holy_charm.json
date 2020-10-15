@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
+    "aaa",
     "cac",
-    "aba",
-    "cac"
+    "cbc"
   ],
   "key": {
     "a": {
@@ -13,7 +13,7 @@
       "item": "minecraft:elytra"
     },
     "c": {
-      "item": "splendidpendants:enchanted_lace"
+      "item": "splendidpendants:enchanted_gemstone"
     }
   },
   "result": {

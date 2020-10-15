@@ -9,8 +9,8 @@ import java.nio.file.Path;
 
 @Mod.EventBusSubscriber
 public class CommonConfig {
+    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static ForgeConfigSpec.DoubleValue ATLANTIC_SWIM_SPEED;
-
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_EXTRA_HEALTH;
     public static ForgeConfigSpec.IntValue KNIGHTHOOD_ARMOR;
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_ARMOR_TOUGHNESS;
@@ -18,10 +18,13 @@ public class CommonConfig {
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_KNOCK_BACK_BOOST;
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_DAMAGE_BOOST;
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_CRITICAL_DAMAGE;
-
     public static ForgeConfigSpec.DoubleValue HOLY_FLIGHT_SPEED;
 
-    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    static {
+        BUILDER.push("Splendid Pendants - Common Config:");
+        setup();
+        BUILDER.pop();
+    }
 
     public static void init(Path file) {
         final CommentedFileConfig data = CommentedFileConfig.builder(file)
@@ -31,12 +34,6 @@ public class CommonConfig {
                 .build();
         data.load();
         CONFIG.setConfig(data);
-    }
-
-    static {
-        BUILDER.push("Splendid Pendants - Common Config:");
-        setup();
-        BUILDER.pop();
     }
 
     private static void setup() {
@@ -61,6 +58,5 @@ public class CommonConfig {
         HOLY_FLIGHT_SPEED = BUILDER.comment("Boosted speed value for flight with the holy pendant (while sprinting).")
                 .defineInRange("holy_flight_speed", 3, 0, Double.MAX_VALUE);
     }
-
     public static final ForgeConfigSpec CONFIG = BUILDER.build();
 }
