@@ -2,7 +2,6 @@ package dunkmania101.splendidpendants.events;
 
 import dunkmania101.splendidpendants.SplendidPendants;
 import dunkmania101.splendidpendants.util.PendantTools;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
@@ -14,14 +13,13 @@ public class PlayerEvents {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
-            PlayerEntity player = event.player;
-            PendantTools.checkPlayerPendants(player);
+            PendantTools.runPendants(event.player);
         }
     }
 
     @SubscribeEvent
     public static void onRenderPlayer(RenderPlayerEvent event) {
-        PendantTools.runAtlanticModel(event);
+        PendantTools.runPendantModel(event);
     }
 
     @SubscribeEvent

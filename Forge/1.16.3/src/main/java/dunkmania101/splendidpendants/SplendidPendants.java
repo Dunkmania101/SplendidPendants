@@ -1,6 +1,8 @@
 package dunkmania101.splendidpendants;
 
 import dunkmania101.splendidpendants.data.CommonConfig;
+import dunkmania101.splendidpendants.data.compat.CuriosCompat;
+import dunkmania101.splendidpendants.data.compat.Mods;
 import dunkmania101.splendidpendants.init.ContainerInit;
 import dunkmania101.splendidpendants.init.ItemInit;
 import net.minecraft.inventory.container.PlayerContainer;
@@ -16,6 +18,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +33,7 @@ public class SplendidPendants {
     public SplendidPendants() {
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
         modbus.addListener(this::setup);
+        modbus.addListener(this::enqueueImc);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.CONFIG);
         CommonConfig.init(FMLPaths.CONFIGDIR.get().resolve(SplendidPendants.modid + "-common.toml"));
@@ -42,6 +46,11 @@ public class SplendidPendants {
 
     private void setup(final FMLCommonSetupEvent event) {
         ContainerInit.initScreens();
+    }
+
+    public void enqueueImc(InterModEnqueueEvent event) {
+        if (Mods.CURIOS.isLoaded())
+            CuriosCompat.enqueueImc();
     }
 
     @Mod.EventBusSubscriber(modid = SplendidPendants.modid, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)

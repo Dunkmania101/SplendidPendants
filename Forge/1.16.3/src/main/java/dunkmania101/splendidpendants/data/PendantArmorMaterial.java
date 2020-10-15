@@ -9,7 +9,7 @@ import net.minecraft.util.SoundEvents;
 
 public enum PendantArmorMaterial implements IArmorMaterial {
     ATLANTIC(SplendidPendants.modid + ":atlantic", SoundEvents.ENTITY_DOLPHIN_SPLASH, 0, 0, 0),
-    KNIGHTHOOD(SplendidPendants.modid + ":knighthood", SoundEvents.ENTITY_IRON_GOLEM_STEP, CommonConfig.KNIGHTHOOD_ARMOR.get(), CommonConfig.KNIGHTHOOD_ARMOR_TOUGHNESS.get(), CommonConfig.KNIGHTHOOD_KNOCK_BACK_RESISTANCE.get()),
+    KNIGHTHOOD(SplendidPendants.modid + ":knighthood", SoundEvents.ENTITY_IRON_GOLEM_STEP, 0, 0, 0),
     HOLY(SplendidPendants.modid + ":holy", SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, 0, 0, 0),
     LOCKET(SplendidPendants.modid + ":locket", SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 0, 0, 0);
 

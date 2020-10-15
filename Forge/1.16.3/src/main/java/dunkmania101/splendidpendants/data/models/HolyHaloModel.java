@@ -46,10 +46,13 @@ public class HolyHaloModel extends BipedModel<LivingEntity> {
         holyHaloModel.setTextureOffset(0, 0).addBox(-6.1747F, -18.2114F, -6.9314F, 10.0F, 1.0F, 1.0F, 0.0F, false);
         holyHaloModel.setTextureOffset(0, 0).addBox(-6.1747F, -18.2114F, -5.9314F, 1.0F, 1.0F, 8.0F, 0.0F, false);
 
+        this.bipedHeadwear = holyHaloModel;
+        this.bipedHead = new ModelRenderer(this);
         this.bipedBody = new ModelRenderer(this);
         this.bipedRightArm = new ModelRenderer(this);
         this.bipedLeftArm = new ModelRenderer(this);
-        this.bipedHeadwear = holyHaloModel;
+        this.bipedRightLeg = new ModelRenderer(this);
+        this.bipedLeftLeg = new ModelRenderer(this);
     }
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {

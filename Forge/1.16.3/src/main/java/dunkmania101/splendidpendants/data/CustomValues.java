@@ -10,6 +10,8 @@ public class CustomValues {
 
     public static final int renderKnighthoodTicks = 60;
 
+    public static final String pendantCuriosSlotName = "pendant";
+
     //NBT keys
     public static final String storedItemStacksKey = SplendidPendants.modid + "_storedItemStacks";
     public static final String enabledKey = SplendidPendants.modid + "_enabled";

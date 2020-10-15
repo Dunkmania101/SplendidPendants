@@ -2,14 +2,15 @@ package dunkmania101.splendidpendants.util;
 
 import dunkmania101.splendidpendants.data.CommonConfig;
 import dunkmania101.splendidpendants.data.CustomValues;
+import dunkmania101.splendidpendants.data.compat.Mods;
 import dunkmania101.splendidpendants.init.ItemInit;
-import dunkmania101.splendidpendants.objects.items.LocketItem;
-import dunkmania101.splendidpendants.objects.items.PendantItem;
+import dunkmania101.splendidpendants.objects.items.*;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,56 +22,70 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import top.theillusivec4.curios.api.CuriosApi;
 
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PendantTools {
-    public static void checkPlayerPendants(PlayerEntity player) {
-        if (player != null) {
-            PlayerInventory inventory = player.inventory;
-            if (areAllPendantsDisabled(inventory, ItemInit.ATLANTIC_PENDANT.get())) {
-                resetAtlantic(player);
-            } else {
-                runAtlantic(player);
-            }
-            if (areAllPendantsDisabled(inventory, ItemInit.KNIGHTHOOD_PENDANT.get())) {
-                resetKnighthood(player);
-            } else {
-                runKnighthood(player);
-            }
-            if (areAllPendantsDisabled(inventory, ItemInit.HOLY_PENDANT.get())) {
-                resetHoly(player);
-            } else {
-                runHoly(player);
-            }
+    public static void runPendants(PlayerEntity player) {
+        if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
+            runAtlantic(player);
+        } else {
+            resetAtlantic(player);
+        }
+        if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
+            runKnighthood(player);
+        } else {
+            resetKnighthood(player);
+        }
+        if (inventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
+            runHoly(player);
+        } else {
+            resetHoly(player);
         }
     }
 
-    public static boolean areAllPendantsDisabled(PlayerInventory inventory, PendantItem pendant) {
-        ItemStack checkStack = inventory.armorInventory.get(EquipmentSlotType.CHEST.getIndex());
-        Item checkItem = checkStack.getItem();
-        if (checkItem instanceof LocketItem) {
-            if (isEnabled(checkStack)) {
-                ItemStackHandler itemHandler = Tools.getItemStackHandlerOfStack(checkStack, CustomValues.locketSize, false);
-                for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
-                    ItemStack pendantStack = itemHandler.getStackInSlot(slot);
-                    if (pendantStack.getItem() instanceof PendantItem) {
-                        PendantItem pendantItem = (PendantItem) pendantStack.getItem();
-                        if (pendantItem == pendant) {
-                            if (isEnabled(pendantStack)) {
-                                return false;
+    public static boolean inventoryHasEnabledPendant(PlayerEntity player, PendantItem pendant) {
+        ArrayList<ItemStack> checkStacks = new ArrayList<>();
+        checkStacks.add(player.inventory.armorInventory.get(EquipmentSlotType.CHEST.getIndex()));
+        if (Mods.CURIOS.isLoaded()) {
+            Optional<ImmutableTriple<String, Integer, ItemStack>> optionalStack = CuriosApi.getCuriosHelper().findEquippedCurio(pendant, player);
+            if (optionalStack.isPresent()) {
+                checkStacks.add(optionalStack.get().right);
+            } else {
+                optionalStack = CuriosApi.getCuriosHelper().findEquippedCurio(ItemInit.LOCKET.get(), player);
+                optionalStack.ifPresent(stackTriple -> checkStacks.add(stackTriple.right));
+            }
+        }
+        for (ItemStack checkStack : checkStacks) {
+            Item checkItem = checkStack.getItem();
+            if (checkItem instanceof LocketItem) {
+                if (isEnabled(checkStack)) {
+                    ItemStackHandler itemHandler = Tools.getItemStackHandlerOfStack(checkStack, CustomValues.locketSize, false);
+                    for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
+                        ItemStack pendantStack = itemHandler.getStackInSlot(slot);
+                        if (pendantStack.getItem() instanceof PendantItem) {
+                            PendantItem pendantItem = (PendantItem) pendantStack.getItem();
+                            if (pendantItem == pendant) {
+                                if (isEnabled(pendantStack)) {
+                                    return true;
+                                }
                             }
                         }
                     }
                 }
+            } else if (checkItem instanceof PendantItem) {
+                if (checkItem == pendant) {
+                    if (isEnabled(checkStack)) {
+                        return true;
+                    }
+                }
             }
         }
-        if (checkItem instanceof PendantItem) {
-            if (checkItem == pendant) {
-                return !isEnabled(checkStack);
-            }
-        }
-        return true;
+        return false;
     }
 
     public static boolean isEnabled(ItemStack stack) {
@@ -87,6 +102,24 @@ public class PendantTools {
         if (stack != null) {
             stack.getOrCreateTag().putBoolean(CustomValues.enabledKey, enabled);
         }
+    }
+
+    public static ItemStack getPrioritizedStoredStack(ItemStack thisStack, Entity entity) {
+        ItemStack storedStack = ItemStack.EMPTY;
+        ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(thisStack, CustomValues.locketSize, false);
+        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+            ItemStack checkStack = itemStackHandler.getStackInSlot(i);
+            Item checkItem = checkStack.getItem();
+            Item storedItem = storedStack.getItem();
+            if (checkItem instanceof AtlanticPendantItem) {
+                storedStack = checkStack;
+            } else if (checkItem instanceof KnighthoodPendantItem && !(storedItem instanceof AtlanticPendantItem && entity.isInWater())) {
+                storedStack = checkStack;
+            } else if (checkItem instanceof HolyPendantItem && !((storedItem instanceof AtlanticPendantItem && entity.isInWater()) || (storedItem instanceof KnighthoodPendantItem && entity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0))) {
+                storedStack = checkStack;
+            }
+        }
+        return storedStack;
     }
 
     public static AttributeModifier getAttributeModifier(double addValue, UUID uuid, String name) {
@@ -134,11 +167,14 @@ public class PendantTools {
         }
     }
 
-    public static void runAtlanticModel(RenderPlayerEvent event) {
+    public static void runPendantModel(RenderPlayerEvent event) {
         PlayerEntity player = event.getPlayer();
+        PlayerRenderer renderer = event.getRenderer();
         if (player.isInWater()) {
-            if (!areAllPendantsDisabled(player.inventory, ItemInit.ATLANTIC_PENDANT.get())) {
-                event.getRenderer().getEntityModel().bipedRightLeg.showModel = false;
+            if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
+                renderer.getEntityModel().bipedRightLeg.showModel = false;
+                renderer.getEntityModel().bipedRightLegwear.showModel = false;
+                renderer.getEntityModel().bipedLeftLegwear.showModel = false;
             }
         }
     }
@@ -149,10 +185,16 @@ public class PendantTools {
 
     public static void runKnighthood(PlayerEntity player) {
         double health = CommonConfig.KNIGHTHOOD_EXTRA_HEALTH.get();
+        int armor = CommonConfig.KNIGHTHOOD_ARMOR.get();
+        double armorToughness = CommonConfig.KNIGHTHOOD_ARMOR_TOUGHNESS.get();
+        double knockBackReduce = CommonConfig.KNIGHTHOOD_KNOCK_BACK_RESISTANCE.get();
         double knockBackBoost = CommonConfig.KNIGHTHOOD_KNOCK_BACK_BOOST.get();
         double damageBoost = CommonConfig.KNIGHTHOOD_DAMAGE_BOOST.get();
 
         modifyPlayerAttribute(player.getAttribute(Attributes.field_233818_a_), health, CustomValues.knighthoodMaxHealthUUID, CustomValues.knighthoodMaxHealthName);
+        modifyPlayerAttribute(player.getAttribute(Attributes.field_233826_i_), armor, CustomValues.knighthoodArmorUUID, CustomValues.knighthoodArmorName);
+        modifyPlayerAttribute(player.getAttribute(Attributes.field_233827_j_), armorToughness, CustomValues.knighthoodArmorToughnessUUID, CustomValues.knighthoodArmorToughnessName);
+        modifyPlayerAttribute(player.getAttribute(Attributes.field_233820_c_), knockBackReduce, CustomValues.knighthoodKnockBackResistUUID, CustomValues.knighthoodKnockBackResistName);
         modifyPlayerAttribute(player.getAttribute(Attributes.field_233824_g_), knockBackBoost, CustomValues.knighthoodKnockBackBoostUUID, CustomValues.knighthoodKnockBackBoostName);
         modifyPlayerAttribute(player.getAttribute(Attributes.field_233823_f_), damageBoost, CustomValues.knighthoodDamageBoostUUID, CustomValues.knighthoodDamageBoostName);
 
@@ -188,7 +230,7 @@ public class PendantTools {
     public static void runKnighthoodCritical(CriticalHitEvent event) {
         if (event.isVanillaCritical()) {
             PlayerEntity player = event.getPlayer();
-            if (!areAllPendantsDisabled(player.inventory, ItemInit.KNIGHTHOOD_PENDANT.get())) {
+            if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
                 double damage = CommonConfig.KNIGHTHOOD_CRITICAL_DAMAGE.get();
                 event.setDamageModifier((float) (event.getDamageModifier() + damage));
 
@@ -202,6 +244,9 @@ public class PendantTools {
 
     public static void resetKnighthood(PlayerEntity player) {
         resetPlayerAttribute(player.getAttribute(Attributes.field_233818_a_), CustomValues.knighthoodMaxHealthUUID);
+        resetPlayerAttribute(player.getAttribute(Attributes.field_233826_i_), CustomValues.knighthoodArmorUUID);
+        resetPlayerAttribute(player.getAttribute(Attributes.field_233827_j_), CustomValues.knighthoodArmorToughnessUUID);
+        resetPlayerAttribute(player.getAttribute(Attributes.field_233820_c_), CustomValues.knighthoodKnockBackResistUUID);
         resetPlayerAttribute(player.getAttribute(Attributes.field_233824_g_), CustomValues.knighthoodKnockBackBoostUUID);
         resetPlayerAttribute(player.getAttribute(Attributes.field_233823_f_), CustomValues.knighthoodDamageBoostUUID);
 

@@ -13,6 +13,7 @@
   "item.splendidpendants.atlantic_charm": "Atlantic Charm",
   "item.splendidpendants.knighthood_charm": "Knighthood Charm",
   "item.splendidpendants.holy_charm": "Holy Charm",
+  "curios.identifier.pendant": "Pendant",
   "itemGroup.splendidpendants": "Splendid Pendants",
   "msg.splendidpendants.divider": "----------",
   "msg.splendidpendants.use_instructions": "Use to enable/disable.",

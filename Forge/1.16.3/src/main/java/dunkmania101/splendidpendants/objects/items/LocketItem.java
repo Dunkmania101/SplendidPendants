@@ -6,6 +6,7 @@ import dunkmania101.splendidpendants.data.CustomValues;
 import dunkmania101.splendidpendants.data.PendantArmorMaterial;
 import dunkmania101.splendidpendants.data.models.BlankBipedModel;
 import dunkmania101.splendidpendants.objects.containers.LocketContainer;
+import dunkmania101.splendidpendants.util.PendantTools;
 import dunkmania101.splendidpendants.util.Tools;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
@@ -34,7 +35,7 @@ public class LocketItem extends PendantItem {
 
     @Override
     public BipedModel<LivingEntity> getCustomModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot) {
-        ItemStack storedStack = getPrioritizedStoredStack(itemStack, entityLiving);
+        ItemStack storedStack = PendantTools.getPrioritizedStoredStack(itemStack, entityLiving);
         Item storedItem = storedStack.getItem();
         if (storedItem instanceof PendantItem) {
             PendantItem pendant = (PendantItem) storedItem;
@@ -45,34 +46,13 @@ public class LocketItem extends PendantItem {
 
     @Override
     public String getCustomTexture(ItemStack stack, Entity entity, EquipmentSlotType equipmentSlot, String type) {
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) entity;
-            ItemStack storedStack = getPrioritizedStoredStack(stack, livingEntity);
-            Item storedItem = storedStack.getItem();
-            if (storedItem instanceof PendantItem) {
-                PendantItem pendant = (PendantItem) storedItem;
-                return pendant.getArmorTexture(storedStack, entity, slot, type);
-            }
+        ItemStack storedStack = PendantTools.getPrioritizedStoredStack(stack, entity);
+        Item storedItem = storedStack.getItem();
+        if (storedItem instanceof PendantItem) {
+            PendantItem pendant = (PendantItem) storedItem;
+            return pendant.getArmorTexture(storedStack, entity, slot, type);
         }
         return super.getCustomTexture(stack, entity, slot, type);
-    }
-
-    public ItemStack getPrioritizedStoredStack(ItemStack thisStack, LivingEntity livingEntity) {
-        ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(thisStack, CustomValues.locketSize, false);
-        ItemStack storedStack = ItemStack.EMPTY;
-        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-            ItemStack checkStack = itemStackHandler.getStackInSlot(i);
-            Item checkItem = checkStack.getItem();
-            Item storedItem = storedStack.getItem();
-            if (checkItem instanceof AtlanticPendantItem) {
-                storedStack = checkStack;
-            } else if (checkItem instanceof KnighthoodPendantItem && !(storedItem instanceof AtlanticPendantItem && livingEntity.isInWater())) {
-                storedStack = checkStack;
-            } else if (checkItem instanceof HolyPendantItem && !((storedItem instanceof AtlanticPendantItem && livingEntity.isInWater()) || (storedItem instanceof KnighthoodPendantItem && livingEntity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0))) {
-                storedStack = checkStack;
-            }
-        }
-        return storedStack;
     }
 
     @Override

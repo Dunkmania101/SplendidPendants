@@ -1,26 +1,26 @@
 package dunkmania101.splendidpendants.objects.items;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import dunkmania101.splendidpendants.SplendidPendants;
+import dunkmania101.splendidpendants.data.compat.CuriosCompat;
+import dunkmania101.splendidpendants.data.compat.Mods;
 import dunkmania101.splendidpendants.data.models.BlankBipedModel;
 import dunkmania101.splendidpendants.util.PendantTools;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.List;
 
@@ -30,15 +30,16 @@ public class PendantItem extends ArmorItem {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot, ItemStack stack) {
-        if (PendantTools.isEnabled(stack) && equipmentSlot == this.getEquipmentSlot()) {
-            return customAttributeModifiers();
-        }
-        return ImmutableMultimap.of();
+    public boolean canEquip(ItemStack stack, EquipmentSlotType armorType, Entity entity) {
+        return checkEquipmentSlot(armorType);
     }
 
-    public Multimap<Attribute, AttributeModifier> customAttributeModifiers() {
-        return ImmutableMultimap.of();
+    public boolean checkEquipmentSlot(EquipmentSlotType slot) {
+        return slot != EquipmentSlotType.MAINHAND
+                && slot != EquipmentSlotType.OFFHAND
+                && slot != EquipmentSlotType.HEAD
+                && slot != EquipmentSlotType.LEGS
+                && slot != EquipmentSlotType.FEET;
     }
 
     @Override
@@ -103,5 +104,13 @@ public class PendantItem extends ArmorItem {
             tooltip.add(new TranslationTextComponent("msg.splendidpendants.disabled"));
         }
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
+    }
+
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+        if (Mods.CURIOS.isLoaded()) {
+            return CuriosCompat.initPendantCapabilities(stack);
+        }
+        return super.initCapabilities(stack, nbt);
     }
 }

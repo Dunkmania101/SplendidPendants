@@ -35,7 +35,10 @@ public class AtlanticPendantItem extends PendantItem {
 
     @Override
     public String getCustomTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-        return SplendidPendants.modid + ":textures/blank_white.png";
+        if (entity.isInWater()) {
+            return SplendidPendants.modid + ":textures/blank_white.png";
+        }
+        return super.getCustomTexture(stack, entity, slot, type);
     }
 
     @Override

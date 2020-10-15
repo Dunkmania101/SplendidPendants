@@ -55,9 +55,12 @@ public class AtlanticTailModel extends BipedModel<LivingEntity> {
         leftLegModel.setTextureOffset(0, 0).addBox(-3.0F, 6.0F, -3.0F, 2.0F, 1.0F, 1.0F, 0.0F, false);
         leftLegModel.setTextureOffset(0, 0).addBox(-3.0F, 8.0F, -3.0F, 2.0F, 1.0F, 1.0F, 0.0F, false);
 
+        this.bipedHead = new ModelRenderer(this);
+        this.bipedHeadwear = new ModelRenderer(this);
         this.bipedBody = new ModelRenderer(this);
         this.bipedRightArm = new ModelRenderer(this);
         this.bipedLeftArm = new ModelRenderer(this);
+        this.bipedRightLeg = new ModelRenderer(this);
         this.bipedLeftLeg = leftLegModel;
     }
 

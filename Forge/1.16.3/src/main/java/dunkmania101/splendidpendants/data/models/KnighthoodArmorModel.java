@@ -36,7 +36,13 @@ public class KnighthoodArmorModel extends BipedModel<LivingEntity> {
         knighthoodArmorChest.setTextureOffset(0, 0).addBox(-8.0F, -1.0F, -8.0F, 16.0F, 4.0F, 16.0F, 0.0F, false);
         knighthoodArmorChest.setTextureOffset(0, 0).addBox(-7.0F, 3.0F, -7.0F, 14.0F, 10.0F, 14.0F, 0.0F, false);
 
+        this.bipedHead = new ModelRenderer(this);
+        this.bipedHeadwear = new ModelRenderer(this);
         this.bipedBody = knighthoodArmorChest;
+        this.bipedRightArm = new ModelRenderer(this);
+        this.bipedLeftArm = new ModelRenderer(this);
+        this.bipedRightLeg = new ModelRenderer(this);
+        this.bipedLeftLeg = new ModelRenderer(this);
     }
 
     @Override
