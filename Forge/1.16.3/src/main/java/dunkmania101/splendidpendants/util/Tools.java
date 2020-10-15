@@ -13,12 +13,17 @@ public class Tools {
     public static ItemStackHandler getItemStackHandlerOfStack(ItemStack stack, int size, boolean isDyeable) {
         ItemStackHandler stackHandler = new ItemStackHandler(size) {
             @Override
+            public int getSlotLimit(int slot) {
+                return 1;
+            }
+
+            @Override
             public boolean isItemValid(int slot, ItemStack questionStack) {
                 Item checkItem = questionStack.getItem();
                 if (!(checkItem instanceof DyeItem) && isDyeable) {
                     return false;
                 }
-                if (!isDyeable && !(checkItem instanceof PendantItem) || checkItem instanceof LocketItem) {
+                if ((!(checkItem instanceof PendantItem) && !isDyeable) || checkItem instanceof LocketItem) {
                     return false;
                 }
                 for (ItemStack checkStack : this.stacks) {

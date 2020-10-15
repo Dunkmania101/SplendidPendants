@@ -37,11 +37,17 @@ public class KnighthoodArmorModel extends BipedModel<LivingEntity> {
         knighthoodArmorChest.setTextureOffset(0, 0).addBox(-8.0F, -1.0F, -8.0F, 16.0F, 4.0F, 16.0F, 0.0F, false);
         knighthoodArmorChest.setTextureOffset(0, 0).addBox(-7.0F, 3.0F, -7.0F, 14.0F, 10.0F, 14.0F, 0.0F, false);
 
+        ModelRenderer knighthoodArmorArm = new ModelRenderer(this);
+        knighthoodArmorArm.setRotationPoint(1.0F, 6.0F, -1.0F);
+        knighthoodArmorArm.setTextureOffset(0, 0).addBox(-5.0F, 2.0F, -3.0F, 8.0F, 14.0F, 8.0F, 0.0F, false);
+        knighthoodArmorArm.setTextureOffset(0, 0).addBox(-6.0F, 16.0F, -4.0F, 10.0F, 2.0F, 10.0F, 0.0F, false);
+        knighthoodArmorArm.setTextureOffset(0, 0).addBox(-6.0F, 0.0F, -4.0F, 10.0F, 2.0F, 10.0F, 0.0F, false);
+
         this.bipedHead = new ModelRenderer(this);
         this.bipedHeadwear = new ModelRenderer(this);
         this.bipedBody = knighthoodArmorChest;
-        this.bipedRightArm = new ModelRenderer(this);
-        this.bipedLeftArm = new ModelRenderer(this);
+        this.bipedRightArm = knighthoodArmorArm;
+        this.bipedLeftArm = knighthoodArmorArm;
         this.bipedRightLeg = new ModelRenderer(this);
         this.bipedLeftLeg = new ModelRenderer(this);
     }
@@ -50,6 +56,8 @@ public class KnighthoodArmorModel extends BipedModel<LivingEntity> {
     public void render(@Nonnull MatrixStack matrixStackIn, @Nonnull IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         float[] colors = this.color.getColorComponentValues();
         this.bipedBody.showModel = true;
+        this.bipedRightArm.showModel = true;
+        this.bipedLeftArm.showModel = true;
         super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, colors[0], colors[1], colors[2], alpha);
     }
 }

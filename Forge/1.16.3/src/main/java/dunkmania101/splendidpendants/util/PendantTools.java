@@ -121,9 +121,15 @@ public class PendantTools {
             Item storedItem = storedStack.getItem();
             if (checkItem instanceof AtlanticPendantItem) {
                 storedStack = checkStack;
-            } else if (checkItem instanceof KnighthoodPendantItem && !(storedItem instanceof AtlanticPendantItem && entity.isInWater())) {
+            } else if (checkItem instanceof KnighthoodPendantItem
+                    && !(storedItem instanceof AtlanticPendantItem
+                    && entity.isInWater())) {
                 storedStack = checkStack;
-            } else if (checkItem instanceof HolyPendantItem && !((storedItem instanceof AtlanticPendantItem && entity.isInWater()) || (storedItem instanceof KnighthoodPendantItem && entity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0))) {
+            } else if (checkItem instanceof HolyPendantItem
+                    && !((storedItem instanceof AtlanticPendantItem
+                    && entity.isInWater())
+                    || (storedItem instanceof KnighthoodPendantItem
+                    && entity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0))) {
                 storedStack = checkStack;
             }
         }
@@ -218,9 +224,7 @@ public class PendantTools {
 
         if (data.contains(CustomValues.renderKnighthoodKey)) {
             int renderKnighthoodTicks = data.getInt(CustomValues.renderKnighthoodKey);
-            if (renderKnighthoodTicks <= 0) {
-                data.remove(CustomValues.renderKnighthoodKey);
-            } else {
+            if (renderKnighthoodTicks > -1) {
                 data.putInt(CustomValues.renderKnighthoodKey, renderKnighthoodTicks - 1);
             }
         }
@@ -252,7 +256,7 @@ public class PendantTools {
                     double damage = CommonConfig.KNIGHTHOOD_CRITICAL_DAMAGE.get();
                     event.setDamageModifier((float) (event.getDamageModifier() + damage));
 
-                    player.getPersistentData().putInt(CustomValues.renderKnighthoodKey, CustomValues.renderKnighthoodTicks);
+                    data.putInt(CustomValues.renderKnighthoodKey, CustomValues.renderKnighthoodTicks);
 
                     player.playSound(SoundEvents.ENTITY_ENDER_DRAGON_FLAP, 1, 1);
                     player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 2);
@@ -264,6 +268,8 @@ public class PendantTools {
     public static void resetKnighthood(PlayerEntity player) {
         CompoundNBT data = player.getPersistentData();
         data.remove(CustomValues.hasKnighthoodKey);
+        data.remove(CustomValues.renderKnighthoodKey);
+        data.remove(CustomValues.playerHealthKey);
 
         resetPlayerAttribute(player.getAttribute(Attributes.field_233818_a_), CustomValues.knighthoodMaxHealthUUID);
         resetPlayerAttribute(player.getAttribute(Attributes.field_233826_i_), CustomValues.knighthoodArmorUUID);
@@ -271,9 +277,6 @@ public class PendantTools {
         resetPlayerAttribute(player.getAttribute(Attributes.field_233820_c_), CustomValues.knighthoodKnockBackResistUUID);
         resetPlayerAttribute(player.getAttribute(Attributes.field_233824_g_), CustomValues.knighthoodKnockBackBoostUUID);
         resetPlayerAttribute(player.getAttribute(Attributes.field_233823_f_), CustomValues.knighthoodDamageBoostUUID);
-
-        data.remove(CustomValues.renderKnighthoodKey);
-        data.remove(CustomValues.playerHealthKey);
     }
 
     public static void runHoly(PlayerEntity player) {

@@ -50,9 +50,8 @@ public class PendantItem extends ArmorItem {
         if (PendantTools.isEnabled(itemStack)) {
             if (entityLiving instanceof PlayerEntity) {
                 return (A) getCustomModel(entityLiving, itemStack, armorSlot);
-            } else {
-                return (A) new FakeHolyHaloModel(DyeColor.RED);
             }
+            return (A) new FakeHolyHaloModel(DyeColor.RED);
         }
         return (A) new BlankBipedModel();
     }
@@ -64,10 +63,12 @@ public class PendantItem extends ArmorItem {
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
         if (PendantTools.isEnabled(stack)) {
-            return getCustomTexture(stack, entity, slot, type);
-        } else {
-            return SplendidPendants.modid + ":textures/blank.png";
+            if (entity instanceof PlayerEntity) {
+                return getCustomTexture(stack, entity, slot, type);
+            }
+            return SplendidPendants.modid + ":textures/blank_white.png";
         }
+        return SplendidPendants.modid + ":textures/blank.png";
     }
 
     public String getCustomTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
