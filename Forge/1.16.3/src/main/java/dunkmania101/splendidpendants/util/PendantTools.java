@@ -39,8 +39,6 @@ public class PendantTools {
             } else {
                 resetAtlantic(player);
             }
-        } else {
-            resetAtlantic(player);
         }
         if (data.contains(CustomValues.hasKnighthoodKey)) {
             if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
@@ -48,8 +46,6 @@ public class PendantTools {
             } else {
                 resetKnighthood(player);
             }
-        } else {
-            resetKnighthood(player);
         }
         if (data.contains(CustomValues.hasHolyKey)) {
             if (inventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
@@ -57,8 +53,6 @@ public class PendantTools {
             } else {
                 resetHoly(player);
             }
-        } else {
-            resetHoly(player);
         }
     }
 
