@@ -6,6 +6,7 @@ import dunkmania101.splendidpendants.data.PendantArmorMaterial;
 import dunkmania101.splendidpendants.data.models.AtlanticTailModel;
 import dunkmania101.splendidpendants.data.models.BlankBipedModel;
 import dunkmania101.splendidpendants.objects.containers.DyeableContainer;
+import dunkmania101.splendidpendants.util.PendantTools;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -46,9 +47,11 @@ public class AtlanticPendantItem extends PendantItem {
 
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-        CompoundNBT data = player.getPersistentData();
-        if (!data.contains(CustomValues.hasAtlanticKey)) {
-            data.putString(CustomValues.hasAtlanticKey, "");
+        if (PendantTools.isEnabled(stack)) {
+            CompoundNBT data = player.getPersistentData();
+            if (!data.contains(CustomValues.hasAtlanticKey)) {
+                data.putString(CustomValues.hasAtlanticKey, "");
+            }
         }
     }
 

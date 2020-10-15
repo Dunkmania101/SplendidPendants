@@ -5,6 +5,7 @@ import dunkmania101.splendidpendants.data.CustomValues;
 import dunkmania101.splendidpendants.data.PendantArmorMaterial;
 import dunkmania101.splendidpendants.data.models.KnighthoodArmorModel;
 import dunkmania101.splendidpendants.objects.containers.DyeableContainer;
+import dunkmania101.splendidpendants.util.PendantTools;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -45,9 +46,11 @@ public class KnighthoodPendantItem extends PendantItem {
 
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-        CompoundNBT data = player.getPersistentData();
-        if (!data.contains(CustomValues.hasKnighthoodKey)) {
-            data.putString(CustomValues.hasKnighthoodKey, "");
+        if (PendantTools.isEnabled(stack)) {
+            CompoundNBT data = player.getPersistentData();
+            if (!data.contains(CustomValues.hasKnighthoodKey)) {
+                data.putString(CustomValues.hasKnighthoodKey, "");
+            }
         }
     }
 

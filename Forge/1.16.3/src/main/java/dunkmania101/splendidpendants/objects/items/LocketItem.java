@@ -53,10 +53,12 @@ public class LocketItem extends PendantItem {
 
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-        ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.locketSize, false);
-        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-            ItemStack storedStack = itemStackHandler.getStackInSlot(i);
-            storedStack.onArmorTick(world, player);
+        if (PendantTools.isEnabled(stack)) {
+            ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.locketSize, false);
+            for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+                ItemStack storedStack = itemStackHandler.getStackInSlot(i);
+                storedStack.onArmorTick(world, player);
+            }
         }
     }
 
