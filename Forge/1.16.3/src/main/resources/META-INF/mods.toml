@@ -26,7 +26,7 @@ SOFTWARE.
 issueTrackerURL = "https://github.com/Dunkmania101/SplendidPendants/issues" #optional
 [[mods]] #mandatory
 modId = "splendidpendants" #mandatory
-version = "0.0.7" #mandatory
+version = "0.0.8" #mandatory
 displayName = "Splendid Pendants" #mandatory
 #updateJSONURL="http://myurl.me/" #optional
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/splendid-pendants" #optional
