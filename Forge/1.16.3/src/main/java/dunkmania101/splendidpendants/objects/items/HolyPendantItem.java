@@ -44,7 +44,7 @@ public class HolyPendantItem extends PendantItem {
     public String getCustomTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
-            if (player.abilities.isFlying) {
+            if (player.abilities.isFlying && !player.isCreative() && !player.isSpectator()) {
                 return SplendidPendants.modid + ":textures/blank_white.png";
             }
         }

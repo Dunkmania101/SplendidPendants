@@ -41,7 +41,7 @@ public class CuriosCompat {
     }
 
     public static ICapabilityProvider initPendantCapabilities(ItemStack stack) {
-        ICurio curio = new ICurio() {
+        ICurio pendantCurio = new ICurio() {
             @Override
             public boolean canRightClickEquip() {
                 return false;
@@ -114,12 +114,12 @@ public class CuriosCompat {
         };
 
         return new ICapabilityProvider() {
-            private final LazyOptional<ICurio> curioOpt = LazyOptional.of(() -> curio);
+            private final LazyOptional<ICurio> pendantCurioOpt = LazyOptional.of(() -> pendantCurio);
 
             @Nonnull
             @Override
             public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
-                return CuriosCapability.ITEM.orEmpty(cap, curioOpt);
+                return CuriosCapability.ITEM.orEmpty(cap, pendantCurioOpt);
             }
         };
     }

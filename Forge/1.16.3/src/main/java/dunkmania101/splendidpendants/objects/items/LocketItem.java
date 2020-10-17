@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
@@ -80,9 +81,15 @@ public class LocketItem extends PendantItem {
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.stored_stacks"));
         ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.locketSize, false);
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-            ItemStack checkStack = itemStackHandler.getStackInSlot(i);
-            if (!checkStack.isEmpty()) {
-                tooltip.add(checkStack.getDisplayName());
+            ItemStack storedSack = itemStackHandler.getStackInSlot(i);
+            if (!storedSack.isEmpty()) {
+                String storedStackEnabled;
+                if (PendantTools.isEnabled(storedSack)) {
+                    storedStackEnabled = new TranslationTextComponent("msg.splendidpendants.enabled").getString();
+                } else {
+                    storedStackEnabled = new TranslationTextComponent("msg.splendidpendants.disabled").getString();
+                }
+                tooltip.add(new StringTextComponent(storedSack.getDisplayName().getString() + " - " + storedStackEnabled));
             }
         }
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));

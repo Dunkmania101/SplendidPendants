@@ -136,8 +136,8 @@ public class PendantTools {
         return storedStack;
     }
 
-    public static AttributeModifier getAttributeModifier(double addValue, UUID uuid, String name) {
-        return new AttributeModifier(uuid, name, addValue, AttributeModifier.Operation.ADDITION);
+    public static AttributeModifier getAttributeModifier(double additive, UUID uuid, String name) {
+        return new AttributeModifier(uuid, name, additive, AttributeModifier.Operation.ADDITION);
     }
 
     public static void modifyPlayerAttribute(ModifiableAttributeInstance playerAttribute, double additive, UUID uuid, String name) {
@@ -145,7 +145,7 @@ public class PendantTools {
             AttributeModifier modifier = getAttributeModifier(additive, uuid, name);
             AttributeModifier existingModifier = playerAttribute.getModifier(uuid);
             if (existingModifier != null) {
-                if (existingModifier.getAmount() != additive) {
+                if (existingModifier.getAmount() != additive || existingModifier.getOperation() != modifier.getOperation()) {
                     resetPlayerAttribute(playerAttribute, uuid);
                 }
             }
@@ -158,26 +158,6 @@ public class PendantTools {
     public static void resetPlayerAttribute(ModifiableAttributeInstance playerAttribute, UUID uuid) {
         if (playerAttribute != null) {
             playerAttribute.removeModifier(uuid);
-        }
-    }
-
-    public static void runAtlantic(PlayerEntity player) {
-        ModifiableAttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
-        if (player.isSprinting()) {
-            double speed = CommonConfig.ATLANTIC_SWIM_SPEED.get();
-            modifyPlayerAttribute(swimSpeed, speed, CustomValues.atlanticSpeedUUID, CustomValues.atlanticSpeedName);
-        } else {
-            resetPlayerAttribute(swimSpeed, CustomValues.atlanticSpeedUUID);
-        }
-
-        int maxAir = player.getMaxAir();
-        if (player.getAir() < maxAir) {
-            player.setAir(maxAir);
-        }
-
-        if (player.isInWater()) {
-            EffectInstance nightVision = new EffectInstance(Effects.NIGHT_VISION, 20, 1, false, false, false);
-            player.addPotionEffect(nightVision);
         }
     }
 
@@ -196,6 +176,27 @@ public class PendantTools {
         }
     }
 
+    public static void runAtlantic(PlayerEntity player) {
+        ModifiableAttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
+        if (player.isSprinting()) {
+            double speed = CommonConfig.ATLANTIC_SWIM_SPEED.get();
+            modifyPlayerAttribute(swimSpeed, speed, CustomValues.atlanticSpeedUUID, CustomValues.atlanticSpeedName);
+        } else {
+            resetPlayerAttribute(swimSpeed, CustomValues.atlanticSpeedUUID);
+        }
+
+        int maxAir = player.getMaxAir();
+        if (player.getAir() < maxAir) {
+            player.setAir(maxAir);
+        }
+
+        if (player.isInWater()) {
+            int amplifier = CommonConfig.ATLANTIC_VISION_AMPLIFIER.get();
+            EffectInstance nightVision = new EffectInstance(Effects.NIGHT_VISION, 20, amplifier, false, false, false);
+            player.addPotionEffect(nightVision);
+        }
+    }
+
     public static void resetAtlantic(PlayerEntity player) {
         CompoundNBT data = player.getPersistentData();
         data.remove(CustomValues.hasAtlanticKey);
@@ -205,7 +206,7 @@ public class PendantTools {
 
     public static void runKnighthood(PlayerEntity player) {
         double health = CommonConfig.KNIGHTHOOD_EXTRA_HEALTH.get();
-        int armor = CommonConfig.KNIGHTHOOD_ARMOR.get();
+        double armor = CommonConfig.KNIGHTHOOD_ARMOR.get();
         double armorToughness = CommonConfig.KNIGHTHOOD_ARMOR_TOUGHNESS.get();
         double knockBackReduce = CommonConfig.KNIGHTHOOD_KNOCK_BACK_RESISTANCE.get();
         double knockBackBoost = CommonConfig.KNIGHTHOOD_KNOCK_BACK_BOOST.get();
@@ -235,7 +236,8 @@ public class PendantTools {
         if (data.contains(CustomValues.playerHealthKey)) {
             oldHealth = data.getFloat(CustomValues.playerHealthKey);
             if (newHealth < oldHealth) {
-                data.putInt(CustomValues.renderKnighthoodKey, CustomValues.renderKnighthoodTicks);
+                int renderKnighthoodTicks = CommonConfig.RENDER_KNIGHTHOOD_TICKS.get();
+                data.putInt(CustomValues.renderKnighthoodKey, renderKnighthoodTicks);
 
                 player.playSound(SoundEvents.ENTITY_IRON_GOLEM_HURT, 1, -1);
                 player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 3);
@@ -256,7 +258,8 @@ public class PendantTools {
                     double damage = CommonConfig.KNIGHTHOOD_CRITICAL_DAMAGE.get();
                     event.setDamageModifier((float) (event.getDamageModifier() + damage));
 
-                    data.putInt(CustomValues.renderKnighthoodKey, CustomValues.renderKnighthoodTicks);
+                    int ticks = CommonConfig.RENDER_KNIGHTHOOD_TICKS.get();
+                    data.putInt(CustomValues.renderKnighthoodKey, ticks);
 
                     player.playSound(SoundEvents.ENTITY_ENDER_DRAGON_FLAP, 1, 1);
                     player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 2);

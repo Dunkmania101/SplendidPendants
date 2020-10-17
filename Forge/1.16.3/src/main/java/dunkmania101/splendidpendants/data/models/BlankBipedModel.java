@@ -9,9 +9,9 @@ import javax.annotation.Nonnull;
 
 public class BlankBipedModel extends BipedModel<LivingEntity> {
     public BlankBipedModel() {
-        super(0);
-        textureWidth = 16;
-        textureHeight = 16;
+        super(0F);
+        textureWidth = 32;
+        textureHeight = 32;
     }
 
     @Override

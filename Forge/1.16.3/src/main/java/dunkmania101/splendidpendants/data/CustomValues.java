@@ -8,8 +8,6 @@ public class CustomValues {
     public static final int locketSize = 3;
     public static final int dyeableSize = 1;
 
-    public static final int renderKnighthoodTicks = 60;
-
     public static final String pendantCuriosSlotName = "pendant";
 
     //NBT keys
