@@ -23,7 +23,7 @@ public class CommonConfig {
     public static ForgeConfigSpec.DoubleValue HOLY_FLIGHT_SPEED;
 
     static {
-        BUILDER.push("Splendid Pendants - Common Config:");
+        BUILDER.push("Splendid Pendants - Common Config: ");
         setup();
         BUILDER.pop();
     }
@@ -39,14 +39,14 @@ public class CommonConfig {
     }
 
     private static void setup() {
-        BUILDER.push("Atlantic Pendant Stats");
+        BUILDER.push("Atlantic Pendant Stats: ");
         ATLANTIC_SWIM_SPEED = BUILDER.comment("Boosted swim speed of the atlantic pendant.")
                 .defineInRange("atlantic_swim_speed", 3, 0, Double.MAX_VALUE);
         ATLANTIC_VISION_AMPLIFIER = BUILDER.comment("Amplifier for the night vision effect of the atlantic pendant.")
                 .defineInRange("atlantic_vision_amplifier", 2, 0, Integer.MAX_VALUE);
         BUILDER.pop();
 
-        BUILDER.push("Knighthood Pendant Stats");
+        BUILDER.push("Knighthood Pendant Stats: ");
         RENDER_KNIGHTHOOD_TICKS = BUILDER.comment("How long to render the knighthood pendant's armor model upon activation (in ticks, there are 20 in a second).")
                 .defineInRange("render_knighthood_ticks", 60, 0, Integer.MAX_VALUE);
         KNIGHTHOOD_EXTRA_HEALTH = BUILDER.comment("Extra health from the knighthood pendant.")
@@ -65,7 +65,7 @@ public class CommonConfig {
                 .defineInRange("knighthood_critical_damage", 9, 0, Double.MAX_VALUE);
         BUILDER.pop();
 
-        BUILDER.push("Holy Pendant Stats");
+        BUILDER.push("Holy Pendant Stats: ");
         HOLY_FLIGHT_SPEED = BUILDER.comment("Boosted speed value for flight with the holy pendant (while sprinting).")
                 .defineInRange("holy_flight_speed", 3, 0, Double.MAX_VALUE);
         BUILDER.pop();
