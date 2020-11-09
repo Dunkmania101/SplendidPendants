@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "splendidpendants:enchanted_gemstone"
+    },
+    "b": {
+      "item": "minecraft:nautilus_shell"
+    }
+  },
+  "result": {
+    "item": "splendidpendants:atlantic_charm"
+  }
+}
