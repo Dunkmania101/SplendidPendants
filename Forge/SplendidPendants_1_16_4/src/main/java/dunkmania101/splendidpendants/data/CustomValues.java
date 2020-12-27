@@ -19,7 +19,7 @@ public class CustomValues {
     public static final String hasHolyKey = SplendidPendants.modid + "_hasHoly";
 
     public static final String renderKnighthoodKey = SplendidPendants.modid + "_renderKnighthood";
-    public static final String playerHealthKey = SplendidPendants.modid + "_playerHealth";
+
 
     // AttributeModifier UUIDs
     /**

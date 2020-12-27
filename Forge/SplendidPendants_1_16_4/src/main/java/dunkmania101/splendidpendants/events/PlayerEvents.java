@@ -12,9 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 public class PlayerEvents {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) {
-            PendantTools.runPendants(event.player);
-        }
+        PendantTools.runPendants(event.player);
     }
 
     @SubscribeEvent

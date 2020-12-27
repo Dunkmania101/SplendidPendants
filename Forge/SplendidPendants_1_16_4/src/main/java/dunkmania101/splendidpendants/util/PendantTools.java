@@ -230,22 +230,21 @@ public class PendantTools {
             }
         }
 
-        float oldHealth = 0;
-        float newHealth = player.getHealth();
+        if (player.hurtTime == player.maxHurtTime - 1) {
+            activateKnighthoodEffects(player);
+        }
+    }
 
-        if (data.contains(CustomValues.playerHealthKey)) {
-            oldHealth = data.getFloat(CustomValues.playerHealthKey);
-            if (newHealth < oldHealth) {
+    public static void activateKnighthoodEffects(PlayerEntity player) {
+        CompoundNBT data = player.getPersistentData();
+        if (data.contains(CustomValues.hasKnighthoodKey)) {
+            if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
                 int renderKnighthoodTicks = CommonConfig.RENDER_KNIGHTHOOD_TICKS.get();
                 data.putInt(CustomValues.renderKnighthoodKey, renderKnighthoodTicks);
 
                 player.playSound(SoundEvents.ENTITY_IRON_GOLEM_HURT, 1, -1);
                 player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 3);
             }
-        }
-
-        if (oldHealth != newHealth) {
-            data.putFloat(CustomValues.playerHealthKey, newHealth);
         }
     }
 
@@ -258,11 +257,8 @@ public class PendantTools {
                     double damage = CommonConfig.KNIGHTHOOD_CRITICAL_DAMAGE.get();
                     event.setDamageModifier((float) (event.getDamageModifier() + damage));
 
-                    int ticks = CommonConfig.RENDER_KNIGHTHOOD_TICKS.get();
-                    data.putInt(CustomValues.renderKnighthoodKey, ticks);
-
-                    player.playSound(SoundEvents.ENTITY_ENDER_DRAGON_FLAP, 1, 1);
-                    player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 2);
+                    player.playSound(SoundEvents.ENTITY_ENDER_DRAGON_FLAP, 1, -1);
+                    activateKnighthoodEffects(player);
                 }
             }
         }
@@ -272,7 +268,6 @@ public class PendantTools {
         CompoundNBT data = player.getPersistentData();
         data.remove(CustomValues.hasKnighthoodKey);
         data.remove(CustomValues.renderKnighthoodKey);
-        data.remove(CustomValues.playerHealthKey);
 
         resetPlayerAttribute(player.getAttribute(Attributes.MAX_HEALTH), CustomValues.knighthoodMaxHealthUUID);
         resetPlayerAttribute(player.getAttribute(Attributes.ARMOR), CustomValues.knighthoodArmorUUID);
