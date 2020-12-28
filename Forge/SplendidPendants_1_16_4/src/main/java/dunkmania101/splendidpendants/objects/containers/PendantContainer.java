@@ -48,7 +48,8 @@ public class PendantContainer extends Container {
                 }
 
                 @OnlyIn(Dist.CLIENT)
-                public Pair<ResourceLocation, ResourceLocation> func_225517_c_() {
+                @Override
+                public Pair<ResourceLocation, ResourceLocation> getBackground() {
                     return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, getSlotBackground());
                 }
             };
