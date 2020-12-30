@@ -22,10 +22,12 @@ public class HolyHaloModel extends BipedModel<LivingEntity> {
         super(1F);
 
         ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.dyeableSize, true);
-        Item storedDye = itemStackHandler.getStackInSlot(0).getItem();
-        if (storedDye instanceof DyeItem) {
-            DyeItem dyeItem = (DyeItem) storedDye;
-            this.color = dyeItem.getDyeColor();
+        if (itemStackHandler.getSlots() > 0) {
+            Item storedDye = itemStackHandler.getStackInSlot(0).getItem();
+            if (storedDye instanceof DyeItem) {
+                DyeItem dyeItem = (DyeItem) storedDye;
+                this.color = dyeItem.getDyeColor();
+            }
         }
 
         this.textureWidth = 32;

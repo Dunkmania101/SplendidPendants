@@ -42,6 +42,15 @@ public class ItemInit {
                             .isImmuneToFire()
             ));
 
+// Not done yet!
+//    public static final RegistryObject<InstructableConjuringPendantItem> INSTRUCTABLE_CONJURING_PENDANT = ITEMS.register("instructable_conjuring_pendant",
+//            () -> new InstructableConjuringPendantItem(
+//                    new Item.Properties()
+//                            .group(SplendidPendants.SPLENDID_PENDANTS_GROUP.instance)
+//                            .maxStackSize(1)
+//                            .isImmuneToFire()
+//            ));
+
     // Ingredient items
     public static final RegistryObject<ShinyItem> ENCHANTED_LACE = ITEMS.register("enchanted_lace",
             () -> new ShinyItem(

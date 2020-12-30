@@ -17,11 +17,13 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public class PendantContainer extends Container {
     protected final ItemStack stack;
     protected ItemStackHandler itemStackHandler;
     protected int thisSlot = -1;
+    protected final UUID playerUUID;
 
     public PendantContainer(ContainerType<?> type, int id, PlayerInventory playerInventory, ItemStack stack, int size, boolean isDyeable) {
         super(type, id);
@@ -29,6 +31,7 @@ public class PendantContainer extends Container {
         this.stack = stack;
         this.itemStackHandler = Tools.getItemStackHandlerOfStack(stack, size, isDyeable);
         drawSlots(playerInventory);
+        this.playerUUID = playerInventory.player.getUniqueID();
     }
 
     protected void drawSlots(PlayerInventory playerInventory) {
@@ -126,6 +129,6 @@ public class PendantContainer extends Container {
 
     @Override
     public boolean canInteractWith(@Nonnull PlayerEntity playerIn) {
-        return true;
+        return playerIn.getUniqueID().equals(this.playerUUID);
     }
 }

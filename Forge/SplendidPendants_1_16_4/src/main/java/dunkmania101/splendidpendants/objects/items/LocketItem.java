@@ -20,6 +20,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -30,6 +32,7 @@ public class LocketItem extends PendantItem {
         super(PendantArmorMaterial.LOCKET, properties);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public BipedModel<LivingEntity> getCustomModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot) {
         ItemStack storedStack = PendantTools.getPrioritizedStoredStack(itemStack, entityLiving);

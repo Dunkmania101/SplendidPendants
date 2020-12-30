@@ -22,6 +22,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nonnull;
@@ -45,6 +47,8 @@ public class PendantItem extends ArmorItem {
                 && slot != EquipmentSlotType.FEET;
     }
 
+
+    @OnlyIn(Dist.CLIENT)
     @Override
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
         if (PendantTools.isEnabled(itemStack)) {
@@ -56,6 +60,7 @@ public class PendantItem extends ArmorItem {
         return (A) new BlankBipedModel();
     }
 
+    @OnlyIn(Dist.CLIENT)
     public BipedModel<LivingEntity> getCustomModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot) {
         return new BlankBipedModel();
     }

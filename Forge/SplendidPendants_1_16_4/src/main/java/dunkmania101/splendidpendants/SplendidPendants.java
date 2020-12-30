@@ -17,6 +17,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -31,6 +32,7 @@ public class SplendidPendants {
     public SplendidPendants() {
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
         modbus.addListener(this::setup);
+        modbus.addListener(this::clientSetup);
         modbus.addListener(this::enqueueImc);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.CONFIG);
@@ -43,6 +45,9 @@ public class SplendidPendants {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+    }
+
+    private void clientSetup(final FMLClientSetupEvent event) {
         ContainerInit.initScreens();
     }
 

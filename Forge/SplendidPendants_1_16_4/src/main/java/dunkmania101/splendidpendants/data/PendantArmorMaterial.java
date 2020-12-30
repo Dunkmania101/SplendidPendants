@@ -13,6 +13,7 @@ public enum PendantArmorMaterial implements IArmorMaterial {
     ATLANTIC(SplendidPendants.modid + ":atlantic", SoundEvents.ENTITY_DOLPHIN_SPLASH, 0, 0, 0),
     KNIGHTHOOD(SplendidPendants.modid + ":knighthood", SoundEvents.ENTITY_IRON_GOLEM_STEP, 0, 0, 0),
     HOLY(SplendidPendants.modid + ":holy", SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, 0, 0, 0),
+    INSTRUCTABLE_CONJURING(SplendidPendants.modid + ":instructable_conjuring", SoundEvents.ENTITY_EVOKER_FANGS_ATTACK, 0, 0, 0),
     LOCKET(SplendidPendants.modid + ":locket", SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 0, 0, 0);
 
     private final String name;
