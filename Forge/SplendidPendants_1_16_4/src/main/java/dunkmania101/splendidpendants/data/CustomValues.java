@@ -17,7 +17,7 @@ public class CustomValues {
     public static final String hasAtlanticKey = SplendidPendants.modid + "_hasAtlantic";
     public static final String hasKnighthoodKey = SplendidPendants.modid + "_hasKnighthood";
     public static final String hasHolyKey = SplendidPendants.modid + "_hasHoly";
-    public static final String hasInstructalbeConjuringKey = SplendidPendants.modid + "_hasInstructalbeConjuring";
+//    public static final String hasInstructalbeConjuringKey = SplendidPendants.modid + "_hasInstructalbeConjuring";
 
     public static final String renderKnighthoodKey = SplendidPendants.modid + "_renderKnighthood";
 

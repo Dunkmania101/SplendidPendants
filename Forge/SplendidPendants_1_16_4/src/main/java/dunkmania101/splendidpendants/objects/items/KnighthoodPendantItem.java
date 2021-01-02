@@ -5,7 +5,6 @@ import dunkmania101.splendidpendants.data.CustomValues;
 import dunkmania101.splendidpendants.data.PendantArmorMaterial;
 import dunkmania101.splendidpendants.data.models.KnighthoodArmorModel;
 import dunkmania101.splendidpendants.objects.containers.DyeableContainer;
-import dunkmania101.splendidpendants.util.PendantTools;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -14,7 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -45,16 +43,6 @@ public class KnighthoodPendantItem extends PendantItem {
             return SplendidPendants.modid + ":textures/blank_gray.png";
         }
         return super.getCustomTexture(stack, entity, slot, type);
-    }
-
-    @Override
-    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-        if (PendantTools.isEnabled(stack)) {
-            CompoundNBT data = player.getPersistentData();
-            if (!data.contains(CustomValues.hasKnighthoodKey)) {
-                data.putString(CustomValues.hasKnighthoodKey, "");
-            }
-        }
     }
 
     @Override

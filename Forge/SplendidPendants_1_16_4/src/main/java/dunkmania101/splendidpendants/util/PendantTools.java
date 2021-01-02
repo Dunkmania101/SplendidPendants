@@ -33,26 +33,29 @@ import java.util.UUID;
 public class PendantTools {
     public static void runPendants(PlayerEntity player) {
         CompoundNBT data = player.getPersistentData();
-        if (data.contains(CustomValues.hasAtlanticKey)) {
-            if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
-                runAtlantic(player);
-            } else {
-                resetAtlantic(player);
+        if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
+            if (!data.contains(CustomValues.hasAtlanticKey)) {
+                data.putString(CustomValues.hasAtlanticKey, "");
             }
+            runAtlantic(player);
+        } else if (data.contains(CustomValues.hasAtlanticKey)) {
+            resetAtlantic(player);
         }
-        if (data.contains(CustomValues.hasKnighthoodKey)) {
-            if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
-                runKnighthood(player);
-            } else {
-                resetKnighthood(player);
+        if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
+            if (!data.contains(CustomValues.hasKnighthoodKey)) {
+                data.putString(CustomValues.hasKnighthoodKey, "");
             }
+            runKnighthood(player);
+        } else if (data.contains(CustomValues.hasKnighthoodKey)) {
+            resetKnighthood(player);
         }
-        if (data.contains(CustomValues.hasHolyKey)) {
-            if (inventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
-                runHoly(player);
-            } else {
-                resetHoly(player);
+        if (inventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
+            if (!data.contains(CustomValues.hasHolyKey)) {
+                data.putString(CustomValues.hasHolyKey, "");
             }
+            runHoly(player);
+        } else if (data.contains(CustomValues.hasHolyKey)) {
+            resetHoly(player);
         }
     }
 
@@ -119,17 +122,14 @@ public class PendantTools {
             ItemStack checkStack = itemStackHandler.getStackInSlot(i);
             Item checkItem = checkStack.getItem();
             Item storedItem = storedStack.getItem();
-            if (checkItem instanceof AtlanticPendantItem) {
-                storedStack = checkStack;
-            } else if (checkItem instanceof KnighthoodPendantItem
-                    && !(storedItem instanceof AtlanticPendantItem
-                    && entity.isInWater())) {
-                storedStack = checkStack;
-            } else if (checkItem instanceof HolyPendantItem
-                    && !((storedItem instanceof AtlanticPendantItem
-                    && entity.isInWater())
-                    || (storedItem instanceof KnighthoodPendantItem
-                    && entity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0))) {
+            if (
+                    (checkItem instanceof AtlanticPendantItem && entity.isInWater())
+                            || ((checkItem instanceof KnighthoodPendantItem && entity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0)
+                            && !(storedItem instanceof AtlanticPendantItem && entity.isInWater()))
+                            || ((checkItem instanceof HolyPendantItem && entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.isFlying)
+                            && !((storedItem instanceof AtlanticPendantItem && entity.isInWater())
+                            || (storedItem instanceof KnighthoodPendantItem && entity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0)))
+            ) {
                 storedStack = checkStack;
             }
         }

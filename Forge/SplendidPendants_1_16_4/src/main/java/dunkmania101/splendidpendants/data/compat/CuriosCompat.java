@@ -76,14 +76,6 @@ public class CuriosCompat {
             }
 
             @Override
-            public void curioTick(String identifier, int index, LivingEntity livingEntity) {
-                if (livingEntity instanceof PlayerEntity) {
-                    PlayerEntity player = (PlayerEntity) livingEntity;
-                    stack.onArmorTick(player.getEntityWorld(), player);
-                }
-            }
-
-            @Override
             @OnlyIn(Dist.CLIENT)
             public void render(String identifier, int index, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
                 if (PendantTools.isEnabled(stack)) {

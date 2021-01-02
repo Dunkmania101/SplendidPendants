@@ -56,17 +56,6 @@ public class LocketItem extends PendantItem {
     }
 
     @Override
-    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-        if (PendantTools.isEnabled(stack)) {
-            ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.locketSize, false);
-            for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-                ItemStack storedStack = itemStackHandler.getStackInSlot(i);
-                storedStack.onArmorTick(world, player);
-            }
-        }
-    }
-
-    @Override
     public void customClickActions(World world, PlayerEntity player, Hand hand, ItemStack stack) {
         super.customClickActions(world, player, hand, stack);
         SimpleNamedContainerProvider newContainer = new SimpleNamedContainerProvider(
