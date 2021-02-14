@@ -13,9 +13,9 @@
 //import net.minecraftforge.api.distmarker.Dist;
 //import net.minecraftforge.api.distmarker.OnlyIn;
 //
-//public class InstructableConjuringPendantItem extends PendantItem {
-//    public InstructableConjuringPendantItem(Properties properties) {
-//        super(PendantArmorMaterial.INSTRUCTABLE_CONJURING, properties);
+//public class ConjuringPendantItem extends PendantItem {
+//    public ConjuringPendantItem(Properties properties) {
+//        super(PendantArmorMaterial.CONJURING, properties);
 //    }
 //
 //    @OnlyIn(Dist.CLIENT)

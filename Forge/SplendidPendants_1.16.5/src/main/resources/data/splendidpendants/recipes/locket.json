@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "splendidpendants:enchanted_necklace"
+    },
+    {
+      "item": "splendidpendants:locket_casing"
+    },
+    {
+      "item": "splendidpendants:enchanted_gemstone"
+    }
+  ],
+  "result": {
+    "item": "splendidpendants:locket"
+  }
+}

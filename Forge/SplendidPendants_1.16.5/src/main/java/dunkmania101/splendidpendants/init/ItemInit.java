@@ -10,6 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SplendidPendants.modid);
 
+    // Pendants
     public static final RegistryObject<LocketItem> LOCKET = ITEMS.register("locket",
             () -> new LocketItem(
                     new Item.Properties()
@@ -50,6 +51,14 @@ public class ItemInit {
 //                            .maxStackSize(1)
 //                            .isImmuneToFire()
 //            ));
+
+    // Random Utilities
+    public static final RegistryObject<DyeSpongeItem> DYE_SPONGE = ITEMS.register("dye_sponge",
+            () -> new DyeSpongeItem(
+                    new Item.Properties()
+                            .group(SplendidPendants.SPLENDID_PENDANTS_GROUP.instance)
+                            .maxStackSize(1)
+            ));
 
     // Ingredient items
     public static final RegistryObject<ShinyItem> ENCHANTED_LACE = ITEMS.register("enchanted_lace",

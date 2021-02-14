@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "splendidpendants:reinforced_plate"
+    },
+    "b": {
+      "item": "splendidpendants:armory_core"
+    }
+  },
+  "result": {
+    "item": "splendidpendants:knighthood_charm"
+  }
+}
