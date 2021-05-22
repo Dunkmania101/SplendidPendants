@@ -55,7 +55,7 @@ public class CommonConfig {
         KNIGHTHOOD_ARMOR = BUILDER.comment("Armor value of the knighthood pendant.")
                 .defineInRange("knighthood_armor", 20, 0, Double.MAX_VALUE);
         KNIGHTHOOD_ARMOR_TOUGHNESS = BUILDER.comment("Armor toughness value of the knighthood pendant.")
-                .defineInRange("knighthood_armor_toughness", 4, 0, Double.MAX_VALUE);
+                .defineInRange("knighthood_armor_toughness", 12, 0, Double.MAX_VALUE);
         KNIGHTHOOD_KNOCK_BACK_RESISTANCE = BUILDER.comment("Knock-back resistance value of the knighthood pendant.")
                 .defineInRange("knighthood_knock_back_resistance", 10, 0, Double.MAX_VALUE);
         KNIGHTHOOD_KNOCK_BACK_BOOST = BUILDER.comment("Knock-back boost value of the knighthood pendant (when attacking).")
