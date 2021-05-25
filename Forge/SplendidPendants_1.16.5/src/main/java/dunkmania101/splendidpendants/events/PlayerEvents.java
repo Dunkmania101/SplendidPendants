@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = SplendidPendants.modid, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PlayerEvents {
-
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PendantTools.runPendants(event.player);

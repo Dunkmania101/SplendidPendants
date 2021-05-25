@@ -10,7 +10,6 @@
 //
 //@Mod.EventBusSubscriber(modid = SplendidPendants.modid, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 //public class ClientEvents {
-//
 //    @OnlyIn(Dist.CLIENT)
 //    @SubscribeEvent
 //    public void onTick(TickEvent.ClientTickEvent event) {

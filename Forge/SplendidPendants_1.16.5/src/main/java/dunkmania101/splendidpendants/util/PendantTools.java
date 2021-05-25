@@ -278,12 +278,19 @@ public class PendantTools {
     }
 
     public static void runHoly(PlayerEntity player) {
+        boolean noClipEnabled = CommonConfig.HOLY_ENABLE_NOCLIP.get();
         ModifiableAttributeInstance flySpeed = player.getAttribute(Attributes.FLYING_SPEED);
         if (player.isSprinting()) {
+            if (!player.isSpectator() && noClipEnabled) {
+                player.noClip = true;
+            }
             double speed = CommonConfig.HOLY_FLIGHT_SPEED.get();
             modifyPlayerAttribute(flySpeed, speed, CustomValues.holyFlightSpeedBoostUUID, CustomValues.holyFlightSpeedBoostName);
         } else {
             resetPlayerAttribute(flySpeed, CustomValues.holyFlightSpeedBoostUUID);
+            if (!player.isSpectator() && noClipEnabled) {
+                player.noClip = false;
+            }
         }
 
         if (!player.isCreative() && !player.isSpectator()) {
@@ -291,10 +298,18 @@ public class PendantTools {
                 player.abilities.allowFlying = true;
                 player.sendPlayerAbilities();
             }
+            if (player.isEntityInsideOpaqueBlock() && noClipEnabled) {
+                if (!player.abilities.isFlying) {
+                    player.abilities.isFlying = true;
+                    player.sendPlayerAbilities();
+                }
+                player.noClip = true;
+            }
         }
     }
 
     public static void resetHoly(PlayerEntity player) {
+        boolean noClipEnabled = CommonConfig.HOLY_ENABLE_NOCLIP.get();
         CompoundNBT data = player.getPersistentData();
         data.remove(CustomValues.hasHolyKey);
 
@@ -312,6 +327,9 @@ public class PendantTools {
             }
             if (changed) {
                 player.sendPlayerAbilities();
+            }
+            if (noClipEnabled) {
+                player.noClip = false;
             }
         }
     }
