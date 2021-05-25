@@ -17,7 +17,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 
 public class PendantContainer extends Container {
     protected final ItemStack stack;

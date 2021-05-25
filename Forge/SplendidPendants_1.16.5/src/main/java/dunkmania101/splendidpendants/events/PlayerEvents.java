@@ -5,7 +5,6 @@ import dunkmania101.splendidpendants.util.PendantTools;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
