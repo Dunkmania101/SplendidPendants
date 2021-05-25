@@ -282,7 +282,7 @@ public class PendantTools {
         ModifiableAttributeInstance flySpeed = player.getAttribute(Attributes.FLYING_SPEED);
         if (player.isSprinting()) {
             if (!player.isSpectator() && noClipEnabled) {
-                player.noClip = true;
+                player.noClip = player.abilities.isFlying;
             }
             double speed = CommonConfig.HOLY_FLIGHT_SPEED.get();
             modifyPlayerAttribute(flySpeed, speed, CustomValues.holyFlightSpeedBoostUUID, CustomValues.holyFlightSpeedBoostName);
@@ -298,7 +298,7 @@ public class PendantTools {
                 player.abilities.allowFlying = true;
                 player.sendPlayerAbilities();
             }
-            if (player.isEntityInsideOpaqueBlock() && noClipEnabled) {
+            if ((player.isEntityInsideOpaqueBlock() || player.noClip) && noClipEnabled) {
                 if (!player.abilities.isFlying) {
                     player.abilities.isFlying = true;
                     player.sendPlayerAbilities();
