@@ -26,7 +26,7 @@ SOFTWARE.
 issueTrackerURL = "https://github.com/Dunkmania101/SplendidPendants/issues" #optional
 [[mods]] #mandatory
 modId = "splendidpendants" #mandatory
-version = "0.4.1" #mandatory
+version = "0.4.2" #mandatory
 displayName = "Splendid Pendants" #mandatory
 #updateJSONURL="http://myurl.me/" #optional
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/splendid-pendants" #optional
@@ -48,8 +48,8 @@ description = '''
 #ordering = "NONE"
 #side = "BOTH"
 [[dependencies.splendidpendants]]
- modId = "curios"
- mandatory = false
- versionRange = "[1.16.4-4.0.3.5,]"
- ordering = "NONE"
- side = "BOTH"
+    modId = "curios"
+    mandatory = false
+    versionRange = "[1.16.4-4.0.3.5,]"
+    ordering = "NONE"
+    side = "BOTH"

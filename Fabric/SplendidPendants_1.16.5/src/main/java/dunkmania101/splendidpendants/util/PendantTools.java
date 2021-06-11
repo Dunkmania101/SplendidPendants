@@ -75,7 +75,7 @@ public class PendantTools {
             Item checkItem = checkStack.getItem();
             if (checkItem instanceof LocketItem) {
                 if (isEnabled(checkStack)) {
-                    ItemStackHandler itemHandler = Tools.getItemStackHandlerOfStack(checkStack, CustomValues.locketSize, false);
+                    ItemStackHandler itemHandler = Tools.getInventoryOfStack(checkStack, CustomValues.locketSize, false);
                     for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
                         ItemStack pendantStack = itemHandler.getStackInSlot(slot);
                         if (pendantStack.getItem() instanceof PendantItem) {
@@ -117,7 +117,7 @@ public class PendantTools {
 
     public static ItemStack getPrioritizedStoredStack(ItemStack thisStack, Entity entity) {
         ItemStack storedStack = ItemStack.EMPTY;
-        ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(thisStack, CustomValues.locketSize, false);
+        ItemStackHandler itemStackHandler = Tools.getInventoryOfStack(thisStack, CustomValues.locketSize, false);
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
             ItemStack checkStack = itemStackHandler.getStackInSlot(i);
             Item checkItem = checkStack.getItem();
@@ -136,23 +136,21 @@ public class PendantTools {
         return storedStack;
     }
 
-    public static AttributeModifier genAttributeModifier(double additive, UUID uuid, String name) {
+    public static AttributeModifier getAttributeModifier(double additive, UUID uuid, String name) {
         return new AttributeModifier(uuid, name, additive, AttributeModifier.Operation.ADDITION);
     }
 
     public static void modifyPlayerAttribute(ModifiableAttributeInstance playerAttribute, double additive, UUID uuid, String name) {
-        if (additive != 0) {
-            if (playerAttribute != null) {
-                AttributeModifier modifier = genAttributeModifier(additive, uuid, name);
-                AttributeModifier existingModifier = playerAttribute.getModifier(uuid);
-                if (existingModifier != null) {
-                    if (existingModifier.getAmount() != additive || existingModifier.getOperation() != modifier.getOperation()) {
-                        resetPlayerAttribute(playerAttribute, uuid);
-                    }
+        if (playerAttribute != null) {
+            AttributeModifier modifier = getAttributeModifier(additive, uuid, name);
+            AttributeModifier existingModifier = playerAttribute.getModifier(uuid);
+            if (existingModifier != null) {
+                if (existingModifier.getAmount() != additive || existingModifier.getOperation() != modifier.getOperation()) {
+                    resetPlayerAttribute(playerAttribute, uuid);
                 }
-                if (!playerAttribute.hasModifier(modifier)) {
-                    playerAttribute.applyPersistentModifier(modifier);
-                }
+            }
+            if (!playerAttribute.hasModifier(modifier)) {
+                playerAttribute.applyPersistentModifier(modifier);
             }
         }
     }
@@ -193,12 +191,9 @@ public class PendantTools {
         }
 
         if (player.isInWater()) {
-            int duration = CommonConfig.ATLANTIC_VISION_DURATION.get();
             int amplifier = CommonConfig.ATLANTIC_VISION_AMPLIFIER.get();
-            if (duration != 0 && amplifier != 0) {
-                EffectInstance nightVision = new EffectInstance(Effects.NIGHT_VISION, duration, amplifier, false, false, false);
-                player.addPotionEffect(nightVision);
-            }
+            EffectInstance nightVision = new EffectInstance(Effects.NIGHT_VISION, 20, amplifier, false, false, false);
+            player.addPotionEffect(nightVision);
         }
     }
 
@@ -245,9 +240,7 @@ public class PendantTools {
         if (data.contains(CustomValues.hasKnighthoodKey)) {
             if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
                 int renderKnighthoodTicks = CommonConfig.RENDER_KNIGHTHOOD_TICKS.get();
-                if (renderKnighthoodTicks != 0) {
-                    data.putInt(CustomValues.renderKnighthoodKey, renderKnighthoodTicks);
-                }
+                data.putInt(CustomValues.renderKnighthoodKey, renderKnighthoodTicks);
 
                 player.playSound(SoundEvents.ENTITY_IRON_GOLEM_HURT, 1, -1);
                 player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 3);

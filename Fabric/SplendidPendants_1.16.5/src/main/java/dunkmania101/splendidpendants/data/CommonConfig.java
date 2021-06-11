@@ -12,7 +12,6 @@ public class CommonConfig {
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
         public static ForgeConfigSpec.BooleanValue ENABLE_CURIOS;
         public static ForgeConfigSpec.DoubleValue ATLANTIC_SWIM_SPEED;
-        public static ForgeConfigSpec.IntValue ATLANTIC_VISION_DURATION;
         public static ForgeConfigSpec.IntValue ATLANTIC_VISION_AMPLIFIER;
         public static ForgeConfigSpec.IntValue RENDER_KNIGHTHOOD_TICKS;
         public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_EXTRA_HEALTH;
@@ -42,46 +41,42 @@ public class CommonConfig {
                 BUILDER.push("Atlantic Pendant Stats: ");
                 ATLANTIC_SWIM_SPEED = BUILDER.comment("Boosted swim speed of the atlantic pendant.")
                                 .defineInRange("atlantic_swim_speed", 3, 0, Double.MAX_VALUE);
-                ATLANTIC_VISION_DURATION = BUILDER
-                                .comment("Duration for the night vision effect of the atlantic pendant (in ticks, there are 20 in a second) (0 to disable).")
-                                .defineInRange("atlantic_vision_duration", 220, 0, Integer.MAX_VALUE);
                 ATLANTIC_VISION_AMPLIFIER = BUILDER
-                                .comment("Amplifier for the night vision effect of the atlantic pendant (0 to disable).")
+                                .comment("Amplifier for the night vision effect of the atlantic pendant.")
                                 .defineInRange("atlantic_vision_amplifier", 2, 0, Integer.MAX_VALUE);
-
                 BUILDER.pop();
 
                 BUILDER.push("Knighthood Pendant Stats: ");
                 RENDER_KNIGHTHOOD_TICKS = BUILDER.comment(
-                                "How long to render the knighthood pendant's armor model upon activation (in ticks, there are 20 in a second) (0 to disable).")
+                                "How long to render the knighthood pendant's armor model upon activation (in ticks, there are 20 in a second).")
                                 .defineInRange("render_knighthood_ticks", 60, 0, Integer.MAX_VALUE);
-                KNIGHTHOOD_EXTRA_HEALTH = BUILDER.comment("Extra health from the knighthood pendant (0 to disable).")
+                KNIGHTHOOD_EXTRA_HEALTH = BUILDER.comment("Extra health from the knighthood pendant.")
                                 .defineInRange("knighthood_extra_health", 20, 0, Double.MAX_VALUE);
-                KNIGHTHOOD_ARMOR = BUILDER.comment("Armor value of the knighthood pendant (0 to disable).")
+                KNIGHTHOOD_ARMOR = BUILDER.comment("Armor value of the knighthood pendant.")
                                 .defineInRange("knighthood_armor", 20, 0, Double.MAX_VALUE);
-                KNIGHTHOOD_ARMOR_TOUGHNESS = BUILDER.comment("Armor toughness value of the knighthood pendant (0 to disable).")
+                KNIGHTHOOD_ARMOR_TOUGHNESS = BUILDER.comment("Armor toughness value of the knighthood pendant.")
                                 .defineInRange("knighthood_armor_toughness", 12, 0, Double.MAX_VALUE);
                 KNIGHTHOOD_KNOCK_BACK_RESISTANCE = BUILDER
-                                .comment("Knock-back resistance value of the knighthood pendant (0 to disable).")
+                                .comment("Knock-back resistance value of the knighthood pendant.")
                                 .defineInRange("knighthood_knock_back_resistance", 10, 0, Double.MAX_VALUE);
                 KNIGHTHOOD_KNOCK_BACK_BOOST = BUILDER
-                                .comment("Knock-back boost value of the knighthood pendant (when attacking) (0 to disable).")
+                                .comment("Knock-back boost value of the knighthood pendant (when attacking).")
                                 .defineInRange("knighthood_knock_back_boost", 1, 0, Double.MAX_VALUE);
                 KNIGHTHOOD_DAMAGE_BOOST = BUILDER.comment("Damage boost of the knighthood pendant.")
                                 .defineInRange("knighthood_damage_boost", 2, 0, Double.MAX_VALUE);
-                KNIGHTHOOD_CRITICAL_DAMAGE = BUILDER.comment("Damage of the knighthood pendant's critical attack (0 to disable).")
+                KNIGHTHOOD_CRITICAL_DAMAGE = BUILDER.comment("Damage of the knighthood pendant's critical attack.")
                                 .defineInRange("knighthood_critical_damage", 9, 0, Double.MAX_VALUE);
-                BUILDER.pop();
-
-                BUILDER.push("Holy Pendant Stats: ");
-                HOLY_FLIGHT_SPEED = BUILDER
-                                .comment("Speed boost value for flight with the holy pendant (while sprinting) (0 to disable).")
-                                .defineInRange("holy_flight_speed", 10, 0, Double.MAX_VALUE);
-                HOLY_ENABLE_NOCLIP = BUILDER.comment("Whether to enable noclip during flight while sprinting.").define("holy_enable_noclip", true);
                 BUILDER.pop();
 
                 BUILDER.push("MISC: ");
                 ENABLE_CURIOS = BUILDER.comment("Whether to enable Curios compat.").define("enable_curios", true);
+                BUILDER.pop();
+
+                BUILDER.push("Holy Pendant Stats: ");
+                HOLY_FLIGHT_SPEED = BUILDER
+                                .comment("Speed boost value for flight with the holy pendant (while sprinting).")
+                                .defineInRange("holy_flight_speed", 10, 0, Double.MAX_VALUE);
+                HOLY_ENABLE_NOCLIP = BUILDER.comment("Whether to enable noclip during flight while sprinting.").define("holy_enable_noclip", true);
                 BUILDER.pop();
         }
 

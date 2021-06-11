@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "splendidpendants",
+  "version": "${version}",
+
+  "name": "Splendid Pendants",
+  "description": "Adds some pendants that give the player great strengths. Splendid!",
+  "authors": [
+    "Dunkmania101"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/splendid-pendants-fabric",
+    "sources": "https://github.com/Dunkmania101/SplendidPendants"
+  },
+
+  "license": "MIT",
+  "icon": "assets/splendidpendants/splendidpendants-logo.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dunkmania101.splendidpendants.SplendidPendants"
+    ]
+  },
+  "mixins": [
+    "splendidpendants.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

@@ -40,7 +40,7 @@ public class PendantContainer extends Container {
         for (int x = 0; x < this.itemStackHandler.getSlots(); ++x) {
             int valueX = startX + (x * slotSizePlus2);
             if (x > 0) {
-                valueX += 9 * x;
+                valueX += (8 * x) + 1;
             }
             SlotItemHandler slot = new SlotItemHandler(this.itemStackHandler, x, valueX, startY) {
                 @Override
