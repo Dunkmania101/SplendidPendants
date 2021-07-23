@@ -4,16 +4,13 @@ import dunkmania101.splendidpendants.SplendidPendants;
 import dunkmania101.splendidpendants.data.PendantArmorMaterial;
 import dunkmania101.splendidpendants.data.models.BlankBipedModel;
 import dunkmania101.splendidpendants.data.models.HolyHaloModel;
-import dunkmania101.splendidpendants.objects.containers.DyeableContainer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -34,7 +31,7 @@ public class HolyPendantItem extends PendantItem {
     public BipedModel<LivingEntity> getCustomModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot) {
         if (entityLiving instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entityLiving;
-            if (player.abilities.isFlying && !player.isCreative() && !player.isSpectator()) {
+            if (player.abilities.flying && !player.isCreative() && !player.isSpectator()) {
                 return new HolyHaloModel(itemStack);
             }
         }
@@ -45,7 +42,7 @@ public class HolyPendantItem extends PendantItem {
     public String getCustomTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
-            if (player.abilities.isFlying && !player.isCreative() && !player.isSpectator()) {
+            if (player.abilities.flying && !player.isCreative() && !player.isSpectator()) {
                 return SplendidPendants.modid + ":textures/blank_white.png";
             }
         }
@@ -53,19 +50,9 @@ public class HolyPendantItem extends PendantItem {
     }
 
     @Override
-    public void customClickActions(World world, PlayerEntity player, Hand hand, ItemStack stack) {
-        super.customClickActions(world, player, hand, stack);
-        SimpleNamedContainerProvider newContainer = new SimpleNamedContainerProvider(
-                (id, playerInventory, openingPlayer) -> new DyeableContainer(id, playerInventory, stack),
-                stack.getDisplayName()
-        );
-        player.openContainer(newContainer);
-    }
-
-    @Override
-    public void addInformation(@Nonnull ItemStack stack, World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslationTextComponent("msg.splendidpendants.dyeable_sneak_use_instructions").mergeStyle(TextFormatting.GRAY));
+    public void appendHoverText(@Nonnull ItemStack stack, World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        tooltip.add(new TranslationTextComponent("msg.splendidpendants.dyeable_sneak_use_instructions").withStyle(TextFormatting.GRAY));
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
     }
 }

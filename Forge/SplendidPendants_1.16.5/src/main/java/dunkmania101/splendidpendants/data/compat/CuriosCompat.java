@@ -83,7 +83,7 @@ public class CuriosCompat {
                     if (livingEntity instanceof PlayerEntity) {
                         PlayerEntity player = (PlayerEntity) livingEntity;
                         Item pendantItem = stack.getItem();
-                        ItemStack chestStack = player.inventory.armorInventory.get(EquipmentSlotType.CHEST.getIndex());
+                        ItemStack chestStack = player.inventory.armor.get(EquipmentSlotType.CHEST.getIndex());
                         Item chestItem = chestStack.getItem();
                         boolean chestEnabled = PendantTools.isEnabled(chestStack);
                         if (chestItem instanceof LocketItem) {
@@ -94,11 +94,11 @@ public class CuriosCompat {
                             BipedModel<LivingEntity> model = pendantItem.getArmorModel(livingEntity, stack, EquipmentSlotType.CHEST, new BlankBipedModel());
                             String texture = pendantItem.getArmorTexture(stack, livingEntity, EquipmentSlotType.CHEST, null);
                             if (model != null && texture != null) {
-                                model.setRotationAngles(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                                model.setLivingAnimations(player, limbSwing, limbSwingAmount, partialTicks);
+                                model.setupAnim(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+                                model.prepareMobModel(player, limbSwing, limbSwingAmount, partialTicks);
                                 RenderHelper.followBodyRotations(player, model);
-                                IVertexBuilder vertexBuilder = ItemRenderer.getBuffer(renderTypeBuffer, model.getRenderType(new ResourceLocation(texture)), false, stack.hasEffect());
-                                model.render(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+                                IVertexBuilder vertexBuilder = ItemRenderer.getFoilBufferDirect(renderTypeBuffer, model.renderType(new ResourceLocation(texture)), false, stack.hasFoil());
+                                model.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
                             }
                         }
                     }

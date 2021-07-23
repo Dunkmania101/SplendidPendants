@@ -14,7 +14,7 @@ public class LocketContainer extends PendantContainer {
     }
 
     public LocketContainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer ignored) {
-        this(windowId, playerInventory, playerInventory.getCurrentItem());
+        this(windowId, playerInventory, playerInventory.getSelected());
     }
 
     @Override

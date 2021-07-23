@@ -61,7 +61,7 @@ public class PendantTools {
 
     public static boolean inventoryHasEnabledPendant(PlayerEntity player, PendantItem pendant) {
         ArrayList<ItemStack> checkStacks = new ArrayList<>();
-        checkStacks.add(player.inventory.armorInventory.get(EquipmentSlotType.CHEST.getIndex()));
+        checkStacks.add(player.inventory.armor.get(EquipmentSlotType.CHEST.getIndex()));
         if (Mods.CURIOS.isLoaded()) {
             Optional<ImmutableTriple<String, Integer, ItemStack>> optionalStack = CuriosApi.getCuriosHelper().findEquippedCurio(pendant, player);
             if (optionalStack.isPresent()) {
@@ -126,7 +126,7 @@ public class PendantTools {
                     (checkItem instanceof AtlanticPendantItem && entity.isInWater())
                             || ((checkItem instanceof KnighthoodPendantItem && entity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0)
                             && !(storedItem instanceof AtlanticPendantItem && entity.isInWater()))
-                            || ((checkItem instanceof HolyPendantItem && entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.isFlying)
+                            || ((checkItem instanceof HolyPendantItem && entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.flying)
                             && !((storedItem instanceof AtlanticPendantItem && entity.isInWater())
                             || (storedItem instanceof KnighthoodPendantItem && entity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0)))
             ) {
@@ -151,7 +151,7 @@ public class PendantTools {
                     }
                 }
                 if (!playerAttribute.hasModifier(modifier)) {
-                    playerAttribute.applyPersistentModifier(modifier);
+                    playerAttribute.addPermanentModifier(modifier);
                 }
             }
         }
@@ -169,10 +169,10 @@ public class PendantTools {
             CompoundNBT data = player.getPersistentData();
             if (data.contains(CustomValues.hasAtlanticKey)) {
                 if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
-                    PlayerModel<AbstractClientPlayerEntity> model = event.getRenderer().getEntityModel();
-                    model.bipedRightLeg.showModel = false;
-                    model.bipedRightLegwear.showModel = false;
-                    model.bipedLeftLegwear.showModel = false;
+                    PlayerModel<AbstractClientPlayerEntity> model = event.getRenderer().getModel();
+                    model.rightLeg.visible = false;
+                    model.rightPants.visible = false;
+                    model.leftPants.visible = false;
                 }
             }
         }
@@ -187,9 +187,9 @@ public class PendantTools {
             resetPlayerAttribute(swimSpeed, CustomValues.atlanticSpeedUUID);
         }
 
-        int maxAir = player.getMaxAir();
-        if (player.getAir() < maxAir) {
-            player.setAir(maxAir);
+        int maxAir = player.getMaxAirSupply();
+        if (player.getAirSupply() < maxAir) {
+            player.setAirSupply(maxAir);
         }
 
         if (player.isInWater()) {
@@ -197,7 +197,7 @@ public class PendantTools {
             int amplifier = CommonConfig.ATLANTIC_VISION_AMPLIFIER.get();
             if (duration != 0 && amplifier != 0) {
                 EffectInstance nightVision = new EffectInstance(Effects.NIGHT_VISION, duration, amplifier, false, false, false);
-                player.addPotionEffect(nightVision);
+                player.addEffect(nightVision);
             }
         }
     }
@@ -225,8 +225,8 @@ public class PendantTools {
         modifyPlayerAttribute(player.getAttribute(Attributes.ATTACK_DAMAGE), damageBoost, CustomValues.knighthoodDamageBoostUUID, CustomValues.knighthoodDamageBoostName);
 
         CompoundNBT data = player.getPersistentData();
-        player.setFire(0);
-        player.setArrowCountInEntity(0);
+        player.setRemainingFireTicks(0);
+        player.setArrowCount(0);
 
         if (data.contains(CustomValues.renderKnighthoodKey)) {
             int renderKnighthoodTicks = data.getInt(CustomValues.renderKnighthoodKey);
@@ -235,7 +235,7 @@ public class PendantTools {
             }
         }
 
-        if (player.hurtTime == player.maxHurtTime - 1) {
+        if (player.hurtTime == player.hurtDuration - 1) {
             activateKnighthoodEffects(player);
         }
     }
@@ -249,8 +249,8 @@ public class PendantTools {
                     data.putInt(CustomValues.renderKnighthoodKey, renderKnighthoodTicks);
                 }
 
-                player.playSound(SoundEvents.ENTITY_IRON_GOLEM_HURT, 1, -1);
-                player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1, 3);
+                player.playSound(SoundEvents.IRON_GOLEM_HURT, 1, -1);
+                player.playSound(SoundEvents.ARMOR_EQUIP_IRON, 1, 3);
             }
         }
     }
@@ -264,7 +264,7 @@ public class PendantTools {
                     double damage = CommonConfig.KNIGHTHOOD_CRITICAL_DAMAGE.get();
                     event.setDamageModifier((float) (event.getDamageModifier() + damage));
 
-                    player.playSound(SoundEvents.ENTITY_ENDER_DRAGON_FLAP, 1, -1);
+                    player.playSound(SoundEvents.ENDER_DRAGON_FLAP, 1, -1);
                     activateKnighthoodEffects(player);
                 }
             }
@@ -289,28 +289,28 @@ public class PendantTools {
         ModifiableAttributeInstance flySpeed = player.getAttribute(Attributes.FLYING_SPEED);
         if (player.isSprinting()) {
             if (!player.isSpectator() && noClipEnabled) {
-                player.noClip = player.abilities.isFlying;
+                player.noPhysics = player.abilities.flying;
             }
             double speed = CommonConfig.HOLY_FLIGHT_SPEED.get();
             modifyPlayerAttribute(flySpeed, speed, CustomValues.holyFlightSpeedBoostUUID, CustomValues.holyFlightSpeedBoostName);
         } else {
             resetPlayerAttribute(flySpeed, CustomValues.holyFlightSpeedBoostUUID);
             if (!player.isSpectator() && noClipEnabled) {
-                player.noClip = false;
+                player.noPhysics = false;
             }
         }
 
         if (!player.isCreative() && !player.isSpectator()) {
-            if (!player.abilities.allowFlying) {
-                player.abilities.allowFlying = true;
-                player.sendPlayerAbilities();
+            if (!player.abilities.mayfly) {
+                player.abilities.mayfly = true;
+                player.onUpdateAbilities();
             }
-            if ((player.isEntityInsideOpaqueBlock() || player.noClip) && noClipEnabled) {
-                if (!player.abilities.isFlying) {
-                    player.abilities.isFlying = true;
-                    player.sendPlayerAbilities();
+            if ((player.isInWall() || player.noPhysics) && noClipEnabled) {
+                if (!player.abilities.flying) {
+                    player.abilities.flying = true;
+                    player.onUpdateAbilities();
                 }
-                player.noClip = true;
+                player.noPhysics = true;
             }
         }
     }
@@ -324,19 +324,19 @@ public class PendantTools {
 
         if (!player.isCreative() && !player.isSpectator()) {
             boolean changed = false;
-            if (player.abilities.isFlying) {
-                player.abilities.isFlying = false;
+            if (player.abilities.flying) {
+                player.abilities.flying = false;
                 changed = true;
             }
-            if (player.abilities.allowFlying) {
-                player.abilities.allowFlying = false;
+            if (player.abilities.mayfly) {
+                player.abilities.mayfly = false;
                 changed = true;
             }
             if (changed) {
-                player.sendPlayerAbilities();
+                player.onUpdateAbilities();
             }
             if (noClipEnabled) {
-                player.noClip = false;
+                player.noPhysics = false;
             }
         }
     }

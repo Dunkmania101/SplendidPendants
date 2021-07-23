@@ -10,11 +10,11 @@ import net.minecraft.util.SoundEvents;
 import javax.annotation.Nonnull;
 
 public enum PendantArmorMaterial implements IArmorMaterial {
-    ATLANTIC(SplendidPendants.modid + ":atlantic", SoundEvents.ENTITY_DOLPHIN_SPLASH, 0, 0, 0),
-    KNIGHTHOOD(SplendidPendants.modid + ":knighthood", SoundEvents.ENTITY_IRON_GOLEM_STEP, 0, 0, 0),
-    HOLY(SplendidPendants.modid + ":holy", SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, 0, 0, 0),
-//    CONJURING(SplendidPendants.modid + ":conjuring", SoundEvents.ENTITY_EVOKER_FANGS_ATTACK, 0, 0, 0),
-    LOCKET(SplendidPendants.modid + ":locket", SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 0, 0, 0);
+    ATLANTIC(SplendidPendants.modid + ":atlantic", SoundEvents.DOLPHIN_SPLASH, 0, 0, 0),
+    KNIGHTHOOD(SplendidPendants.modid + ":knighthood", SoundEvents.IRON_GOLEM_STEP, 0, 0, 0),
+    HOLY(SplendidPendants.modid + ":holy", SoundEvents.ENCHANTMENT_TABLE_USE, 0, 0, 0),
+//    CONJURING(SplendidPendants.modid + ":conjuring", SoundEvents.EVOKER_FANGS_ATTACK, 0, 0, 0),
+    LOCKET(SplendidPendants.modid + ":locket", SoundEvents.ARMOR_EQUIP_CHAIN, 0, 0, 0);
 
     private final String name;
     private final SoundEvent sound;
@@ -31,29 +31,29 @@ public enum PendantArmorMaterial implements IArmorMaterial {
     }
 
     @Override
-    public int getDurability(@Nonnull EquipmentSlotType slotIn) {
+    public int getDurabilityForSlot(@Nonnull EquipmentSlotType slotIn) {
         return 0;
     }
 
     @Override
-    public int getDamageReductionAmount(@Nonnull EquipmentSlotType slotIn) {
+    public int getDefenseForSlot(@Nonnull EquipmentSlotType slotIn) {
         return this.damageReduce;
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
         return 0;
     }
 
     @Nonnull
     @Override
-    public SoundEvent getSoundEvent() {
+    public SoundEvent getEquipSound() {
         return this.sound;
     }
 
     @Nonnull
     @Override
-    public Ingredient getRepairMaterial() {
+    public Ingredient getRepairIngredient() {
         return Ingredient.EMPTY;
     }
 

@@ -22,14 +22,14 @@ public class BaseDyeableModel extends BipedModel<LivingEntity> {
     public BaseDyeableModel(float modelSize, ItemStack stack, DyeColor defaultColor) {
         super(modelSize);
 
-        this.colors = defaultColor.getColorComponentValues();
+        this.colors = defaultColor.getTextureDiffuseColors();
 
         ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.dyeableSize, true);
         if (itemStackHandler.getSlots() > 0) {
             ItemStack storedStack = itemStackHandler.getStackInSlot(0);
             Item storedDye = storedStack.getItem();
             if (storedDye instanceof DyeItem) {
-                this.colors = ((DyeItem) storedDye).getDyeColor().getColorComponentValues();
+                this.colors = ((DyeItem) storedDye).getDyeColor().getTextureDiffuseColors();
             } else if (storedDye instanceof DyeSpongeItem) {
                 int colorInt = ((DyeSpongeItem) storedDye).getColor(storedStack);
                 this.colors = new float[]{(float) Tools.getRed(colorInt) / 255f, (float) Tools.getGreen(colorInt) / 255f, (float) Tools.getBlue(colorInt) / 255f};
@@ -38,13 +38,13 @@ public class BaseDyeableModel extends BipedModel<LivingEntity> {
     }
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+        modelRenderer.xRot = x;
+        modelRenderer.yRot = y;
+        modelRenderer.zRot = z;
     }
 
     @Override
-    public void render(@Nonnull MatrixStack matrixStackIn, @Nonnull IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, this.colors[0], this.colors[1], this.colors[2], alpha);
+    public void renderToBuffer(@Nonnull MatrixStack matrixStackIn, @Nonnull IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, this.colors[0], this.colors[1], this.colors[2], alpha);
     }
 }

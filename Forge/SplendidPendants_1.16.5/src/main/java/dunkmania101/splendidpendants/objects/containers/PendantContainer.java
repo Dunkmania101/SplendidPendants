@@ -1,6 +1,5 @@
 package dunkmania101.splendidpendants.objects.containers;
 
-import com.mojang.datafixers.util.Pair;
 import dunkmania101.splendidpendants.SplendidPendants;
 import dunkmania101.splendidpendants.util.Tools;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,8 +10,6 @@ import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -44,16 +41,11 @@ public class PendantContainer extends Container {
             }
             SlotItemHandler slot = new SlotItemHandler(this.itemStackHandler, x, valueX, startY) {
                 @Override
-                public int getSlotStackLimit() {
+                public int getMaxStackSize() {
                     return 1;
                 }
-
-                @OnlyIn(Dist.CLIENT)
-                @Override
-                public Pair<ResourceLocation, ResourceLocation> getBackground() {
-                    return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, getSlotBackground());
-                }
             };
+            slot.setBackground(PlayerContainer.BLOCK_ATLAS, getSlotBackground());
             this.addSlot(slot);
         }
 
@@ -70,12 +62,12 @@ public class PendantContainer extends Container {
         for (int x = 0; x < 9; ++x) {
             Slot slot = addSlot(new Slot(playerInventory, x, startX + 1 + (x * slotSizePlus2), startPlayerHotBarY) {
                 @Override
-                public boolean canTakeStack(@Nonnull PlayerEntity playerIn) {
-                    return slotNumber != thisSlot;
+                public boolean mayPickup(@Nonnull PlayerEntity playerIn) {
+                    return index != thisSlot;
                 }
             });
-            if (x == playerInventory.currentItem && ItemStack.areItemStacksEqual(playerInventory.getCurrentItem(), this.stack)) {
-                thisSlot = slot.slotNumber;
+            if (x == playerInventory.selected && ItemStack.isSame(playerInventory.getSelected(), this.stack)) {
+                thisSlot = slot.index;
             }
         }
     }
@@ -86,47 +78,47 @@ public class PendantContainer extends Container {
 
     @Nonnull
     @Override
-    public ItemStack transferStackInSlot(@Nonnull PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(@Nonnull PlayerEntity playerIn, int index) {
         Slot slot = this.getSlot(index);
 
-        if (!slot.canTakeStack(playerIn)) {
-            return slot.getStack();
+        if (!slot.mayPickup(playerIn)) {
+            return slot.getItem();
         }
 
-        if (index == thisSlot || !slot.getHasStack()) {
+        if (index == thisSlot || !slot.hasItem()) {
             return ItemStack.EMPTY;
         }
 
-        ItemStack stack = slot.getStack();
+        ItemStack stack = slot.getItem();
         ItemStack newStack = stack.copy();
 
         int containerSlots = this.itemStackHandler.getSlots();
         if (index < containerSlots) {
-            if (!this.mergeItemStack(stack, containerSlots, this.inventorySlots.size(), true)) {
+            if (!this.moveItemStackTo(stack, containerSlots, this.slots.size(), true)) {
                 return ItemStack.EMPTY;
             }
-            slot.onSlotChanged();
-        } else if (!this.mergeItemStack(stack, 0, containerSlots, false)) {
+            slot.setChanged();
+        } else if (!this.moveItemStackTo(stack, 0, containerSlots, false)) {
             return ItemStack.EMPTY;
         }
 
         if (stack.isEmpty()) {
-            slot.putStack(ItemStack.EMPTY);
+            slot.set(ItemStack.EMPTY);
         } else {
-            slot.onSlotChanged();
+            slot.setChanged();
         }
 
         return slot.onTake(playerIn, newStack);
     }
 
     @Override
-    public void onContainerClosed(@Nonnull PlayerEntity playerIn) {
-        super.onContainerClosed(playerIn);
+    public void removed(@Nonnull PlayerEntity playerIn) {
+        super.removed(playerIn);
         Tools.saveItemStackHandlerOfStack(this.stack, this.itemStackHandler);
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull PlayerEntity playerIn) {
+    public boolean stillValid(@Nonnull PlayerEntity playerIn) {
         return true;
     }
 }

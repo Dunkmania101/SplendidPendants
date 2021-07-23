@@ -13,11 +13,9 @@ import javax.annotation.Nonnull;
 public class BlankBipedModel extends BipedModel<LivingEntity> {
     public BlankBipedModel() {
         super(0F);
-        textureWidth = 32;
-        textureHeight = 32;
     }
 
     @Override
-    public void render(@Nonnull MatrixStack matrixStackIn, @Nonnull IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(@Nonnull MatrixStack matrixStackIn, @Nonnull IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
     }
 }

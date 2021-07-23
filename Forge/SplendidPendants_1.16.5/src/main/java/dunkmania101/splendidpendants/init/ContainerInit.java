@@ -22,7 +22,7 @@ public class ContainerInit {
             .register("dyeable_container", () -> IForgeContainerType.create(DyeableContainer::new));
 
     public static void initScreens() {
-        ScreenManager.registerFactory(LOCKET_CONTAINER.get(), LocketScreen::new);
-        ScreenManager.registerFactory(DYEABLE_CONTAINER.get(), DyeableScreen::new);
+        ScreenManager.register(LOCKET_CONTAINER.get(), LocketScreen::new);
+        ScreenManager.register(DYEABLE_CONTAINER.get(), DyeableScreen::new);
     }
 }

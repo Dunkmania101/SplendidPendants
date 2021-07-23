@@ -14,38 +14,36 @@ import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
 public class PendantScreen extends ContainerScreen<PendantContainer> {
-    private static final ResourceLocation BACKGROUND_TEXTURE = INVENTORY_BACKGROUND;
-
     public PendantScreen(PendantContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
 
-        this.xSize = 176;
-        this.ySize = 125;
-        this.guiLeft = 0;
-        this.guiTop = 0;
+        this.width = 176;
+        this.height = 125;
+        this.leftPos = 0;
+        this.topPos = 0;
     }
 
     @Override
     public void render(@Nonnull MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(stack, mouseX, mouseY);
+        this.renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(@Nonnull MatrixStack matrixStack, int x, int y) {
+    protected void renderLabels(@Nonnull MatrixStack matrixStack, int x, int y) {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(@Nonnull MatrixStack matrixStack, float ignored, int ignored1, int ignored2) {
+    protected void renderBg(@Nonnull MatrixStack matrixStack, float ignored, int ignored1, int ignored2) {
         RenderSystem.blendColor(1.0F, 1.0F, 1.0F, 1.0F);
-        this.getMinecraft().getTextureManager().bindTexture(getBackgroundTexture());
+        this.getMinecraft().getTextureManager().bind(getBackgroundTexture());
         int x = (this.width - this.getXSize()) / 2;
         int y = (this.height - this.getYSize()) / 2;
         blit(matrixStack, x, y, 0, 0, getXSize(), getYSize());
     }
 
     protected ResourceLocation getBackgroundTexture() {
-        return BACKGROUND_TEXTURE;
+        return BACKGROUND_LOCATION;
     }
 }

@@ -14,7 +14,7 @@ public class DyeableContainer extends PendantContainer {
     }
 
     public DyeableContainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer ignored) {
-        this(windowId, playerInventory, playerInventory.getCurrentItem());
+        this(windowId, playerInventory, playerInventory.getSelected());
     }
 
     @Override

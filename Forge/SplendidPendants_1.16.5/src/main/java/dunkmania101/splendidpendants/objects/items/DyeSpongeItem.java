@@ -25,16 +25,16 @@ public class DyeSpongeItem extends Item {
 
     @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull PlayerEntity playerIn, @Nonnull Hand handIn) {
-        if (playerIn.isSneaking()) {
-            ItemStack stack = playerIn.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(@Nonnull World worldIn, @Nonnull PlayerEntity playerIn, @Nonnull Hand handIn) {
+        if (playerIn.isCrouching()) {
+            ItemStack stack = playerIn.getItemInHand(handIn);
             Hand otherHand;
             if (handIn == Hand.MAIN_HAND) {
                 otherHand = Hand.OFF_HAND;
             } else {
                 otherHand = Hand.MAIN_HAND;
             }
-            ItemStack otherStack = playerIn.getHeldItem(otherHand);
+            ItemStack otherStack = playerIn.getItemInHand(otherHand);
             Item item = otherStack.getItem();
             if (item instanceof DyeItem) {
                 addDye(stack, ((DyeItem) item).getDyeColor(), playerIn);
@@ -43,7 +43,7 @@ public class DyeSpongeItem extends Item {
                 }
             }
         }
-        return super.onItemRightClick(worldIn, playerIn, handIn);
+        return super.use(worldIn, playerIn, handIn);
     }
 
     public void addDye(ItemStack stack, DyeColor color, PlayerEntity player) {
@@ -72,7 +72,7 @@ public class DyeSpongeItem extends Item {
         nbt.putInt(CustomValues.colorKey, newColor);
 
         stack.setTag(nbt);
-        player.sendStatusMessage(new TranslationTextComponent("msg.splendidpendants.add_dye_success").mergeStyle(Style.EMPTY.setColor(Color.fromInt(newColor))), true);
+        player.displayClientMessage(new TranslationTextComponent("msg.splendidpendants.add_dye_success").withStyle(Style.EMPTY.withColor(Color.fromRgb(newColor))), true);
     }
 
     public int getColor(ItemStack stack) {
@@ -80,13 +80,13 @@ public class DyeSpongeItem extends Item {
     }
 
     @Override
-    public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslationTextComponent("msg.splendidpendants.dye_sponge_sneak_use_instructions").mergeStyle(TextFormatting.GRAY));
+    public void appendHoverText(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        tooltip.add(new TranslationTextComponent("msg.splendidpendants.dye_sponge_sneak_use_instructions").withStyle(TextFormatting.GRAY));
         int color = getColor(stack);
-        tooltip.add(new TranslationTextComponent("msg.splendidpendants.sponge_color").mergeStyle(Style.EMPTY.setColor(Color.fromInt(color))));
-        tooltip.add(new StringTextComponent("R: " + Tools.getRed(color)).mergeStyle(TextFormatting.RED, TextFormatting.BOLD));
-        tooltip.add(new StringTextComponent("G: " + Tools.getGreen(color)).mergeStyle(TextFormatting.GREEN, TextFormatting.BOLD));
-        tooltip.add(new StringTextComponent("B: " + Tools.getBlue(color)).mergeStyle(TextFormatting.BLUE, TextFormatting.BOLD));
+        tooltip.add(new TranslationTextComponent("msg.splendidpendants.sponge_color").withStyle(Style.EMPTY.withColor(Color.fromRgb(color))));
+        tooltip.add(new StringTextComponent("R: " + Tools.getRed(color)).withStyle(TextFormatting.RED, TextFormatting.BOLD));
+        tooltip.add(new StringTextComponent("G: " + Tools.getGreen(color)).withStyle(TextFormatting.GREEN, TextFormatting.BOLD));
+        tooltip.add(new StringTextComponent("B: " + Tools.getBlue(color)).withStyle(TextFormatting.BLUE, TextFormatting.BOLD));
     }
 }

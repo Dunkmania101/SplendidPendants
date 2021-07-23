@@ -11,7 +11,7 @@ public class ShinyItem extends Item {
     }
 
     @Override
-    public boolean hasEffect(@Nonnull ItemStack stack) {
+    public boolean isFoil(@Nonnull ItemStack stack) {
         return true;
     }
 }

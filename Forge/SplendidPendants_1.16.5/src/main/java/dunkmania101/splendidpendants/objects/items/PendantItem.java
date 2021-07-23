@@ -5,6 +5,7 @@ import dunkmania101.splendidpendants.data.compat.CuriosCompat;
 import dunkmania101.splendidpendants.data.compat.Mods;
 import dunkmania101.splendidpendants.data.models.BlankBipedModel;
 import dunkmania101.splendidpendants.data.models.FakeHolyHaloModel;
+import dunkmania101.splendidpendants.objects.containers.DyeableContainer;
 import dunkmania101.splendidpendants.util.PendantTools;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
@@ -12,6 +13,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.IArmorMaterial;
@@ -82,40 +85,51 @@ public class PendantItem extends ArmorItem {
 
     @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, PlayerEntity playerIn, @Nonnull Hand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(@Nonnull World worldIn, PlayerEntity playerIn, @Nonnull Hand handIn) {
+        ItemStack stack = playerIn.getItemInHand(handIn);
         if (playerIn.isCrouching()) {
             customClickActions(worldIn, playerIn, handIn, stack);
         } else {
             PendantTools.setEnabled(stack, !PendantTools.isEnabled(stack));
         }
-        return ActionResult.resultSuccess(stack);
+        return ActionResult.success(stack);
     }
 
     public void customClickActions(World world, PlayerEntity player, Hand hand, ItemStack stack) {
+        INamedContainerProvider containerProvider = getContainerProvider(world, player, hand, stack);
+        if (containerProvider != null) {
+            player.openMenu(containerProvider);
+        }
+    }
+
+    public INamedContainerProvider getContainerProvider(World world, PlayerEntity playerEntity, Hand hand, ItemStack stack) {
+        return new SimpleNamedContainerProvider(
+                (id, playerInventory, openingPlayer) -> new DyeableContainer(id, playerInventory, stack),
+                stack.getDisplayName()
+        );
     }
 
     @Override
-    public boolean isDamageable() {
+    public boolean canBeDepleted() {
         return false;
     }
 
     @Override
-    public boolean hasEffect(@Nonnull ItemStack stack) {
+    public boolean isFoil(@Nonnull ItemStack stack) {
         return PendantTools.isEnabled(stack);
     }
 
     @Override
-    public void addInformation(@Nonnull ItemStack stack, World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(@Nonnull ItemStack stack, World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
-        tooltip.add(new TranslationTextComponent("msg.splendidpendants.use_instructions").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("msg.splendidpendants.use_instructions").withStyle(TextFormatting.GRAY));
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
-        tooltip.add(new TranslationTextComponent("msg.splendidpendants.is_enabled").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("msg.splendidpendants.is_enabled").withStyle(TextFormatting.GRAY));
         if (PendantTools.isEnabled(stack)) {
-            tooltip.add(new TranslationTextComponent("msg.splendidpendants.enabled").mergeStyle(TextFormatting.GREEN, TextFormatting.BOLD));
+            tooltip.add(new TranslationTextComponent("msg.splendidpendants.enabled").withStyle(TextFormatting.GREEN, TextFormatting.BOLD));
         } else {
-            tooltip.add(new TranslationTextComponent("msg.splendidpendants.disabled").mergeStyle(TextFormatting.RED, TextFormatting.BOLD));
+            tooltip.add(new TranslationTextComponent("msg.splendidpendants.disabled").withStyle(TextFormatting.RED, TextFormatting.BOLD));
         }
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
     }

@@ -61,7 +61,7 @@ public class SplendidPendants {
     public static class TextureStitch {
         @SubscribeEvent
         public static void stitchTextures(TextureStitchEvent.Pre event) {
-            if (event.getMap().getTextureLocation() == PlayerContainer.LOCATION_BLOCKS_TEXTURE) {
+            if (event.getMap().location() == PlayerContainer.BLOCK_ATLAS) {
                 event.addSprite(new ResourceLocation(SplendidPendants.modid, "gui/pendant_slot"));
                 event.addSprite(new ResourceLocation(SplendidPendants.modid, "gui/dye_slot"));
             }
@@ -69,7 +69,7 @@ public class SplendidPendants {
     }
 
     public static class SPLENDID_PENDANTS_GROUP extends ItemGroup {
-        public static final ItemGroup instance = new SPLENDID_PENDANTS_GROUP(ItemGroup.GROUPS.length, "splendidpendants");
+        public static final ItemGroup instance = new SPLENDID_PENDANTS_GROUP(ItemGroup.TABS.length, "splendidpendants");
 
         private SPLENDID_PENDANTS_GROUP(int index, String label) {
             super(index, label);
@@ -77,7 +77,7 @@ public class SplendidPendants {
 
         @Nonnull
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(ItemInit.LOCKET.get());
         }
     }
