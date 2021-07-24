@@ -324,9 +324,7 @@ public class PendantTools {
             if (data.contains(CustomValues.isFlyingKey) && !player.abilities.flying) {
                 player.abilities.flying = true;
                 player.onUpdateAbilities();
-            }
-            if (!data.contains(CustomValues.isFlyingKey) && player.abilities.flying) {
-                data.putString(CustomValues.isFlyingKey, "");
+                data.remove(CustomValues.isFlyingKey);
             }
         }
     }
