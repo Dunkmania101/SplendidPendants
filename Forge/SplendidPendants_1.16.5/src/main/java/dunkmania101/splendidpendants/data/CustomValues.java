@@ -23,6 +23,9 @@ public class CustomValues {
 
     public static final String renderKnighthoodKey = SplendidPendants.modid + "_renderKnighthood";
 
+    public static final String isFlyingKey = SplendidPendants.modid + "_isFlying";
+    public static final String isNoClipKey = SplendidPendants.modid + "_isNoClip";
+
 
     // AttributeModifier UUIDs
     /**

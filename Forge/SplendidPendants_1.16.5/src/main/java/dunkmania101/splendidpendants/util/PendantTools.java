@@ -286,17 +286,26 @@ public class PendantTools {
 
     public static void runHoly(PlayerEntity player) {
         boolean noClipEnabled = CommonConfig.HOLY_ENABLE_NOCLIP.get();
+        CompoundNBT data = player.getPersistentData();
         ModifiableAttributeInstance flySpeed = player.getAttribute(Attributes.FLYING_SPEED);
         if (player.isSprinting()) {
             if (!player.isSpectator() && noClipEnabled) {
                 player.noPhysics = player.abilities.flying;
+                if (player.noPhysics) {
+                    if (!data.contains(CustomValues.isNoClipKey)) {
+                        data.putString(CustomValues.isNoClipKey, "");
+                    }
+                } else {
+                    data.remove(CustomValues.isNoClipKey);
+                }
             }
             double speed = CommonConfig.HOLY_FLIGHT_SPEED.get();
             modifyPlayerAttribute(flySpeed, speed, CustomValues.holyFlightSpeedBoostUUID, CustomValues.holyFlightSpeedBoostName);
         } else {
             resetPlayerAttribute(flySpeed, CustomValues.holyFlightSpeedBoostUUID);
-            if (!player.isSpectator() && noClipEnabled) {
+            if (!player.isSpectator() && data.contains(CustomValues.isNoClipKey) && noClipEnabled) {
                 player.noPhysics = false;
+                data.remove(CustomValues.isNoClipKey);
             }
         }
 
@@ -312,6 +321,13 @@ public class PendantTools {
                 }
                 player.noPhysics = true;
             }
+            if (data.contains(CustomValues.isFlyingKey) && !player.abilities.flying) {
+                player.abilities.flying = true;
+                player.onUpdateAbilities();
+            }
+            if (!data.contains(CustomValues.isFlyingKey) && player.abilities.flying) {
+                data.putString(CustomValues.isFlyingKey, "");
+            }
         }
     }
 
@@ -319,6 +335,8 @@ public class PendantTools {
         boolean noClipEnabled = CommonConfig.HOLY_ENABLE_NOCLIP.get();
         CompoundNBT data = player.getPersistentData();
         data.remove(CustomValues.hasHolyKey);
+        data.remove(CustomValues.isFlyingKey);
+        data.remove(CustomValues.isNoClipKey);
 
         resetPlayerAttribute(player.getAttribute(Attributes.FLYING_SPEED), CustomValues.holyFlightSpeedBoostUUID);
 
