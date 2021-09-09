@@ -20,12 +20,16 @@ public class PendantContainer extends Container {
     protected ItemStackHandler itemStackHandler;
     protected int thisSlot = -1;
 
-    public PendantContainer(ContainerType<?> type, int id, PlayerInventory playerInventory, ItemStack stack, int size, boolean isDyeable) {
+    public PendantContainer(ContainerType<?> type, int id, PlayerInventory playerInventory, ItemStack stack, int size, boolean isDyeable, boolean isAnyItem) {
         super(type, id);
 
         this.stack = stack;
-        this.itemStackHandler = Tools.getItemStackHandlerOfStack(stack, size, isDyeable);
+        this.itemStackHandler = Tools.getItemStackHandlerOfStack(stack, size, isDyeable, isAnyItem);
         drawSlots(playerInventory);
+    }
+
+    public PendantContainer(ContainerType<?> type, int id, PlayerInventory playerInventory, ItemStack stack, int size, boolean isDyeable) {
+        this(type, id, playerInventory, stack, size, isDyeable, false);
     }
 
     protected void drawSlots(PlayerInventory playerInventory) {
@@ -37,7 +41,7 @@ public class PendantContainer extends Container {
         for (int x = 0; x < this.itemStackHandler.getSlots(); ++x) {
             int valueX = startX + (x * slotSizePlus2);
             if (x > 0) {
-                valueX += (8 * x) + 1;
+                valueX += 9 * x;
             }
             SlotItemHandler slot = new SlotItemHandler(this.itemStackHandler, x, valueX, startY) {
                 @Override
@@ -45,7 +49,9 @@ public class PendantContainer extends Container {
                     return 1;
                 }
             };
-            slot.setBackground(PlayerContainer.BLOCK_ATLAS, getSlotBackground());
+            if (getSlotBackground() != null) {
+                slot.setBackground(PlayerContainer.BLOCK_ATLAS, getSlotBackground());
+            }
             this.addSlot(slot);
         }
 
@@ -109,12 +115,6 @@ public class PendantContainer extends Container {
         }
 
         return slot.onTake(playerIn, newStack);
-    }
-
-    @Override
-    public void removed(@Nonnull PlayerEntity playerIn) {
-        super.removed(playerIn);
-        Tools.saveItemStackHandlerOfStack(this.stack, this.itemStackHandler);
     }
 
     @Override

@@ -3,6 +3,8 @@
   "item.splendidpendants.atlantic_pendant": "Atlantic Pendant",
   "item.splendidpendants.knighthood_pendant": "Knighthood Pendant",
   "item.splendidpendants.holy_pendant": "Holy Pendant",
+  "item.splendidpendants.mage_pendant": "Mage Pendant",
+  "item.splendidpendants.holding_pendant": "Holding Pendant",
   "item.splendidpendants.enchanted_lace": "Enchanted Lace",
   "item.splendidpendants.enchanted_necklace": "Enchanted Necklace",
   "item.splendidpendants.enchanted_gemstone": "Enchanted Gemstone",
@@ -13,6 +15,9 @@
   "item.splendidpendants.atlantic_charm": "Atlantic Charm",
   "item.splendidpendants.knighthood_charm": "Knighthood Charm",
   "item.splendidpendants.holy_charm": "Holy Charm",
+  "item.splendidpendants.mage_charm": "Mage Charm",
+  "item.splendidpendants.leather_hand": "Leather Hand",
+  "item.splendidpendants.holding_charm": "Holding Charm",
   "item.splendidpendants.dye_sponge": "Dye Sponge",
   "curios.identifier.pendant": "Pendant",
   "itemGroup.splendidpendants": "Splendid Pendants",
@@ -36,5 +41,9 @@
   "advancements.splendidpendants.knighthood_pendant.title": "The K is silent...",
   "advancements.splendidpendants.knighthood_pendant.description": "Dear creators of the English language... (Obtain the Knighthood Pendant)",
   "advancements.splendidpendants.holy_pendant.title": "Holy Cow!",
-  "advancements.splendidpendants.holy_pendant.description": "Congratulations, you have creative flight now. (Obtain the Holy Pendant)"
+  "advancements.splendidpendants.holy_pendant.description": "Congratulations, you have creative flight now. (Obtain the Holy Pendant)",
+  "advancements.splendidpendants.mage_pendant.title": "Hocus Pocus!",
+  "advancements.splendidpendants.mage_pendant.description": "It's just like magic!. (Obtain the Mage Pendant)",
+  "advancements.splendidpendants.holding_pendant.title": "Give me a hand!",
+  "advancements.splendidpendants.holding_pendant.description": "How about six? (Obtain the Holding Pendant)"
 }

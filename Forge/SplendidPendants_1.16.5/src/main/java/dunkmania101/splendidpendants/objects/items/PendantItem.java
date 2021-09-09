@@ -1,6 +1,6 @@
 package dunkmania101.splendidpendants.objects.items;
 
-import dunkmania101.splendidpendants.SplendidPendants;
+import dunkmania101.splendidpendants.data.CustomValues;
 import dunkmania101.splendidpendants.data.compat.CuriosCompat;
 import dunkmania101.splendidpendants.data.compat.Mods;
 import dunkmania101.splendidpendants.data.models.BlankBipedModel;
@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -54,13 +55,13 @@ public class PendantItem extends ArmorItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
-        if (PendantTools.isEnabled(itemStack)) {
-            if (entityLiving instanceof PlayerEntity) {
+        if (entityLiving instanceof PlayerEntity || (entityLiving instanceof ArmorStandEntity)) {
+            if (PendantTools.isEnabled(itemStack)) {
                 return (A) getCustomModel(entityLiving, itemStack, armorSlot);
             }
-            return (A) new FakeHolyHaloModel(DyeColor.RED);
+            return (A) new BlankBipedModel();
         }
-        return (A) new BlankBipedModel();
+        return (A) new FakeHolyHaloModel(DyeColor.RED);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -70,17 +71,17 @@ public class PendantItem extends ArmorItem {
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-        if (PendantTools.isEnabled(stack)) {
-            if (entity instanceof PlayerEntity) {
+        if (entity instanceof PlayerEntity) {
+            if (PendantTools.isEnabled(stack)) {
                 return getCustomTexture(stack, entity, slot, type);
             }
-            return SplendidPendants.modid + ":textures/blank_white.png";
+            return CustomValues.blankTextureLocation;
         }
-        return SplendidPendants.modid + ":textures/blank.png";
+        return CustomValues.whiteTextureLocation;
     }
 
     public String getCustomTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-        return SplendidPendants.modid + ":textures/blank.png";
+        return CustomValues.blankTextureLocation;
     }
 
     @Nonnull
@@ -119,7 +120,12 @@ public class PendantItem extends ArmorItem {
         return PendantTools.isEnabled(stack);
     }
 
+    public boolean isDyeable() {
+        return true;
+    }
+
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void appendHoverText(@Nonnull ItemStack stack, World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
@@ -132,6 +138,10 @@ public class PendantItem extends ArmorItem {
             tooltip.add(new TranslationTextComponent("msg.splendidpendants.disabled").withStyle(TextFormatting.RED, TextFormatting.BOLD));
         }
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
+        if (isDyeable()) {
+            tooltip.add(new TranslationTextComponent("msg.splendidpendants.dyeable_sneak_use_instructions").withStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("msg.splendidpendants.divider"));
+        }
     }
 
     @Override

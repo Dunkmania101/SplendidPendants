@@ -24,11 +24,19 @@ public class PlayerEvents {
         }
     }
 
+//    @SubscribeEvent
+//    public static void onPlayerAttack(AttackEntityEvent event) {
+//        Entity target = event.getTarget();
+//        if (target instanceof LivingEntity) {
+//            PendantTools.runPlayerAttack(event.getPlayer(), (LivingEntity) target);
+//        }
+//    }
+
     @SubscribeEvent
     public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         PlayerEntity player = event.getPlayer();
         CompoundNBT data = player.getPersistentData();
-        if (!player.isCreative() && !player.isSpectator() && PendantTools.inventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
+        if (!player.isCreative() && !player.isSpectator() && PendantTools.anyInventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
             if (!data.contains(CustomValues.isFlyingKey) && player.abilities.flying) {
                 data.putString(CustomValues.isFlyingKey, "");
             } else if (data.contains(CustomValues.isFlyingKey)) {
@@ -44,6 +52,6 @@ public class PlayerEvents {
 
     @SubscribeEvent
     public static void onCriticalHit(CriticalHitEvent event) {
-        PendantTools.runKnighthoodCritical(event);
+        PendantTools.runCriticalAttack(event);
     }
 }

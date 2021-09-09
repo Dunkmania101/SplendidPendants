@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,9 +44,11 @@ public class LocketItem extends PendantItem {
             if (!checkStack.isEmpty()) {
                 Item checkItem = checkStack.getItem();
                 if (checkItem instanceof PendantItem) {
-                    BipedModel<LivingEntity> subCustomModel = ((PendantItem) checkItem).getCustomModel(entityLiving, checkStack, armorSlot);
+                    BipedModel<LivingEntity> subCustomModel = checkItem.getArmorModel(entityLiving, checkStack, armorSlot, null);
                     if (!(subCustomModel instanceof BlankBipedModel)) {
-                        Tools.followBodyRotations(entityLiving, subCustomModel);
+//                        if (!(subCustomModel instanceof MultiBipedModel)) {
+                            Tools.followBodyRotations(entityLiving, subCustomModel);
+//                        }
                         customModel.addChild(subCustomModel);
                     }
                 }
@@ -74,6 +77,12 @@ public class LocketItem extends PendantItem {
     }
 
     @Override
+    public boolean isDyeable() {
+        return false;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
     public void appendHoverText(@Nonnull ItemStack stack, World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         tooltip.add(new TranslationTextComponent("msg.splendidpendants.locket_sneak_use_instructions").withStyle(TextFormatting.GRAY));
@@ -89,24 +98,36 @@ public class LocketItem extends PendantItem {
                 } else {
                     storedStackEnabled = (TextComponent) new TranslationTextComponent("msg.splendidpendants.disabled").withStyle(TextFormatting.RED, TextFormatting.BOLD);
                 }
-                Style pendantColorStyle;
-                Integer gray = TextFormatting.GRAY.getColor();
-                if (gray == null) {
-                    gray = 0;
+                Integer dyeColorInt = TextFormatting.GRAY.getColor();
+                if (dyeColorInt == null) {
+                    dyeColorInt = 0;
                 }
-                pendantColorStyle = Style.EMPTY.withColor(Color.fromRgb(gray));
                 ItemStackHandler dyeStackHandler = Tools.getItemStackHandlerOfStack(storedSack, CustomValues.dyeableSize, true);
+                boolean colorDyed = false;
                 if (dyeStackHandler.getSlots() > 0) {
                     ItemStack dyeStack = dyeStackHandler.getStackInSlot(0);
                     if (!dyeStack.isEmpty()) {
                         Item dyeItem = dyeStack.getItem();
                         if (dyeItem instanceof DyeItem) {
-                            pendantColorStyle = Style.EMPTY.withColor(Color.fromRgb(((DyeItem) dyeItem).getDyeColor().getTextColor()));
+                            dyeColorInt = ((DyeItem) dyeItem).getDyeColor().getTextColor();
+                            colorDyed = true;
                         } else if (dyeItem instanceof DyeSpongeItem) {
-                            pendantColorStyle = Style.EMPTY.withColor(Color.fromRgb(((DyeSpongeItem) dyeItem).getColor(dyeStack)));
+                            dyeColorInt = ((DyeSpongeItem) dyeItem).getColor(dyeStack);
+                            colorDyed = true;
                         }
                     }
                 }
+                if (!colorDyed) {
+                    Item storedItem = storedSack.getItem();
+                    if (storedItem instanceof AtlanticPendantItem) {
+                        dyeColorInt = DyeColor.LIME.getTextColor();
+                    } else if (storedItem instanceof KnighthoodPendantItem) {
+                        dyeColorInt = DyeColor.GRAY.getTextColor();
+                    } else if (storedItem instanceof HolyPendantItem) {
+                        dyeColorInt = DyeColor.YELLOW.getTextColor();
+                    }
+                }
+                Style pendantColorStyle = Style.EMPTY.withColor(Color.fromRgb(dyeColorInt));
                 tooltip.add(new StringTextComponent(storedSack.getDisplayName().getString() + " - ").withStyle(pendantColorStyle).withStyle(TextFormatting.BOLD).append(storedStackEnabled));
             }
         }

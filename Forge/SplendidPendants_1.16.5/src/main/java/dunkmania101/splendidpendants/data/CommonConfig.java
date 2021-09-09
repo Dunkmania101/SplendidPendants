@@ -12,8 +12,8 @@ public class CommonConfig {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static ForgeConfigSpec.BooleanValue ENABLE_CURIOS;
     public static ForgeConfigSpec.DoubleValue ATLANTIC_SWIM_SPEED;
-    public static ForgeConfigSpec.IntValue ATLANTIC_VISION_DURATION;
-    public static ForgeConfigSpec.IntValue ATLANTIC_VISION_AMPLIFIER;
+    public static ForgeConfigSpec.IntValue ATLANTIC_CONDUIT_POWER_DURATION;
+    public static ForgeConfigSpec.IntValue ATLANTIC_CONDUIT_POWER_AMPLIFIER;
     public static ForgeConfigSpec.IntValue RENDER_KNIGHTHOOD_TICKS;
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_EXTRA_HEALTH;
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_ARMOR;
@@ -24,6 +24,7 @@ public class CommonConfig {
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_CRITICAL_DAMAGE;
     public static ForgeConfigSpec.DoubleValue HOLY_FLIGHT_SPEED;
     public static ForgeConfigSpec.BooleanValue HOLY_ENABLE_NOCLIP;
+    public static ForgeConfigSpec.DoubleValue HOLDING_REACH_DISTANCE;
 
     static {
         BUILDER.push("Splendid Pendants - Common Config: ");
@@ -42,12 +43,12 @@ public class CommonConfig {
         BUILDER.push("Atlantic Pendant Stats: ");
         ATLANTIC_SWIM_SPEED = BUILDER.comment("Boosted swim speed of the atlantic pendant.")
                 .defineInRange("atlantic_swim_speed", 3, 0, Double.MAX_VALUE);
-        ATLANTIC_VISION_DURATION = BUILDER
-                .comment("Duration for the night vision effect of the atlantic pendant (in ticks, there are 20 in a second) (0 to disable).")
-                .defineInRange("atlantic_vision_duration", 220, 0, Integer.MAX_VALUE);
-        ATLANTIC_VISION_AMPLIFIER = BUILDER
-                .comment("Amplifier for the night vision effect of the atlantic pendant (0 to disable).")
-                .defineInRange("atlantic_vision_amplifier", 2, 0, Integer.MAX_VALUE);
+        ATLANTIC_CONDUIT_POWER_DURATION = BUILDER
+                .comment("Duration for the conduit power effect of the atlantic pendant (in ticks, there are 20 in a second) (0 to disable).")
+                .defineInRange("atlantic_conduit_power_duration", 220, 0, Integer.MAX_VALUE);
+        ATLANTIC_CONDUIT_POWER_AMPLIFIER = BUILDER
+                .comment("Amplifier for the conduit power effect of the atlantic pendant (0 to disable).")
+                .defineInRange("atlantic_conduit_power_amplifier", 2, 0, Integer.MAX_VALUE);
 
         BUILDER.pop();
 
@@ -78,6 +79,12 @@ public class CommonConfig {
                 .comment("Speed boost value for flight with the holy pendant (while sprinting) (0 to disable).")
                 .defineInRange("holy_flight_speed", 10, 0, Double.MAX_VALUE);
         HOLY_ENABLE_NOCLIP = BUILDER.comment("Whether to enable noclip during flight while sprinting.").define("holy_enable_noclip", true);
+        BUILDER.pop();
+
+        BUILDER.push("Holding Pendant Stats: ");
+        HOLDING_REACH_DISTANCE = BUILDER
+                .comment("Reach distance buff value with the holding pendant (0 to disable).")
+                .defineInRange("holding_reach_distance_speed", 7, 0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("MISC: ");

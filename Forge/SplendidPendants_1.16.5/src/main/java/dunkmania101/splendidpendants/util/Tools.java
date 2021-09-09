@@ -18,8 +18,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+
 public class Tools {
-    public static ItemStackHandler getItemStackHandlerOfStack(ItemStack stack, int size, boolean isDyeable) {
+    public static ItemStackHandler getItemStackHandlerOfStack(ItemStack stack, int size, boolean isDyeable, boolean isAnyItem) {
+        String key;
+        if (isAnyItem) {
+            key = CustomValues.heldItemStacksKey;
+        } else {
+            key = CustomValues.storedItemStacksKey;
+        }
         ItemStackHandler stackHandler = new ItemStackHandler(size) {
             @Override
             public int getSlotLimit(int slot) {
@@ -27,34 +35,50 @@ public class Tools {
             }
 
             @Override
-            public boolean isItemValid(int slot, ItemStack questionStack) {
-                Item checkItem = questionStack.getItem();
-                if (!(checkItem instanceof DyeItem || checkItem instanceof DyeSpongeItem) && isDyeable) {
-                    return false;
-                }
-                if ((!(checkItem instanceof PendantItem) && !isDyeable) || checkItem instanceof LocketItem) {
-                    return false;
-                }
-                for (ItemStack checkStack : this.stacks) {
-                    if (checkStack.getItem() == checkItem) {
+            protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
+                saveItemStackHandlerToStack(stack, this, key);
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack questionStack) {
+                if (!isAnyItem) {
+                    Item checkItem = questionStack.getItem();
+                    if (!(checkItem instanceof DyeItem || checkItem instanceof DyeSpongeItem) && isDyeable) {
                         return false;
+                    }
+                    if ((!(checkItem instanceof PendantItem) && !isDyeable) || checkItem instanceof LocketItem) {
+                        return false;
+                    }
+                    for (ItemStack checkStack : this.stacks) {
+                        if (checkStack.getItem() == checkItem) {
+                            return false;
+                        }
                     }
                 }
                 return super.isItemValid(slot, stack);
             }
         };
         if (stack.getItem() instanceof PendantItem) {
-            stackHandler.deserializeNBT(stack.getOrCreateTag().getCompound(CustomValues.storedItemStacksKey));
+            stackHandler.deserializeNBT(stack.getOrCreateTag().getCompound(key));
         }
         return stackHandler;
     }
 
-    public static void saveItemStackHandlerOfStack(ItemStack stack, ItemStackHandler stackHandler) {
+    public static ItemStackHandler getItemStackHandlerOfStack(ItemStack stack, int size, boolean isDyeable) {
+        return getItemStackHandlerOfStack(stack, size, isDyeable, false);
+    }
+
+    public static void saveItemStackHandlerToStack(ItemStack stack, ItemStackHandler stackHandler, String key) {
         CompoundNBT stacksNBT = stackHandler.serializeNBT();
         CompoundNBT stackNBT = stack.getOrCreateTag();
-        if (stackNBT.getCompound(CustomValues.storedItemStacksKey) != stacksNBT) {
-            stackNBT.put(CustomValues.storedItemStacksKey, stacksNBT);
+        if (stackNBT.getCompound(key) != stacksNBT) {
+            stackNBT.put(key, stacksNBT);
         }
+    }
+
+    public static void saveItemStackHandlerToStack(ItemStack stack, ItemStackHandler stackHandler) {
+        saveItemStackHandlerToStack(stack, stackHandler, CustomValues.storedItemStacksKey);
     }
 
 //    public static String translateString(String key) {

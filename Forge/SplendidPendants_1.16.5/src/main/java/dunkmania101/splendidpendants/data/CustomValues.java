@@ -5,19 +5,22 @@ import dunkmania101.splendidpendants.SplendidPendants;
 import java.util.UUID;
 
 public class CustomValues {
-    public static final int locketSize = 3;
+    public static final int locketSize = 4;
     public static final int dyeableSize = 1;
+    public static final int holdingSize = 6;
 
     public static final String pendantCuriosSlotName = "pendant";
 
     //NBT keys
     public static final String storedItemStacksKey = SplendidPendants.modid + "_storedItemStacks";
+    public static final String heldItemStacksKey = SplendidPendants.modid + "_heldItemStacks";
     public static final String enabledKey = SplendidPendants.modid + "_enabled";
 
     public static final String hasAtlanticKey = SplendidPendants.modid + "_hasAtlantic";
     public static final String hasKnighthoodKey = SplendidPendants.modid + "_hasKnighthood";
     public static final String hasHolyKey = SplendidPendants.modid + "_hasHoly";
-//    public static final String hasInstructalbeConjuringKey = SplendidPendants.modid + "_hasInstructalbeConjuring";
+    public static final String hasHoldingKey = SplendidPendants.modid + "_hasHolding";
+//    public static final String hasMageKey = SplendidPendants.modid + "_hasMage";
 
     public static final String colorKey = SplendidPendants.modid + "_color";
 
@@ -26,6 +29,10 @@ public class CustomValues {
     public static final String isFlyingKey = SplendidPendants.modid + "_isFlying";
     public static final String isNoClipKey = SplendidPendants.modid + "_isNoClip";
 
+    // Resource Locations
+    public static final String blankTextureLocation = SplendidPendants.modid + ":textures/blank.png";
+    public static final String whiteTextureLocation = SplendidPendants.modid + ":textures/blank_white.png";
+    public static final String grayTextureLocation = SplendidPendants.modid + ":textures/blank_gray.png";
 
     // AttributeModifier UUIDs
     /**
@@ -44,6 +51,8 @@ public class CustomValues {
 
     public static final UUID holyFlightSpeedBoostUUID = UUID.fromString("2a85cec2-8ce6-471f-b091-572fa13d9fc1");
 
+    public static final UUID holdingReachBuffUUID = UUID.fromString("11d832df-44f8-48e1-aff0-fd95b20d94c1");
+
     // AttributeModifier names
     public static final String atlanticSpeedName = SplendidPendants.modid + "_atlanticSpeed";
 
@@ -55,4 +64,6 @@ public class CustomValues {
     public static final String knighthoodDamageBoostName = SplendidPendants.modid + "_knighthoodDamageBoost";
 
     public static final String holyFlightSpeedBoostName = SplendidPendants.modid + "_holyFlightSpeedBoost";
+
+    public static final String holdingReachBuffName = SplendidPendants.modid + "_holdingReachBuff";
 }

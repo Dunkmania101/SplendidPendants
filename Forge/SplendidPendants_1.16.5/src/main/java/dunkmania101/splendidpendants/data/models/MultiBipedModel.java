@@ -1,14 +1,16 @@
 package dunkmania101.splendidpendants.data.models;
 
+import java.util.ArrayList;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
 
 @OnlyIn(Dist.CLIENT)
 public class MultiBipedModel extends BipedModel<LivingEntity> {
@@ -25,7 +27,7 @@ public class MultiBipedModel extends BipedModel<LivingEntity> {
     @Override
     public void setupAnim(@Nonnull LivingEntity entity, float a, float b, float c, float d, float e) {
         super.setupAnim(entity, a, b, c, d, e);
-        for (BipedModel<LivingEntity> child : children) {
+        for (BipedModel<LivingEntity> child : this.children) {
             child.setupAnim(entity, a, b, c, d, e);
         }
     }
@@ -33,7 +35,7 @@ public class MultiBipedModel extends BipedModel<LivingEntity> {
     @Override
     public void prepareMobModel(@Nonnull LivingEntity entity, float a, float b, float c) {
         super.prepareMobModel(entity, a, b, c);
-        for (BipedModel<LivingEntity> child : children) {
+        for (BipedModel<LivingEntity> child : this.children) {
             child.prepareMobModel(entity, a, b, c);
         }
     }

@@ -1,0 +1,31 @@
+// package dunkmania101.splendidpendants.data.models;
+//
+// import dunkmania101.splendidpendants.data.CustomValues;
+// import dunkmania101.splendidpendants.objects.items.HoldingPendantItem;
+// import dunkmania101.splendidpendants.util.Tools;
+// import net.minecraft.item.ItemStack;
+// import net.minecraftforge.api.distmarker.Dist;
+// import net.minecraftforge.api.distmarker.OnlyIn;
+// import net.minecraftforge.items.ItemStackHandler;
+//
+// @OnlyIn(Dist.CLIENT)
+// public class HoldingHandsModel extends MultiBipedModel {
+//     public HoldingHandsModel(ItemStack stack) {
+//         super();
+//
+//         if (stack.getItem() instanceof HoldingPendantItem) {
+//             ItemStackHandler stackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.holdingSize, false, true);
+//             int index = 1;
+//             for (int i = 0; i < stackHandler.getSlots(); i++) {
+//                 ItemStack checkStack = stackHandler.getStackInSlot(i);
+//                 if (!checkStack.isEmpty()) {
+//                     this.addChild(new HoldingHandModel(stack, index));
+//                     index++;
+//                 }
+//             }
+//         }
+//
+//         this.texWidth = 32;
+//         this.texHeight = 32;
+//     }
+// }

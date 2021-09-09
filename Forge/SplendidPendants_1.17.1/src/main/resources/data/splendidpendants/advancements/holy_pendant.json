@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "splendidpendants:holy_pendant"
+    },
+    "title": {
+      "translate": "advancements.splendidpendants.holy_pendant.title"
+    },
+    "description": {
+      "translate": "advancements.splendidpendants.holy_pendant.description"
+    }
+  },
+  "parent": "splendidpendants:root",
+  "criteria": {
+    "holy_pendant": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "splendidpendants:holy_pendant"
+          }
+        ]
+      }
+    }
+  }
+}

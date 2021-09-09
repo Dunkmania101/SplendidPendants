@@ -36,9 +36,9 @@ import javax.annotation.Nonnull;
 
 public class CuriosCompat {
     public static void enqueueImc() {
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(CustomValues.pendantCuriosSlotName)
-                .icon(new ResourceLocation(SplendidPendants.modid, "gui/pendant_slot"))
-                .build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
+                () -> new SlotTypeMessage.Builder(CustomValues.pendantCuriosSlotName)
+                        .icon(new ResourceLocation(SplendidPendants.modid, "gui/pendant_slot")).build());
     }
 
     public static ICapabilityProvider initPendantCapabilities(ItemStack stack) {
@@ -58,16 +58,20 @@ public class CuriosCompat {
                 if (identifier.equals(CustomValues.pendantCuriosSlotName)) {
                     if (entityLivingBase instanceof PlayerEntity) {
                         Item pendantItem = stack.getItem();
-                        if (CuriosApi.getCuriosHelper().findEquippedCurio(ItemInit.ATLANTIC_PENDANT.get(), entityLivingBase).isPresent()) {
+                        if (CuriosApi.getCuriosHelper()
+                                .findEquippedCurio(ItemInit.ATLANTIC_PENDANT.get(), entityLivingBase).isPresent()) {
                             return false;
                         }
-                        if (CuriosApi.getCuriosHelper().findEquippedCurio(ItemInit.KNIGHTHOOD_PENDANT.get(), entityLivingBase).isPresent()) {
+                        if (CuriosApi.getCuriosHelper()
+                                .findEquippedCurio(ItemInit.KNIGHTHOOD_PENDANT.get(), entityLivingBase).isPresent()) {
                             return false;
                         }
-                        if (CuriosApi.getCuriosHelper().findEquippedCurio(ItemInit.HOLY_PENDANT.get(), entityLivingBase).isPresent()) {
+                        if (CuriosApi.getCuriosHelper().findEquippedCurio(ItemInit.HOLY_PENDANT.get(), entityLivingBase)
+                                .isPresent()) {
                             return false;
                         }
-                        if (CuriosApi.getCuriosHelper().findEquippedCurio(ItemInit.LOCKET.get(), entityLivingBase).isPresent()) {
+                        if (CuriosApi.getCuriosHelper().findEquippedCurio(ItemInit.LOCKET.get(), entityLivingBase)
+                                .isPresent()) {
                             return false;
                         }
                         return pendantItem instanceof PendantItem;
@@ -91,14 +95,18 @@ public class CuriosCompat {
                             chestItem = chestStack.getItem();
                         }
                         if (chestItem != pendantItem || (!chestEnabled && !PendantTools.isEnabled(chestStack))) {
-                            BipedModel<LivingEntity> model = pendantItem.getArmorModel(livingEntity, stack, EquipmentSlotType.CHEST, new BlankBipedModel());
-                            String texture = pendantItem.getArmorTexture(stack, livingEntity, EquipmentSlotType.CHEST, null);
+                            BipedModel<LivingEntity> model = pendantItem.getArmorModel(livingEntity, stack,
+                                    EquipmentSlotType.CHEST, new BlankBipedModel());
+                            String texture = pendantItem.getArmorTexture(stack, livingEntity, EquipmentSlotType.CHEST,
+                                    null);
                             if (model != null && texture != null) {
                                 model.setupAnim(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
                                 model.prepareMobModel(player, limbSwing, limbSwingAmount, partialTicks);
                                 RenderHelper.followBodyRotations(player, model);
-                                IVertexBuilder vertexBuilder = ItemRenderer.getFoilBufferDirect(renderTypeBuffer, model.renderType(new ResourceLocation(texture)), false, stack.hasFoil());
-                                model.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+                                IVertexBuilder vertexBuilder = ItemRenderer.getFoilBufferDirect(renderTypeBuffer,
+                                        model.renderType(new ResourceLocation(texture)), false, stack.hasFoil());
+                                model.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1F,
+                                        1F, 1F, 1F);
                             }
                         }
                     }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "splendidpendants:reinforced_plate"
+    },
+    "b": {
+      "tag": "forge:nether_stars"
+    }
+  },
+  "result": {
+    "item": "splendidpendants:locket_casing"
+  }
+}

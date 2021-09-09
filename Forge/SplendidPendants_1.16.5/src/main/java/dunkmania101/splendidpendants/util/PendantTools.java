@@ -1,10 +1,21 @@
 package dunkmania101.splendidpendants.util;
 
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+
 import dunkmania101.splendidpendants.data.CommonConfig;
 import dunkmania101.splendidpendants.data.CustomValues;
 import dunkmania101.splendidpendants.data.compat.Mods;
 import dunkmania101.splendidpendants.init.ItemInit;
-import dunkmania101.splendidpendants.objects.items.*;
+import dunkmania101.splendidpendants.objects.items.AtlanticPendantItem;
+import dunkmania101.splendidpendants.objects.items.HoldingPendantItem;
+import dunkmania101.splendidpendants.objects.items.HolyPendantItem;
+import dunkmania101.splendidpendants.objects.items.KnighthoodPendantItem;
+import dunkmania101.splendidpendants.objects.items.LocketItem;
+import dunkmania101.splendidpendants.objects.items.PendantItem;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.Entity;
@@ -23,17 +34,12 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.items.ItemStackHandler;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import top.theillusivec4.curios.api.CuriosApi;
-
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.UUID;
 
 public class PendantTools {
     public static void runPendants(PlayerEntity player) {
         CompoundNBT data = player.getPersistentData();
-        if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
+        if (anyInventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
             if (!data.contains(CustomValues.hasAtlanticKey)) {
                 data.putString(CustomValues.hasAtlanticKey, "");
             }
@@ -41,7 +47,7 @@ public class PendantTools {
         } else if (data.contains(CustomValues.hasAtlanticKey)) {
             resetAtlantic(player);
         }
-        if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
+        if (anyInventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
             if (!data.contains(CustomValues.hasKnighthoodKey)) {
                 data.putString(CustomValues.hasKnighthoodKey, "");
             }
@@ -49,7 +55,7 @@ public class PendantTools {
         } else if (data.contains(CustomValues.hasKnighthoodKey)) {
             resetKnighthood(player);
         }
-        if (inventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
+        if (anyInventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
             if (!data.contains(CustomValues.hasHolyKey)) {
                 data.putString(CustomValues.hasHolyKey, "");
             }
@@ -57,20 +63,73 @@ public class PendantTools {
         } else if (data.contains(CustomValues.hasHolyKey)) {
             resetHoly(player);
         }
+        if (anyInventoryHasEnabledPendant(player, ItemInit.HOLDING_PENDANT.get())) {
+            if (!data.contains(CustomValues.hasHoldingKey)) {
+                data.putString(CustomValues.hasHoldingKey, "");
+            }
+            runHolding(player);
+        } else if (data.contains(CustomValues.hasHoldingKey)) {
+            resetHolding(player);
+        }
+        // if (anyInventoryHasEnabledPendant(player, ItemInit.MAGE_PENDANT.get())) {
+        //     if (!data.contains(CustomValues.hasMageKey)) {
+        //         data.putString(CustomValues.hasMageKey, "");
+        //     }
+        //     runMage(player);
+        // } else if (data.contains(CustomValues.hasMageKey)) {
+        //     resetMage(player);
+        // }
     }
 
-    public static boolean inventoryHasEnabledPendant(PlayerEntity player, PendantItem pendant) {
-        ArrayList<ItemStack> checkStacks = new ArrayList<>();
-        checkStacks.add(player.inventory.armor.get(EquipmentSlotType.CHEST.getIndex()));
+    public static ArrayList<ItemStack> getAllEnabledPendantsInInventory(ArrayList<ItemStack> inventory, PendantItem pendant) {
+        ArrayList<ItemStack> enabledPendants = new ArrayList<>();
+        for (ItemStack checkStack : inventory) {
+            Item checkItem = checkStack.getItem();
+            if (checkItem instanceof LocketItem) {
+                if (isEnabled(checkStack)) {
+                    ItemStackHandler itemHandler = Tools.getItemStackHandlerOfStack(checkStack, CustomValues.locketSize, false);
+                    for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
+                        ItemStack pendantStack = itemHandler.getStackInSlot(slot);
+                        if (pendantStack.getItem() instanceof PendantItem) {
+                            PendantItem pendantItem = (PendantItem) pendantStack.getItem();
+                            if (pendantItem == pendant) {
+                                if (isEnabled(pendantStack)) {
+                                    enabledPendants.add(pendantStack);
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (checkItem instanceof PendantItem) {
+                if (checkItem == pendant) {
+                    if (isEnabled(checkStack)) {
+                        enabledPendants.add(checkStack);
+                    }
+                }
+            }
+        }
+        return enabledPendants;
+    }
+
+    public static ArrayList<ItemStack> getAllEnabledPendantsOnPlayer(PlayerEntity player, PendantItem pendant) {
+        ArrayList<ItemStack> pendants = new ArrayList<>();
         if (Mods.CURIOS.isLoaded()) {
             Optional<ImmutableTriple<String, Integer, ItemStack>> optionalStack = CuriosApi.getCuriosHelper().findEquippedCurio(pendant, player);
             if (optionalStack.isPresent()) {
-                checkStacks.add(optionalStack.get().right);
+                pendants.add(optionalStack.get().right);
             } else {
                 optionalStack = CuriosApi.getCuriosHelper().findEquippedCurio(ItemInit.LOCKET.get(), player);
-                optionalStack.ifPresent(stackTriple -> checkStacks.add(stackTriple.right));
+                optionalStack.ifPresent(stackTriple -> pendants.add(stackTriple.right));
             }
         }
+        ItemStack armorStack = player.inventory.armor.get(EquipmentSlotType.CHEST.getIndex());
+        if (armorStack.getItem() == pendant) {
+            pendants.add(armorStack);
+        }
+        return getAllEnabledPendantsInInventory(pendants, pendant);
+    }
+
+    public static boolean inventoryHasEnabledPendant(ArrayList<ItemStack> checkStacks, PendantItem pendant) {
         for (ItemStack checkStack : checkStacks) {
             Item checkItem = checkStack.getItem();
             if (checkItem instanceof LocketItem) {
@@ -99,6 +158,31 @@ public class PendantTools {
         return false;
     }
 
+    public static boolean armorInventoryHasEnabledPendant(PlayerEntity player, PendantItem pendant) {
+        ArrayList<ItemStack> checkStacks = new ArrayList<>();
+        checkStacks.add(player.inventory.armor.get(EquipmentSlotType.CHEST.getIndex()));
+        return inventoryHasEnabledPendant(checkStacks, pendant);
+    }
+
+    public static boolean curiosInventoryHasEnabledPendant(PlayerEntity player, PendantItem pendant) {
+        if (Mods.CURIOS.isLoaded()) {
+            ArrayList<ItemStack> checkStacks = new ArrayList<>();
+            Optional<ImmutableTriple<String, Integer, ItemStack>> optionalStack = CuriosApi.getCuriosHelper().findEquippedCurio(pendant, player);
+            if (optionalStack.isPresent()) {
+                checkStacks.add(optionalStack.get().right);
+            } else {
+                optionalStack = CuriosApi.getCuriosHelper().findEquippedCurio(ItemInit.LOCKET.get(), player);
+                optionalStack.ifPresent(stackTriple -> checkStacks.add(stackTriple.right));
+            }
+            return inventoryHasEnabledPendant(checkStacks, pendant);
+        }
+        return false;
+    }
+
+    public static boolean anyInventoryHasEnabledPendant(PlayerEntity player, PendantItem pendant) {
+        return armorInventoryHasEnabledPendant(player, pendant) || curiosInventoryHasEnabledPendant(player, pendant);
+    }
+
     public static boolean isEnabled(ItemStack stack) {
         if (stack != null) {
             CompoundNBT nbt = stack.getTag();
@@ -123,7 +207,8 @@ public class PendantTools {
             Item checkItem = checkStack.getItem();
             Item storedItem = storedStack.getItem();
             if (
-                    (checkItem instanceof AtlanticPendantItem && entity.isInWater())
+                (checkItem instanceof HoldingPendantItem)
+                    || (!(storedItem instanceof HoldingPendantItem) && checkItem instanceof AtlanticPendantItem && entity.isInWater())
                             || ((checkItem instanceof KnighthoodPendantItem && entity.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0)
                             && !(storedItem instanceof AtlanticPendantItem && entity.isInWater()))
                             || ((checkItem instanceof HolyPendantItem && entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.flying)
@@ -168,7 +253,7 @@ public class PendantTools {
         if (player.isInWater()) {
             CompoundNBT data = player.getPersistentData();
             if (data.contains(CustomValues.hasAtlanticKey)) {
-                if (inventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
+                if (anyInventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
                     PlayerModel<AbstractClientPlayerEntity> model = event.getRenderer().getModel();
                     model.rightLeg.visible = false;
                     model.rightPants.visible = false;
@@ -177,6 +262,32 @@ public class PendantTools {
             }
         }
     }
+
+    public static void runCriticalAttack(CriticalHitEvent event) {
+        if (event.isVanillaCritical()) {
+            PlayerEntity player = event.getPlayer();
+            CompoundNBT data = player.getPersistentData();
+            if (data.contains(CustomValues.hasKnighthoodKey)) {
+                if (anyInventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
+                    double damage = CommonConfig.KNIGHTHOOD_CRITICAL_DAMAGE.get();
+                    event.setDamageModifier((float) (event.getDamageModifier() + damage));
+
+                    player.playSound(SoundEvents.ENDER_DRAGON_FLAP, 1, -1);
+                    activateKnighthoodEffects(player);
+                }
+            }
+        }
+    }
+
+    // public static void runPlayerAttack(PlayerEntity player, LivingEntity target) {
+    //     CompoundNBT data = player.getPersistentData();
+    //     if (data.contains(CustomValues.hasMageKey)) {
+    //         if (anyInventoryHasEnabledPendant(player, ItemInit.MAGE_PENDANT.get())) {
+    //             if (player.isSprinting()) {
+    //             }
+    //         }
+    //     }
+    // }
 
     public static void runAtlantic(PlayerEntity player) {
         ModifiableAttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
@@ -193,11 +304,11 @@ public class PendantTools {
         }
 
         if (player.isInWater()) {
-            int duration = CommonConfig.ATLANTIC_VISION_DURATION.get();
-            int amplifier = CommonConfig.ATLANTIC_VISION_AMPLIFIER.get();
+            int duration = CommonConfig.ATLANTIC_CONDUIT_POWER_DURATION.get();
+            int amplifier = CommonConfig.ATLANTIC_CONDUIT_POWER_AMPLIFIER.get();
             if (duration != 0 && amplifier != 0) {
-                EffectInstance nightVision = new EffectInstance(Effects.NIGHT_VISION, duration, amplifier, false, false, false);
-                player.addEffect(nightVision);
+                EffectInstance conduitPower = new EffectInstance(Effects.CONDUIT_POWER, duration, amplifier, false, false, false);
+                player.addEffect(conduitPower);
             }
         }
     }
@@ -243,7 +354,7 @@ public class PendantTools {
     public static void activateKnighthoodEffects(PlayerEntity player) {
         CompoundNBT data = player.getPersistentData();
         if (data.contains(CustomValues.hasKnighthoodKey)) {
-            if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
+            if (anyInventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
                 int renderKnighthoodTicks = CommonConfig.RENDER_KNIGHTHOOD_TICKS.get();
                 if (renderKnighthoodTicks != 0) {
                     data.putInt(CustomValues.renderKnighthoodKey, renderKnighthoodTicks);
@@ -251,22 +362,6 @@ public class PendantTools {
 
                 player.playSound(SoundEvents.IRON_GOLEM_HURT, 1, -1);
                 player.playSound(SoundEvents.ARMOR_EQUIP_IRON, 1, 3);
-            }
-        }
-    }
-
-    public static void runKnighthoodCritical(CriticalHitEvent event) {
-        if (event.isVanillaCritical()) {
-            PlayerEntity player = event.getPlayer();
-            CompoundNBT data = player.getPersistentData();
-            if (data.contains(CustomValues.hasKnighthoodKey)) {
-                if (inventoryHasEnabledPendant(player, ItemInit.KNIGHTHOOD_PENDANT.get())) {
-                    double damage = CommonConfig.KNIGHTHOOD_CRITICAL_DAMAGE.get();
-                    event.setDamageModifier((float) (event.getDamageModifier() + damage));
-
-                    player.playSound(SoundEvents.ENDER_DRAGON_FLAP, 1, -1);
-                    activateKnighthoodEffects(player);
-                }
             }
         }
     }
@@ -348,12 +443,35 @@ public class PendantTools {
                 player.abilities.mayfly = false;
                 changed = true;
             }
+            if (noClipEnabled) {
+                player.noPhysics = false;
+                changed = true;
+            }
             if (changed) {
                 player.onUpdateAbilities();
             }
-            if (noClipEnabled) {
-                player.noPhysics = false;
-            }
         }
     }
+
+    public static void runHolding(PlayerEntity player) {
+        for (ItemStack holdingPendantStack : getAllEnabledPendantsOnPlayer(player, ItemInit.HOLDING_PENDANT.get())) {
+            ItemStackHandler holdingStackHandler = Tools.getItemStackHandlerOfStack(holdingPendantStack, CustomValues.holdingSize, false, true);
+            for (int i = 0; i < holdingStackHandler.getSlots(); i++) {
+                holdingStackHandler.getStackInSlot(i).inventoryTick(player.level, player, -1, true);
+            }
+        }
+
+        double reachBuff = CommonConfig.HOLDING_REACH_DISTANCE.get();
+        modifyPlayerAttribute(player.getAttribute(ForgeMod.REACH_DISTANCE.get()), reachBuff, CustomValues.holdingReachBuffUUID, CustomValues.holdingReachBuffName);
+    }
+
+    public static void resetHolding(PlayerEntity player) {
+        resetPlayerAttribute(player.getAttribute(ForgeMod.REACH_DISTANCE.get()), CustomValues.holdingReachBuffUUID);
+    }
+
+//    public static void runMage(PlayerEntity player) {
+//    }
+
+//    public static void resetMage(PlayerEntity player) {
+//    }
 }

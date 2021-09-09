@@ -18,7 +18,7 @@ public class PendantScreen extends ContainerScreen<PendantContainer> {
         super(screenContainer, inv, titleIn);
 
         this.width = 176;
-        this.height = 125;
+        this.height = 121;
         this.leftPos = 0;
         this.topPos = 0;
     }
