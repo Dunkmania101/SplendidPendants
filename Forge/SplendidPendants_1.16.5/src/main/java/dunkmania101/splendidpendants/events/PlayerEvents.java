@@ -1,6 +1,7 @@
 package dunkmania101.splendidpendants.events;
 
 import dunkmania101.splendidpendants.SplendidPendants;
+import dunkmania101.splendidpendants.data.CommonConfig;
 import dunkmania101.splendidpendants.data.CustomValues;
 import dunkmania101.splendidpendants.init.ItemInit;
 import dunkmania101.splendidpendants.util.PendantTools;
@@ -24,19 +25,20 @@ public class PlayerEvents {
         }
     }
 
-//    @SubscribeEvent
-//    public static void onPlayerAttack(AttackEntityEvent event) {
-//        Entity target = event.getTarget();
-//        if (target instanceof LivingEntity) {
-//            PendantTools.runPlayerAttack(event.getPlayer(), (LivingEntity) target);
-//        }
-//    }
+    // @SubscribeEvent
+    // public static void onPlayerAttack(AttackEntityEvent event) {
+    // Entity target = event.getTarget();
+    // if (target instanceof LivingEntity) {
+    // PendantTools.runPlayerAttack(event.getPlayer(), (LivingEntity) target);
+    // }
+    // }
 
     @SubscribeEvent
     public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         PlayerEntity player = event.getPlayer();
         CompoundNBT data = player.getPersistentData();
-        if (!player.isCreative() && !player.isSpectator() && PendantTools.anyInventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
+        if (!player.isCreative() && !player.isSpectator()
+                && PendantTools.anyInventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
             if (!data.contains(CustomValues.isFlyingKey) && player.abilities.flying) {
                 data.putString(CustomValues.isFlyingKey, "");
             } else if (data.contains(CustomValues.isFlyingKey)) {
@@ -53,5 +55,19 @@ public class PlayerEvents {
     @SubscribeEvent
     public static void onCriticalHit(CriticalHitEvent event) {
         PendantTools.runCriticalAttack(event);
+    }
+
+    @SubscribeEvent
+    public static void breakSpeed(PlayerEvent.BreakSpeed event) {
+        if (CommonConfig.HOLY_ENABLE_BREAK_SPEED.get()) {
+            PlayerEntity player = event.getPlayer();
+            if (!player.isOnGround()
+                    && PendantTools.anyInventoryHasEnabledPendant(player, ItemInit.HOLY_PENDANT.get())) {
+                float newSpeed = event.getNewSpeed();
+                if (newSpeed < event.getOriginalSpeed() * 5F) {
+                    event.setNewSpeed(newSpeed * 5F);
+                }
+            }
+        }
     }
 }

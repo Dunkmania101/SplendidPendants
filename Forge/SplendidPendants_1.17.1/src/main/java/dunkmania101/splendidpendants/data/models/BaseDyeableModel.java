@@ -8,9 +8,11 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dunkmania101.splendidpendants.data.CustomValues;
 import dunkmania101.splendidpendants.objects.items.DyeSpongeItem;
 import dunkmania101.splendidpendants.util.Tools;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
@@ -22,7 +24,7 @@ public class BaseDyeableModel extends HumanoidModel<LivingEntity> {
     private float[] colors;
 
     public BaseDyeableModel(ItemStack stack, DyeColor defaultColor) {
-        super(createMesh(new CubeDeformation(1F), 1F).getRoot().bake(1, 1));
+        super(Minecraft.getInstance().getEntityModels().bakeLayer(new ModelLayerLocation(new ResourceLocation("minecraft:player"), "pendant_model")));
 
         this.colors = defaultColor.getTextureDiffuseColors();
 

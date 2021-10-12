@@ -23,6 +23,7 @@ public class CommonConfig {
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_DAMAGE_BOOST;
     public static ForgeConfigSpec.DoubleValue KNIGHTHOOD_CRITICAL_DAMAGE;
     public static ForgeConfigSpec.DoubleValue HOLY_FLIGHT_SPEED;
+    public static ForgeConfigSpec.BooleanValue HOLY_ENABLE_BREAK_SPEED;
     public static ForgeConfigSpec.BooleanValue HOLY_ENABLE_NOCLIP;
     public static ForgeConfigSpec.DoubleValue HOLDING_REACH_DISTANCE;
 
@@ -78,7 +79,8 @@ public class CommonConfig {
         HOLY_FLIGHT_SPEED = BUILDER
                 .comment("Speed boost value for flight with the holy pendant (while sprinting) (0 to disable).")
                 .defineInRange("holy_flight_speed", 10, 0, Double.MAX_VALUE);
-        HOLY_ENABLE_NOCLIP = BUILDER.comment("Whether to enable noclip during flight while sprinting.").define("holy_enable_noclip", true);
+        HOLY_ENABLE_BREAK_SPEED = BUILDER.comment("Whether to enable negation of the Vanilla mining slowdown effect while flying with the holy pendant.").define("holy_enable_break_speed", true);
+        HOLY_ENABLE_NOCLIP = BUILDER.comment("Whether to enable noclip during flight with the holy pendant while sprinting.").define("holy_enable_noclip", true);
         BUILDER.pop();
 
         BUILDER.push("Holding Pendant Stats: ");
