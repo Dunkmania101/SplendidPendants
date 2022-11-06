@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bab",
+    "bab",
+    "bab"
+  ],
+  "key": {
+    "a": {
+      "item": "splendidpendants:enchanted_gemstone"
+    },
+    "b": {
+      "item": "splendidpendants:leather_hand"
+    }
+  },
+  "result": {
+    "item": "splendidpendants:holding_charm"
+  }
+}

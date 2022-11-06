@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "splendidpendants:locket"
+    },
+    "title": {
+      "translate": "advancements.splendidpendants.root.title"
+    },
+    "description": {
+      "translate": "advancements.splendidpendants.root.description"
+    },
+    "background": "minecraft:textures/block/gold_block.png",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

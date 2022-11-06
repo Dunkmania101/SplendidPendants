@@ -53,8 +53,9 @@ public class SplendidPendants {
     }
 
     public void enqueueImc(InterModEnqueueEvent event) {
-        if (Mods.CURIOS.isLoaded())
+        if (Mods.CURIOS.isLoaded()) {
             CuriosCompat.enqueueImc();
+        }
     }
 
     @Mod.EventBusSubscriber(modid = SplendidPendants.modid, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)

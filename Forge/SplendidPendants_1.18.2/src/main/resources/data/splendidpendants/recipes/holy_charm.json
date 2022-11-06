@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aaa",
+    "cac",
+    "cbc"
+  ],
+  "key": {
+    "a": {
+      "tag": "forge:storage_blocks/gold"
+    },
+    "b": {
+      "item": "minecraft:elytra"
+    },
+    "c": {
+      "item": "splendidpendants:enchanted_gemstone"
+    }
+  },
+  "result": {
+    "item": "splendidpendants:holy_charm"
+  }
+}

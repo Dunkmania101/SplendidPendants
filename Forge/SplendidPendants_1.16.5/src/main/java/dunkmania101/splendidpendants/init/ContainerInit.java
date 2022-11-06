@@ -7,12 +7,6 @@ import dunkmania101.splendidpendants.objects.containers.LocketContainer;
 import dunkmania101.splendidpendants.objects.containers.screens.DyeableScreen;
 import dunkmania101.splendidpendants.objects.containers.screens.HoldingScreen;
 import dunkmania101.splendidpendants.objects.containers.screens.LocketScreen;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraftforge.common.extensions.IForgeContainerType;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ContainerInit {
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, SplendidPendants.modid);
