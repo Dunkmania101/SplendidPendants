@@ -65,6 +65,16 @@ public class CuriosCompat {
                 return stack;
             }
 
+            @Override
+            public void curioTick(SlotContext slotContext) {
+                ICurio.super.curioTick(slotContext);
+                if (slotContext.entity() instanceof Player player) {
+                    if (!slotContext.visible()) {
+                        player.getPersistentData().putString(CustomValues.noRenderAtlanticKey, "");
+                    }
+                }
+            }
+
             // @Override
             // public boolean canRender(String identifier, int index, LivingEntity
             // livingEntity) {
@@ -122,30 +132,33 @@ public class CuriosCompat {
                 PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer,
                 int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
                 float netHeadYaw, float headPitch) {
-            if (PendantTools.isEnabled(stack)) {
-                if (slotContext.entity() instanceof Player player) {
-                    Item item = stack.getItem();
-                    ItemStack chestStack = player.getInventory().armor.get(EquipmentSlot.CHEST.getIndex());
-                    Item chestItem = chestStack.getItem();
-                    boolean chestEnabled = PendantTools.isEnabled(chestStack);
-                    if (chestItem instanceof LocketItem) {
-                        chestStack = PendantTools.getPrioritizedStoredStack(chestStack, player);
-                        chestItem = chestStack.getItem();
-                    }
-                    if ((chestItem != item || (!chestEnabled && !PendantTools.isEnabled(chestStack)))
+            if (slotContext.entity() instanceof Player player) {
+                if (slotContext.visible()) {
+                    player.getPersistentData().remove(CustomValues.noRenderAtlanticKey);
+                    if (PendantTools.isEnabled(stack)) {
+                        Item item = stack.getItem();
+                        ItemStack chestStack = player.getInventory().armor.get(EquipmentSlot.CHEST.getIndex());
+                        Item chestItem = chestStack.getItem();
+                        boolean chestEnabled = PendantTools.isEnabled(chestStack);
+                        if (chestItem instanceof LocketItem) {
+                            chestStack = PendantTools.getPrioritizedStoredStack(chestStack, player);
+                            chestItem = chestStack.getItem();
+                        }
+                        if ((chestItem != item || (!chestEnabled && !PendantTools.isEnabled(chestStack)))
                             && (item instanceof PendantItem pendantItem)) {
-                        HumanoidModel<T> model = (HumanoidModel<T>) pendantItem.getPendantArmorModel(player, stack,
-                                EquipmentSlot.CHEST, new BlankBipedModel());
-                        String texture = pendantItem.getArmorTexture(stack, player, EquipmentSlot.CHEST, null);
-                        if (model != null && texture != null) {
-                            T playerT = (T) player;
-                            model.setupAnim(playerT, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                            model.prepareMobModel(playerT, limbSwing, limbSwingAmount, partialTicks);
-                            Tools.followBodyRotations(playerT, (HumanoidModel<LivingEntity>) model);
-                            VertexConsumer vertexBuilder = ItemRenderer.getFoilBufferDirect(renderTypeBuffer,
-                                    model.renderType(new ResourceLocation(texture)), false, stack.hasFoil());
-                            model.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1F, 1F,
-                                    1F, 1F);
+                            HumanoidModel<T> model = (HumanoidModel<T>) pendantItem.getPendantArmorModel(player, stack,
+                                                                                                         EquipmentSlot.CHEST, new BlankBipedModel());
+                            String texture = pendantItem.getArmorTexture(stack, player, EquipmentSlot.CHEST, null);
+                            if (model != null && texture != null) {
+                                T playerT = (T) player;
+                                model.setupAnim(playerT, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+                                model.prepareMobModel(playerT, limbSwing, limbSwingAmount, partialTicks);
+                                Tools.followBodyRotations(playerT, (HumanoidModel<LivingEntity>) model);
+                                VertexConsumer vertexBuilder = ItemRenderer.getFoilBufferDirect(renderTypeBuffer,
+                                                                                                model.renderType(new ResourceLocation(texture)), false, stack.hasFoil());
+                                model.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1F, 1F,
+                                                     1F, 1F);
+                            }
                         }
                     }
                 }

@@ -13,6 +13,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class AtlanticPendantItem extends PendantItem {
+    protected boolean ARMOR_TOGGLE = false;
+
     public AtlanticPendantItem(Properties properties) {
         super(PendantArmorMaterial.ATLANTIC, properties);
     }
@@ -20,8 +22,12 @@ public class AtlanticPendantItem extends PendantItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public HumanoidModel<LivingEntity> getCustomModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+        boolean armor_toggle = this.ARMOR_TOGGLE;
+        if (this.ARMOR_TOGGLE) {
+            this.ARMOR_TOGGLE = false;
+        }
         if (entityLiving.isInWater()) {
-            return new AtlanticTailModel(itemStack);
+            return new AtlanticTailModel(itemStack, armor_toggle);
         }
         return new BlankBipedModel();
     }
@@ -32,5 +38,9 @@ public class AtlanticPendantItem extends PendantItem {
             return SplendidPendants.modid + ":textures/blank_white.png";
         }
         return super.getCustomTexture(stack, entity, slot, type);
+    }
+
+    public void nextRenderWithArmor() {
+        this.ARMOR_TOGGLE = true;
     }
 }

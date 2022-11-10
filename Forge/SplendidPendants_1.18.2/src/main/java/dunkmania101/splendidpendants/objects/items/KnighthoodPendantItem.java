@@ -14,6 +14,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class KnighthoodPendantItem extends PendantItem {
+    protected boolean TAIL_TOGGLE = false;
+
     public KnighthoodPendantItem(Properties properties) {
         super(PendantArmorMaterial.KNIGHTHOOD, properties);
     }
@@ -21,8 +23,12 @@ public class KnighthoodPendantItem extends PendantItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public HumanoidModel<LivingEntity> getCustomModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+        boolean tail_toggle = this.TAIL_TOGGLE;
+        if (this.TAIL_TOGGLE) {
+            this.TAIL_TOGGLE = false;
+        }
         if (entityLiving.getPersistentData().getInt(CustomValues.renderKnighthoodKey) > 0) {
-            return new KnighthoodArmorModel(itemStack);
+            return new KnighthoodArmorModel(itemStack, tail_toggle);
         }
         return new BlankBipedModel();
     }
@@ -33,5 +39,9 @@ public class KnighthoodPendantItem extends PendantItem {
             return SplendidPendants.modid + ":textures/blank_gray.png";
         }
         return super.getCustomTexture(stack, entity, slot, type);
+    }
+
+    public void nextRenderWithTail() {
+        this.TAIL_TOGGLE = true;
     }
 }

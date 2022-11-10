@@ -47,16 +47,35 @@ public class LocketItem extends PendantItem {
         MultiBipedModel customModel = new MultiBipedModel(itemStack);
         ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(itemStack, CustomValues.locketSize, false,
                 false);
-        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-            ItemStack checkStack = itemStackHandler.getStackInSlot(i);
-            if (!checkStack.isEmpty()) {
-                Item checkItem = checkStack.getItem();
-                if (checkItem instanceof PendantItem) {
-                    HumanoidModel<LivingEntity> subCustomModel = (HumanoidModel<LivingEntity>) ((PendantItem) checkItem)
-                            .getPendantArmorModel(entityLiving, checkStack, armorSlot, _default);
-                    if (!(subCustomModel instanceof BlankBipedModel)) {
-                        Tools.followBodyRotations(entityLiving, subCustomModel);
-                        customModel.addChild(subCustomModel);
+        boolean alsoTail = false;
+        boolean alsoArmor = false;
+        for (int s = 0; s < 2; s++) {
+            for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+                ItemStack checkStack = itemStackHandler.getStackInSlot(i);
+                if (!checkStack.isEmpty()) {
+                    Item checkItem = checkStack.getItem();
+                    if (checkItem instanceof PendantItem pendantItem) {
+                        if (s == 0) {
+                            if (pendantItem instanceof KnighthoodPendantItem) {
+                                alsoArmor = true;
+                            } else if (pendantItem instanceof AtlanticPendantItem && entityLiving.isInWater()) {
+                                alsoTail = true;
+                            }
+                        } else {
+                            if (pendantItem instanceof KnighthoodPendantItem knighthoodPendantItem && alsoTail) {
+                                knighthoodPendantItem.nextRenderWithTail();
+                            } else if (pendantItem instanceof AtlanticPendantItem atlanticPendantItem && alsoArmor) {
+                                atlanticPendantItem.nextRenderWithArmor();
+                            } else if (pendantItem instanceof HolyPendantItem holyPendantItem && alsoArmor) {
+                                holyPendantItem.nextRenderWithArmor();
+                            }
+                            HumanoidModel<LivingEntity> subCustomModel = (HumanoidModel<LivingEntity>) pendantItem
+                                    .getPendantArmorModel(entityLiving, checkStack, armorSlot, _default);
+                            if (!(subCustomModel instanceof BlankBipedModel)) {
+                                Tools.followBodyRotations(entityLiving, subCustomModel);
+                                customModel.addChild(subCustomModel);
+                            }
+                        }
                     }
                 }
             }
@@ -86,13 +105,15 @@ public class LocketItem extends PendantItem {
     }
 
     @Override
+    public String getAltInvKey() {
+        return "msg.splendidpendants.locket_sneak_use_instructions";
+    }
+
+    @Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(@Nonnull ItemStack stack, Level worldIn, @Nonnull List<Component> tooltip,
             @Nonnull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslatableComponent("msg.splendidpendants.locket_sneak_use_instructions")
-                .withStyle(ChatFormatting.GRAY));
-        tooltip.add(new TranslatableComponent("msg.splendidpendants.divider"));
         tooltip.add(new TranslatableComponent("msg.splendidpendants.stored_stacks").withStyle(ChatFormatting.GRAY));
         ItemStackHandler itemStackHandler = Tools.getItemStackHandlerOfStack(stack, CustomValues.locketSize, false);
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {

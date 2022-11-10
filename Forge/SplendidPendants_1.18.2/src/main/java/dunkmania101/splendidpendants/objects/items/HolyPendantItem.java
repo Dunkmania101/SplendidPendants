@@ -14,6 +14,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class HolyPendantItem extends PendantItem {
+    protected boolean ARMOR_TOGGLE = false;
+
     public HolyPendantItem(Properties properties) {
         super(PendantArmorMaterial.HOLY, properties);
     }
@@ -21,10 +23,14 @@ public class HolyPendantItem extends PendantItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public HumanoidModel<LivingEntity> getCustomModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+        boolean armor_toggle = this.ARMOR_TOGGLE;
+        if (this.ARMOR_TOGGLE) {
+            this.ARMOR_TOGGLE = false;
+        }
         if (entityLiving instanceof Player) {
             Player player = (Player) entityLiving;
             if (player.getAbilities().flying && !player.isCreative() && !player.isSpectator()) {
-                return new HolyHaloModel(itemStack);
+                return new HolyHaloModel(itemStack, armor_toggle);
             }
         }
         return new BlankBipedModel();
@@ -40,4 +46,9 @@ public class HolyPendantItem extends PendantItem {
         }
         return super.getCustomTexture(stack, entity, slot, type);
     }
+
+    public void nextRenderWithArmor() {
+        this.ARMOR_TOGGLE = true;
+    }
+
 }

@@ -28,7 +28,7 @@ public class PendantContainer extends AbstractContainerMenu {
     }
 
     protected void drawSlots(Inventory playerInventory) {
-        int startX = 7;
+        int startX = 6;
         int startY = 17;
         int slotSizePlus2 = 18;
 
@@ -36,7 +36,7 @@ public class PendantContainer extends AbstractContainerMenu {
         for (int x = 0; x < this.itemStackHandler.getSlots(); ++x) {
             int valueX = startX + (x * slotSizePlus2);
             if (x > 0) {
-                valueX += (8 * x) + 1;
+                valueX += 8 * x;
             }
             SlotItemHandler slot = new SlotItemHandler(this.itemStackHandler, x, valueX, startY) {
                 @Override

@@ -7,10 +7,13 @@ import dunkmania101.splendidpendants.util.PendantTools;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -19,8 +22,8 @@ public class PlayerEvents {
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity livingEntity = event.getEntityLiving();
-        if (livingEntity instanceof Player) {
-            PendantTools.runPendants((Player) livingEntity);
+        if (livingEntity instanceof Player player) {
+            PendantTools.runPendants(player);
         }
     }
 
@@ -45,7 +48,8 @@ public class PlayerEvents {
         }
     }
 
-    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onRenderPlayer(RenderPlayerEvent event) {
         PendantTools.runPendantModel(event);
     }

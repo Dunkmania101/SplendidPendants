@@ -29,7 +29,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class BaseDyeableModel extends HumanoidModel<LivingEntity> {
     private float[] colors;
 
-    public BaseDyeableModel(LayerDefinition layer, ItemStack stack, DyeColor defaultColor) {
+    public BaseDyeableModel(LayerDefinition layer, ItemStack stack, DyeColor defaultColor, float blendRed, float blendGreen, float blendBlue) {
         super(layer.bakeRoot());
 
         this.colors = defaultColor.getTextureDiffuseColors();
@@ -46,6 +46,14 @@ public class BaseDyeableModel extends HumanoidModel<LivingEntity> {
                         (float) Tools.getGreen(colorInt) / 255f, (float) Tools.getBlue(colorInt) / 255f };
             }
         }
+
+        this.colors[0] = Tools.blendColors(this.colors[0], blendRed);
+        this.colors[1] = Tools.blendColors(this.colors[1], blendGreen);
+        this.colors[2] = Tools.blendColors(this.colors[2], blendBlue);
+    }
+
+    public BaseDyeableModel(LayerDefinition layer, ItemStack stack, DyeColor defaultColor) {
+        this(layer, stack, defaultColor, 1F, 1F, 1F);
     }
 
     public static MeshDefinition createBlankMesh(float scale) {

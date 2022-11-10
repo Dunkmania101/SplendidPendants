@@ -49,6 +49,11 @@ public class HoldingPendantItem extends PendantItem {
     }
 
     @Override
+    public String getAltInvKey() {
+        return "msg.splendidpendants.holding_sneak_use_instructions";
+    }
+
+    @Override
     public void appendHoverText(@Nonnull ItemStack stack, Level worldIn, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }

@@ -26,6 +26,7 @@ public class CustomValues {
     public static final String colorKey = SplendidPendants.modid + "_color";
 
     public static final String renderKnighthoodKey = SplendidPendants.modid + "_renderKnighthood";
+    public static final String noRenderAtlanticKey = SplendidPendants.modid + "_noRenderAtlantic";
 
     public static final String isFlyingKey = SplendidPendants.modid + "_isFlying";
     public static final String isNoClipKey = SplendidPendants.modid + "_isNoClip";

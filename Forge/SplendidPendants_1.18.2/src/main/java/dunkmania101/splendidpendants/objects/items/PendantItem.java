@@ -137,6 +137,10 @@ public class PendantItem extends ArmorItem {
         return true;
     }
 
+    public String getAltInvKey() {
+        return null;
+    }
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(@Nonnull ItemStack stack, Level worldIn, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flagIn) {
@@ -151,6 +155,16 @@ public class PendantItem extends ArmorItem {
             tooltip.add(new TranslatableComponent("msg.splendidpendants.disabled").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
         }
         tooltip.add(new TranslatableComponent("msg.splendidpendants.divider"));
+        String altInvKey = getAltInvKey();
+        if (altInvKey != null) {
+            tooltip.add(new TranslatableComponent("msg.splendidpendants.when_enabled"));
+            tooltip.add(new TranslatableComponent(altInvKey)
+                        .withStyle(ChatFormatting.GRAY));
+            if (isDyeable()) {
+                tooltip.add(new TranslatableComponent("msg.splendidpendants.divider"));
+                tooltip.add(new TranslatableComponent("msg.splendidpendants.when_disabled"));
+            }
+        }
         if (isDyeable()) {
             tooltip.add(new TranslatableComponent("msg.splendidpendants.dyeable_sneak_use_instructions").withStyle(ChatFormatting.GRAY));
             tooltip.add(new TranslatableComponent("msg.splendidpendants.divider"));

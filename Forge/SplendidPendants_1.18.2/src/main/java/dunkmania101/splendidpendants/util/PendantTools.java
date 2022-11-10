@@ -29,6 +29,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
@@ -246,16 +248,20 @@ public class PendantTools {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void runPendantModel(RenderPlayerEvent event) {
         Player player = event.getPlayer();
         CompoundTag data = player.getPersistentData();
-        if (player.isInWater()) {
-            if (data.contains(CustomValues.hasAtlanticKey)) {
-                if (anyInventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
-                    PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
-                    model.rightLeg.visible = false;
-                    model.rightPants.visible = false;
-                    model.leftPants.visible = false;
+        if (!data.contains(CustomValues.noRenderAtlanticKey)) {
+            if (player.isInWater()) {
+                if (data.contains(CustomValues.hasAtlanticKey)) {
+                    if (anyInventoryHasEnabledPendant(player, ItemInit.ATLANTIC_PENDANT.get())) {
+                        PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
+                        model.rightLeg.visible = false;
+                        model.rightPants.visible = false;
+                        model.leftLeg.visible = false;
+                        model.leftPants.visible = false;
+                    }
                 }
             }
         }
