@@ -59,8 +59,8 @@ public class KnighthoodArmorModel extends BaseDyeableModel {
             partdefinition.getChild("left_leg").addOrReplaceChild("knighthood_left_leg", knighthoodArmorLeftLeg, PartPose.offset(1.0F, -6.0F, -1.0F));
         }
 
-        partdefinition.getChild("head").addOrReplaceChild("knighthood_head", knighthoodArmorHead, PartPose.offset(0.0F, -9.0F, 0.0F));
-        partdefinition.getChild("body").addOrReplaceChild("knighthood_body", knighthoodArmorChest, PartPose.offset(0.0F, -7.0F, 0.0F));
+        partdefinition.getChild("head").addOrReplaceChild("knighthood_head", knighthoodArmorHead, PartPose.offset(0.0F, -2.0F, 0.0F));
+        partdefinition.getChild("body").addOrReplaceChild("knighthood_body", knighthoodArmorChest, PartPose.offset(0.0F, 0.0F, 0.0F));
         partdefinition.getChild("right_arm").addOrReplaceChild("knighthood_right_arm", knighthoodArmorRightArm, PartPose.offset(1.0F, -6.0F, -1.0F));
         partdefinition.getChild("left_arm").addOrReplaceChild("knighthood_left_arm", knighthoodArmorLeftArm, PartPose.offset(1.0F, -6.0F, -1.0F));
 
