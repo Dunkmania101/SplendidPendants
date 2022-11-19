@@ -21,12 +21,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class HoldingPendantItem extends PendantItem {
     public HoldingPendantItem(Properties properties) {
         super(PendantArmorMaterial.HOLDING, properties);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public MenuProvider getContainerProvider(Level world, Player playerEntity, InteractionHand hand, ItemStack stack) {
         if (PendantTools.isEnabled(stack)) {
@@ -38,6 +41,7 @@ public class HoldingPendantItem extends PendantItem {
         return super.getContainerProvider(world, playerEntity, hand, stack);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public HumanoidModel<LivingEntity> getCustomModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
         return new HoldingHandsModel(itemStack);
@@ -53,6 +57,7 @@ public class HoldingPendantItem extends PendantItem {
         return "msg.splendidpendants.holding_sneak_use_instructions";
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(@Nonnull ItemStack stack, Level worldIn, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);

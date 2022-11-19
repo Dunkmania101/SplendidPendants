@@ -94,6 +94,7 @@ public class LocketItem extends PendantItem {
         return super.getCustomTexture(stack, entity, slot, type);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public MenuProvider getContainerProvider(Level world, Player playerEntity, InteractionHand hand, ItemStack stack) {
         if (PendantTools.isEnabled(stack)) {

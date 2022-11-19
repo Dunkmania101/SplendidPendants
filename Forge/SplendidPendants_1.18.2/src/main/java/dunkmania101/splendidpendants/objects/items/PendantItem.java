@@ -116,6 +116,7 @@ public class PendantItem extends ArmorItem {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public MenuProvider getContainerProvider(Level world, Player playerEntity, InteractionHand hand, ItemStack stack) {
         return new SimpleMenuProvider(
                 (id, playerInventory, openingPlayer) -> new DyeableContainer(id, playerInventory, stack),
