@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "splendidpendants:mage_pendant"
+    },
+    "title": {
+      "translate": "advancements.splendidpendants.mage_pendant.title"
+    },
+    "description": {
+      "translate": "advancements.splendidpendants.mage_pendant.description"
+    }
+  },
+  "parent": "splendidpendants:root",
+  "criteria": {
+    "holy_pendant": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "splendidpendants:mage_pendant"
+          }
+        ]
+      }
+    }
+  }
+}
