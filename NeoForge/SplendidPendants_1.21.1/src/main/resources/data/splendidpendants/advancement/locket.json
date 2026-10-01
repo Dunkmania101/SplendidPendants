@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "splendidpendants:locket"
+    },
+    "title": {
+      "translate": "advancements.splendidpendants.locket.title"
+    },
+    "description": {
+      "translate": "advancements.splendidpendants.locket.description"
+    }
+  },
+  "parent": "splendidpendants:root",
+  "criteria": {
+    "locket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "splendidpendants:locket"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

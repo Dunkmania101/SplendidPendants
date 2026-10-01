@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "tNe",
+    "hCs",
+    "ndn"
+  ],
+  "key": {
+    "N": {
+      "item": "splendidpendants:enchanted_necklace"
+    },
+    "C": {
+      "item": "splendidpendants:holy_charm"
+    },
+    "t": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "e": {
+      "item": "minecraft:enchanted_golden_apple"
+    },
+    "h": {
+      "item": "minecraft:heavy_core"
+    },
+    "s": {
+      "item": "minecraft:echo_shard"
+    },
+    "n": {
+      "item": "minecraft:nether_star"
+    },
+    "d": {
+      "item": "minecraft:dragon_egg"
+    }
+  },
+  "result": {
+    "id": "splendidpendants:holy_pendant"
+  }
+}
