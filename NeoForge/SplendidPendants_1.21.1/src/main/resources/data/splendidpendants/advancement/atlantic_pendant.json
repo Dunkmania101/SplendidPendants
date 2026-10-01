@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "splendidpendants:atlantic_pendant"
+    },
+    "title": {
+      "translate": "advancements.splendidpendants.atlantic_pendant.title"
+    },
+    "description": {
+      "translate": "advancements.splendidpendants.atlantic_pendant.description"
+    }
+  },
+  "parent": "splendidpendants:root",
+  "criteria": {
+    "atlantic_pendant": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "splendidpendants:atlantic_pendant"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

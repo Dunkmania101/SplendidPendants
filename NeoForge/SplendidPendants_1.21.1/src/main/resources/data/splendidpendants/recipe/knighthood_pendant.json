@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "splendidpendants:enchanted_necklace"
+    },
+    {
+      "item": "splendidpendants:knighthood_charm"
+    },
+    {
+      "item": "splendidpendants:enchanted_gemstone"
+    }
+  ],
+  "result": {
+    "id": "splendidpendants:knighthood_pendant"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "splendidpendants:knighthood_pendant"
+    },
+    "title": {
+      "translate": "advancements.splendidpendants.knighthood_pendant.title"
+    },
+    "description": {
+      "translate": "advancements.splendidpendants.knighthood_pendant.description"
+    }
+  },
+  "parent": "splendidpendants:root",
+  "criteria": {
+    "knighthood_pendant": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "splendidpendants:knighthood_pendant"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

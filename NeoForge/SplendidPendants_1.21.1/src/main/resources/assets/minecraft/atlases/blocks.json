@@ -1,0 +1,12 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "splendidpendants:gui/pendant_slot"
+    },
+    {
+      "type": "single",
+      "resource": "splendidpendants:gui/dye_slot"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aba",
+    "aca",
+    "aca"
+  ],
+  "key": {
+    "a": {
+      "tag": "c:leathers"
+    },
+    "b": {
+      "item": "minecraft:phantom_membrane"
+    },
+    "c": {
+      "item": "splendidpendants:enchanted_gemstone"
+    }
+  },
+  "result": {
+    "id": "splendidpendants:leather_hand"
+  }
+}
